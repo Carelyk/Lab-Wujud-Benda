@@ -14,7 +14,7 @@ export type TingkatVolume = 'mati' | 'pelan' | 'normal'
 
 export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'suara'
 
-export type BendaId = 'es' | 'air' | 'lilin' | 'kapur-barus' | 'panci'
+export type BendaId = 'es' | 'air' | 'lilin' | 'cokelat' | 'kapur-barus' | 'panci'
 
 /** One temperature band of a benda. `mulai` is the lowest °C of the band. */
 export interface Fase {

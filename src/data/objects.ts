@@ -1,4 +1,4 @@
-import type { Benda, BendaId } from '../types'
+﻿import type { Benda, BendaId } from '../types'
 
 /**
  * Content lives here, never inside components.
@@ -20,7 +20,7 @@ export const BENDA_LIST: Benda[] = [
   {
     id: 'es',
     nama: 'Es batu',
-    emoji: '🧊',
+    emoji: 'ðŸ§Š',
     keterangan: 'Es batu keras, bentuknya tetap. Coba panaskan.',
     suhuAwal: -5,
     suhuMin: -20,
@@ -40,7 +40,7 @@ export const BENDA_LIST: Benda[] = [
   {
     id: 'air',
     nama: 'Air',
-    emoji: '💧',
+    emoji: 'ðŸ’§',
     keterangan: 'Air mengikuti bentuk gelas. Coba dinginkan sampai beku.',
     suhuAwal: 25,
     suhuMin: -20,
@@ -60,7 +60,7 @@ export const BENDA_LIST: Benda[] = [
   {
     id: 'lilin',
     nama: 'Lilin',
-    emoji: '🕯️',
+    emoji: 'ðŸ•¯ï¸',
     keterangan: 'Lilin padat saat dingin. Coba panaskan sampai meleleh.',
     suhuAwal: 28,
     suhuMin: -20,
@@ -76,9 +76,27 @@ export const BENDA_LIST: Benda[] = [
     },
   },
   {
+    id: 'cokelat',
+    nama: 'Cokelat',
+    emoji: '🍫',
+    keterangan: 'Cokelat padat saat dingin. Coba panaskan perlahan.',
+    suhuAwal: 25,
+    suhuMin: 0,
+    suhuMaks: 60,
+    fase: [
+      { mulai: 0, wujud: 'padat' },
+      { mulai: 33, wujud: 'cair' },
+    ],
+    perluVerifikasi: true,
+    prediksi: {
+      pertanyaan: 'Menurutmu, cokelat yang dipanaskan akan jadi apa?',
+      benar: 'cair',
+    },
+  },
+  {
     id: 'kapur-barus',
     nama: 'Kapur barus',
-    emoji: '⚪',
+    emoji: 'âšª',
     keterangan: 'Kapur barus adalah benda padat yang menyublim langsung menjadi gas wangi saat dipanaskan tanpa mencair.',
     suhuAwal: 28,
     suhuMin: -10,
@@ -96,7 +114,7 @@ export const BENDA_LIST: Benda[] = [
   {
     id: 'panci',
     nama: 'Air di panci',
-    emoji: '🍲',
+    emoji: 'ðŸ²',
     keterangan: 'Air di panci bisa membeku dan mendidih. Coba keduanya.',
     suhuAwal: 25,
     suhuMin: -20,

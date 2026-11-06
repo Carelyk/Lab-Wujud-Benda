@@ -10,6 +10,7 @@ import {
   IconFlask,
   IconLencana,
   IconPanas,
+  IconSiklus,
   IconStar,
 } from '../components/ui/Icons'
 import { DAFTAR_LENCANA } from '../data/badges'
@@ -41,6 +42,7 @@ interface Props {
   onKuis: () => void
   onLencana: () => void
   onUntungRugi: () => void
+  onSiklus: () => void
 }
 
 function bintangTeks(n: number): string {
@@ -54,6 +56,7 @@ export function HomeScreen({
   onKuis,
   onLencana,
   onUntungRugi,
+  onSiklus,
 }: Props) {
   const totalLencana = DAFTAR_LENCANA.length
 
@@ -92,7 +95,7 @@ export function HomeScreen({
             <BigButton
               nada="panas"
               ikon={<IconFlask size={26} />}
-              sub="5 benda · panas dan dingin"
+              sub="6 benda - panas dan dingin"
               onClick={onMulai}
             >
               Ayo Bereksperimen
@@ -138,7 +141,7 @@ export function HomeScreen({
         stiker="Ayo main"
         judul="Mode belajar"
         ikon={<IconStar size={22} />}
-        aksi={<span className={s.modeJumlah}>5 mode terbuka</span>}
+        aksi={<span className={s.modeJumlah}>6 mode terbuka</span>}
       >
         <div className={s.modeDaftar}>
           <button type="button" className={`${s.modeKartu} ${s.modePanas}`} onClick={onMulai}>
@@ -148,7 +151,7 @@ export function HomeScreen({
             <span className={s.modeTeks}>
               <span className={s.modeNama}>Eksperimen Bebas</span>
               <span className={s.modeKet}>
-                Panaskan dan dinginkan 5 benda, lalu catat perubahannya.
+                Panaskan dan dinginkan 6 benda, lalu catat perubahannya.
               </span>
             </span>
             <span className={s.modeMeta}>{progress.catatan.length} catatan</span>
@@ -204,6 +207,19 @@ export function HomeScreen({
               </span>
             </span>
             <span className={s.modeMeta}>10 contoh</span>
+          </button>
+
+          <button type="button" className={`${s.modeKartu} ${s.modePadat}`} onClick={onSiklus}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <IconSiklus size={26} />
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Siklus Air</span>
+              <span className={s.modeKet}>
+                Ikuti perjalanan air dari laut ke awan, hujan, dan kembali lagi.
+              </span>
+            </span>
+            <span className={s.modeMeta}>{progress.siklus.selesai ? 'selesai' : 'belum'}</span>
           </button>
         </div>
       </Panel>

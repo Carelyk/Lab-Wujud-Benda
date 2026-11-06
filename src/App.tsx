@@ -7,6 +7,7 @@ import { ExperimentScreen } from './screens/ExperimentScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { QuizScreen } from './screens/QuizScreen'
 import { SortingScreen } from './screens/SortingScreen'
+import { SiklusAirScreen } from './screens/SiklusAirScreen'
 import { UntungRugiScreen } from './screens/UntungRugiScreen'
 import { SoundTestScreen } from './screens/SoundTestScreen'
 import type { ScreenId, TingkatVolume } from './types'
@@ -20,6 +21,7 @@ const RUTE: Record<string, ScreenId> = {
   '#/kuis': 'kuis',
   '#/lencana': 'lencana',
   '#/sekitar': 'untungRugi',
+  '#/siklus': 'siklus',
   '#/suara': 'suara',
 }
 
@@ -58,6 +60,8 @@ export default function App() {
     simpanPrediksi,
     simpanSortir,
     simpanKuis,
+    tandaiPartikel,
+    selesaikanSiklus,
     ubahVolume,
     tutupLencanaBaru,
   } = useProgress()
@@ -96,7 +100,7 @@ export default function App() {
   let isi
   switch (layar) {
     case 'eksperimen':
-      isi = <ExperimentScreen progress={progress} catat={catat} simpanPrediksi={simpanPrediksi} />
+      isi = <ExperimentScreen progress={progress} catat={catat} simpanPrediksi={simpanPrediksi} tandaiPartikel={tandaiPartikel} />
       break
     case 'sortir':
       isi = (
@@ -118,6 +122,9 @@ export default function App() {
     case 'lencana':
       isi = <BadgesScreen progress={progress} onBeranda={() => pergi('beranda')} />
       break
+    case 'siklus':
+      isi = <SiklusAirScreen progress={progress} onBack={() => pergi('beranda')} onSelesai={selesaikanSiklus} tandaiPartikel={tandaiPartikel} />
+      break
     case 'untungRugi':
       isi = <UntungRugiScreen onBack={() => pergi('beranda')} />
       break
@@ -133,6 +140,7 @@ export default function App() {
           onKuis={() => pergi('kuis')}
           onLencana={() => pergi('lencana')}
           onUntungRugi={() => pergi('untungRugi')}
+          onSiklus={() => pergi('siklus')}
         />
       )
   }

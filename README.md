@@ -1,12 +1,11 @@
 # Laboratorium Wujud Benda
 
-Interactive science lab for grade 4 (IPAS). Children heat and cool five objects
-(ice, water, candle, chocolate, water in a pot) and watch the wujud change:
+Interactive science lab for grade 4 (IPAS). Children heat and cool six objects
+(ice, water, candle, chocolate, camphor, water in a pot) and watch the wujud change:
 padat → cair → gas. A mascot named Tetes asks for a prediction first, and every
 change is written into an automatic lab notebook.
 
-Status: **Tahap 1 (MVP) is complete**. Tahap 2 (Sortir Benda, Kuis Bintang) and
-Tahap 3 (Siklus Air, Kaca Pembesar Partikel) are not built yet.
+Status: **Tahap 1 (MVP) and Tahap 2 (Sortir Benda, Kuis Bintang) are complete**. Tahap 3 (Siklus Air, Kaca Pembesar Partikel) has basic access and verification flags.
 
 ## Run
 
@@ -28,7 +27,7 @@ src/
   App.tsx                 hash routing (#/ and #/eksperimen) + sound setup
   types.ts                shared types (Benda, Wujud, NamaProses, Progress)
   data/
-    objects.ts            all five benda, their temperature bands and predictions
+    objects.ts            all six benda, their temperature bands and predictions
     labels.ts             every user-facing label and sentence
   utils/
     fase.ts               fasePada(), resolvePhase(), ambangSuhu()

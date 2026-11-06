@@ -1,0 +1,98 @@
+.halaman {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.backBtn {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+}
+
+.badgeCounter {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.daftar {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.kartu {
+  padding: var(--sp-3);
+  border: 2px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.nama {
+  font-weight: 700;
+  display: block;
+  margin-bottom: var(--sp-1);
+}
+
+.deskripsi {
+  margin: 0 0 var(--sp-2);
+  color: var(--ink-soft);
+}
+
+.suhu {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.petunjuk {
+  margin: 0 0 var(--sp-3);
+  color: var(--ink-soft);
+}
+
+.pilihWujud {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-3);
+}
+
+.tombolWujud {
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  text-transform: capitalize;
+}
+
+.tombolWujud.aktif {
+  background: var(--sky);
+  border-color: var(--line-strong);
+  font-weight: 700;
+}
+
+.suhuBaris {
+  display: grid;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+
+.aksi {
+  display: flex;
+  justify-content: center;
+}
+
+.footerMascot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}

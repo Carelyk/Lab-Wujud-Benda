@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Bench } from '../components/experiment/Bench'
+import { ParticleLens } from '../components/experiment/ParticleLens'
 import { HeatControls } from '../components/experiment/HeatControls'
 import { NoteBook } from '../components/experiment/NoteBook'
 import { PredictionCard } from '../components/experiment/PredictionCard'
@@ -9,6 +10,7 @@ import { Bubble, Mascot } from '../components/mascot/Mascot'
 import type { MoodTetes } from '../components/mascot/Mascot'
 import {
   IconAir,
+  IconCokelat,
   IconEs,
   IconLilin,
   IconPanci,
@@ -27,6 +29,7 @@ const IKON: Record<BendaId, ReactNode> = {
   es: <IconEs size={24} />,
   air: <IconAir size={24} />,
   lilin: <IconLilin size={24} />,
+  cokelat: <IconCokelat size={24} />,
   'kapur-barus': <span style={{ fontSize: '1.2rem' }}>⚪</span>,
   panci: <IconPanci size={24} />,
 }
@@ -35,9 +38,10 @@ interface Props {
   progress: Progress
   catat: (entri: EntriCatatan) => Promise<Progress>
   simpanPrediksi: (bendaId: BendaId, jawaban: Wujud, tepat: boolean) => Promise<Progress>
+  tandaiPartikel: (wujud: Wujud) => Promise<Progress>
 }
 
-export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
+export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartikel }: Props) {
   const [bendaId, setBendaId] = useState<BendaId>('es')
   const [toast, setToast] = useState<{ proses: NamaProses; urutan: number } | null>(null)
   const [hasil, setHasil] = useState<{ tepat: boolean; jawaban: Wujud } | null>(null)
@@ -96,6 +100,10 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
   const ambang = ambangSuhu(benda)
   const pred = progress.prediksi[bendaId]
   const jawaban = pred?.jawaban
+
+  useEffect(() => {
+    void tandaiPartikel(fase.wujud)
+  }, [fase.wujud, tandaiPartikel])
 
   // The toast disappears on its own, shortly after its exit animation.
   useEffect(() => {
@@ -225,6 +233,8 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
           </Panel>
 
           <PredictionCard benda={benda} jawaban={jawaban} hasil={hasil} onJawab={jawab} />
+
+          <ParticleLens wujud={fase.wujud} suhu={suhu} />
 
           <NoteBook catatan={progress.catatan} />
         </aside>
