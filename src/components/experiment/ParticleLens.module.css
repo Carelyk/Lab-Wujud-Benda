@@ -1,0 +1,98 @@
+.lensContainer {
+  background: #f8fafc;
+  border: 3px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.lensHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  background: #3b82f6;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.info {
+  font-size: 0.95rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.viewbox {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: #ffffff;
+  border: 2px dashed #94a3b8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  left: var(--rx);
+  top: var(--ry);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  animation-duration: var(--speed);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-delay: var(--delay);
+}
+
+.padat {
+  background: #f59e0b;
+  animation-name: vibrate;
+}
+
+.cair {
+  background: #0ea5e9;
+  animation-name: flow;
+}
+
+.gas {
+  background: #8b5cf6;
+  animation-name: bounceFast;
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(2px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes flow {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(8px, 4px); }
+  100% { transform: translate(-4px, -4px); }
+}
+
+@keyframes bounceFast {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-15px, 12px) scale(1.1); }
+  66% { transform: translate(12px, -15px) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.hint {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  text-align: center;
+}
