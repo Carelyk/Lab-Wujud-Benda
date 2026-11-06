@@ -10,6 +10,8 @@ const IKON: Record<NamaProses, ReactNode> = {
   menguap: <IconCloud size={26} />,
   mendidih: <IconCloud size={26} />,
   mengembun: <IconTetes size={26} />,
+  menyublim: <IconCloud size={26} />,
+  mengkristal: <IconDingin size={26} />,
 }
 
 interface Props {

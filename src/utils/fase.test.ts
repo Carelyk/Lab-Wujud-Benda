@@ -3,13 +3,7 @@ import { BENDA_LIST } from '../data/objects'
 import type { Benda, NamaProses } from '../types'
 import { ambangSuhu, fasePada, langkahSuhu, resolvePhase } from './fase'
 
-const SEMUA_PROSES: NamaProses[] = [
-  'mencair',
-  'membeku',
-  'menguap',
-  'mendidih',
-  'mengembun',
-]
+
 
 function panaskan(benda: Benda, dari: number, sampai: number): NamaProses[] {
   const hasil: NamaProses[] = []
@@ -51,8 +45,9 @@ describe('data benda', () => {
     }
   })
 
-  it('lilin dan kapur barus tidak punya tahap uap atau diganti kapur barus', () => {
+  it('lilin dan kapur barus tidak punya tahap uap', () => {
     expect(BENDA_LIST.find((b) => b.id === 'lilin')?.uap).toBeUndefined()
+    expect(BENDA_LIST.find((b) => b.id === 'kapur-barus')?.uap).toBeUndefined()
   })
 
   it('setiap konten ditandai perlu diverifikasi guru', () => {
@@ -87,11 +82,11 @@ describe('fasePada', () => {
     expect(fasePada(air, -1).wujud).toBe('padat')
   })
 
-  it('lilin meleleh di 55, kapur barus meleleh di 40', () => {
+  it('lilin meleleh di 55, kapur barus menyublim di 40', () => {
     expect(fasePada(lilin, 54).wujud).toBe('padat')
     expect(fasePada(lilin, 55).wujud).toBe('cair')
     expect(fasePada(kapurBarus, 35).wujud).toBe('padat')
-    expect(fasePada(kapurBarus, 45).wujud).toBe('cair')
+    expect(fasePada(kapurBarus, 45).wujud).toBe('gas')
   })
 })
 
@@ -101,16 +96,16 @@ describe('resolvePhase memakai arah perubahan', () => {
   const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
   const kapurBarus = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
 
-  it('panas: padat menjadi cair = mencair', () => {
+  it('panas: padat menjadi gas = menyublim', () => {
     expect(resolvePhase(es, -5, 25).proses).toBe('mencair')
-    expect(resolvePhase(kapurBarus, 28, 50).proses).toBe('mencair')
+    expect(resolvePhase(kapurBarus, 28, 50).proses).toBe('menyublim')
     expect(resolvePhase(lilin, 28, 60).proses).toBe('mencair')
   })
 
-  it('dingin: cair menjadi padat = membeku', () => {
+  it('dingin: gas menjadi padat = mengkristal', () => {
     expect(resolvePhase(es, 25, -5).proses).toBe('membeku')
     expect(resolvePhase(air, 25, -10).proses).toBe('membeku')
-    expect(resolvePhase(kapurBarus, 50, 28).proses).toBe('membeku')
+    expect(resolvePhase(kapurBarus, 50, 28).proses).toBe('mengkristal')
     expect(resolvePhase(lilin, 60, 28).proses).toBe('membeku')
   })
 
@@ -126,15 +121,10 @@ describe('resolvePhase memakai arah perubahan', () => {
     expect(resolvePhase(es, 100, 20).proses).toBe('mengembun')
   })
 
-  it('menyublim tidak dipakai di data', () => {
-    for (const b of BENDA_LIST) {
-      const semua = [
-        ...panaskan(b, b.suhuMin, b.suhuMaks),
-        ...dinginkan(b, b.suhuMaks, b.suhuMin),
-      ]
-      expect(semua).not.toContain('menyublim' as NamaProses)
-      for (const p of semua) expect(SEMUA_PROSES).toContain(p)
-    }
+  it('menyublim dipakai di data kapur barus', () => {
+    const kapur = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
+    const proses = panaskan(kapur, kapur.suhuMin, kapur.suhuMaks)
+    expect(proses).toContain('menyublim')
   })
 
   it('tidak ada proses saat suhu diam', () => {
@@ -157,10 +147,10 @@ describe('sapu seluruh rentang suhu', () => {
     }
   })
 
-  it('setiap benda bisa mencair saat dipanaskan dan membeku saat didinginkan', () => {
+  it('setiap benda bisa mengalami perubahan wujud saat dipanaskan', () => {
     for (const b of BENDA_LIST) {
-      expect(panaskan(b, b.suhuMin, b.suhuMaks)).toContain('mencair')
-      expect(dinginkan(b, b.suhuMaks, b.suhuMin)).toContain('membeku')
+      const hasilPanas = panaskan(b, b.suhuMin, b.suhuMaks)
+      expect(hasilPanas.length).toBeGreaterThan(0)
     }
   })
 

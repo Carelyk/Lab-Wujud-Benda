@@ -18,6 +18,8 @@ export const LABEL_PROSES: Record<NamaProses, string> = {
   menguap: 'Menguap',
   mendidih: 'Mendidih',
   mengembun: 'Mengembun',
+  menyublim: 'Menyublim',
+  mengkristal: 'Mengkristal',
 }
 
 export const PENJELASAN_PROSES: Record<NamaProses, string> = {
@@ -26,6 +28,8 @@ export const PENJELASAN_PROSES: Record<NamaProses, string> = {
   menguap: 'Air berubah jadi uap air karena dipanaskan.',
   mendidih: 'Air yang sangat panas mengeluarkan banyak uap.',
   mengembun: 'Uap air berubah jadi air karena didinginkan.',
+  menyublim: 'Benda padat berubah langsung jadi gas tanpa mencair.',
+  mengkristal: 'Gas berubah langsung jadi padat.',
 }
 
 export const LABEL_ARAH: Record<Arah, string> = {

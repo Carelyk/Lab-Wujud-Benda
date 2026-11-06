@@ -6,6 +6,8 @@ export type NamaProses =
   | 'menguap'
   | 'mendidih'
   | 'mengembun'
+  | 'menyublim'
+  | 'mengkristal'
 
 export type Arah = 'panas' | 'dingin'
 

@@ -36,6 +36,8 @@ const PROSES_PERUBAHAN: Record<string, NamaProses> = {
   'cair>padat': 'membeku',
   'cair>gas': 'mendidih',
   'gas>cair': 'mengembun',
+  'padat>gas': 'menyublim',
+  'gas>padat': 'mengkristal',
 }
 
 /**
