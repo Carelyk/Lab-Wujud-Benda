@@ -7,6 +7,7 @@ import { ExperimentScreen } from './screens/ExperimentScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { QuizScreen } from './screens/QuizScreen'
 import { SortingScreen } from './screens/SortingScreen'
+import { UntungRugiScreen } from './screens/UntungRugiScreen'
 import type { ScreenId } from './types'
 import { mainkan, siapkanSuara } from './utils/sound'
 import s from './App.module.css'
@@ -17,6 +18,7 @@ const RUTE: Record<string, ScreenId> = {
   '#/sortir': 'sortir',
   '#/kuis': 'kuis',
   '#/lencana': 'lencana',
+  '#/sekitar': 'untungRugi',
 }
 
 const HASH: Record<ScreenId, string> = {
@@ -26,6 +28,7 @@ const HASH: Record<ScreenId, string> = {
   kuis: '#/kuis',
   lencana: '#/lencana',
   siklus: '#/siklus',
+  untungRugi: '#/sekitar',
 }
 
 const JUDUL: Record<ScreenId, string> = {
@@ -35,6 +38,7 @@ const JUDUL: Record<ScreenId, string> = {
   kuis: 'Kuis Bintang',
   lencana: 'Lemari Lencana',
   siklus: 'Siklus Air',
+  untungRugi: 'Wujud di Sekitar Kita',
 }
 
 function layarDariHash(hash: string): ScreenId {
@@ -110,6 +114,9 @@ export default function App() {
     case 'lencana':
       isi = <BadgesScreen progress={progress} onBeranda={() => pergi('beranda')} />
       break
+    case 'untungRugi':
+      isi = <UntungRugiScreen onBack={() => pergi('beranda')} />
+      break
     default:
       isi = (
         <HomeScreen
@@ -118,6 +125,7 @@ export default function App() {
           onSortir={() => pergi('sortir')}
           onKuis={() => pergi('kuis')}
           onLencana={() => pergi('lencana')}
+          onUntungRugi={() => pergi('untungRugi')}
         />
       )
   }

@@ -1,0 +1,248 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  color: var(--ink, #1e293b);
+}
+
+.backBtn {
+  background: white;
+  border: 2px solid #cbd5e1;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  background: #f1f5f9;
+}
+
+.badgeCounter {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+.tabRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #cbd5e1;
+  background: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.activeUntung {
+  background: #dcfce7;
+  border-color: #3ccb7f;
+  color: #166534;
+}
+
+.activeRugi {
+  background: #ffe4e6;
+  border-color: #ff8fa3;
+  color: #9f1239;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.cardUntung {
+  border-left: 6px solid #3ccb7f;
+}
+
+.cardRugi {
+  border-left: 6px solid #ff8fa3;
+}
+
+.rotate1 {
+  transform: rotate(-0.5deg);
+}
+
+.rotate2 {
+  transform: rotate(0.5deg);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.processTag {
+  font-size: 0.75rem;
+  background: #f1f5f9;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  color: #475569;
+  font-weight: bold;
+}
+
+.checkMark {
+  font-size: 1.1rem;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.snippet {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.tapHint {
+  font-size: 0.85rem;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modalBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  background: #f1f5f9;
+  margin-bottom: 0.75rem;
+}
+
+.modalContent h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+}
+
+.processPill {
+  display: inline-block;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 0.2rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.desc {
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.tetesBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f0f9ff;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.closeBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.closeBtn:hover {
+  background: #2563eb;
+}
+
+.footerMascot {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

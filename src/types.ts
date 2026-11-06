@@ -11,7 +11,7 @@ export type NamaProses =
 
 export type Arah = 'panas' | 'dingin'
 
-export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus'
+export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi'
 
 export type BendaId = 'es' | 'air' | 'lilin' | 'kapur-barus' | 'panci'
 

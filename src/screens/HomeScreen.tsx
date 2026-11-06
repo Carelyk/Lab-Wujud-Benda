@@ -40,13 +40,21 @@ interface Props {
   onSortir: () => void
   onKuis: () => void
   onLencana: () => void
+  onUntungRugi: () => void
 }
 
 function bintangTeks(n: number): string {
   return n > 0 ? `${n} bintang` : 'belum dimainkan'
 }
 
-export function HomeScreen({ progress, onMulai, onSortir, onKuis, onLencana }: Props) {
+export function HomeScreen({
+  progress,
+  onMulai,
+  onSortir,
+  onKuis,
+  onLencana,
+  onUntungRugi,
+}: Props) {
   const totalLencana = DAFTAR_LENCANA.length
 
   return (
@@ -130,7 +138,7 @@ export function HomeScreen({ progress, onMulai, onSortir, onKuis, onLencana }: P
         stiker="Ayo main"
         judul="Mode belajar"
         ikon={<IconStar size={22} />}
-        aksi={<span className={s.modeJumlah}>4 mode terbuka</span>}
+        aksi={<span className={s.modeJumlah}>5 mode terbuka</span>}
       >
         <div className={s.modeDaftar}>
           <button type="button" className={`${s.modeKartu} ${s.modePanas}`} onClick={onMulai}>
@@ -183,6 +191,19 @@ export function HomeScreen({ progress, onMulai, onSortir, onKuis, onLencana }: P
             <span className={s.modeMeta}>
               {progress.lencana.length} dari {totalLencana}
             </span>
+          </button>
+
+          <button type="button" className={`${s.modeKartu} ${s.modeHijau}`} onClick={onUntungRugi}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <span style={{ fontSize: '1.4rem' }}>🌍</span>
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Wujud di Sekitar Kita</span>
+              <span className={s.modeKet}>
+                Perubahan wujud yang menguntungkan dan merugikan dalam kehidupan.
+              </span>
+            </span>
+            <span className={s.modeMeta}>10 contoh</span>
           </button>
         </div>
       </Panel>
