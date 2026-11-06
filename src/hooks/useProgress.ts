@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { Arah, BendaId, NamaProses, Progress, Wujud } from '../types'
+import type { Arah, BendaId, NamaProses, Progress, TingkatVolume, Wujud } from '../types'
 import { lencanaTerbuka } from '../utils/lencana'
-import { mainkan, setBisu } from '../utils/sound'
+import { mainkan, setBisu, setVolume as setVolumeSuara } from '../utils/sound'
 import { penyimpanan, progressAwal } from '../utils/storage'
 
 export interface EntriCatatan {
@@ -41,6 +41,7 @@ export function useProgress() {
     void penyimpanan.ambil().then((p) => {
       if (!hidup) return
       setBisu(p.suaraMati)
+      setVolumeSuara(p.volume ?? (p.suaraMati ? 'mati' : 'normal'))
       setProgress(p)
       setSiap(true)
     })
@@ -95,8 +96,15 @@ export function useProgress() {
   }, [])
 
   const ubahSuara = useCallback(async (mati: boolean) => {
-    setBisu(mati)
-    const p = await penyimpanan.setSuaraMati(mati)
+    setVolumeSuara(mati ? 'mati' : 'normal')
+    const p = await penyimpanan.setVolume(mati ? 'mati' : 'normal')
+    setProgress(p)
+    return p
+  }, [])
+
+  const ubahVolume = useCallback(async (level: TingkatVolume) => {
+    setVolumeSuara(level)
+    const p = await penyimpanan.setVolume(level)
     setProgress(p)
     return p
   }, [])
@@ -104,6 +112,7 @@ export function useProgress() {
   const reset = useCallback(async () => {
     const p = await penyimpanan.reset()
     setBisu(false)
+    setVolumeSuara('normal')
     setProgress(p)
     setLencanaBaru([])
     return p
@@ -147,6 +156,7 @@ export function useProgress() {
     bukaLencana,
     tutupLencanaBaru,
     ubahSuara,
+    ubahVolume,
     reset,
   }
 }

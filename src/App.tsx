@@ -8,7 +8,8 @@ import { HomeScreen } from './screens/HomeScreen'
 import { QuizScreen } from './screens/QuizScreen'
 import { SortingScreen } from './screens/SortingScreen'
 import { UntungRugiScreen } from './screens/UntungRugiScreen'
-import type { ScreenId } from './types'
+import { SoundTestScreen } from './screens/SoundTestScreen'
+import type { ScreenId, TingkatVolume } from './types'
 import { mainkan, siapkanSuara } from './utils/sound'
 import s from './App.module.css'
 
@@ -19,6 +20,7 @@ const RUTE: Record<string, ScreenId> = {
   '#/kuis': 'kuis',
   '#/lencana': 'lencana',
   '#/sekitar': 'untungRugi',
+  '#/suara': 'suara',
 }
 
 const HASH: Record<ScreenId, string> = {
@@ -29,6 +31,7 @@ const HASH: Record<ScreenId, string> = {
   lencana: '#/lencana',
   siklus: '#/siklus',
   untungRugi: '#/sekitar',
+  suara: '#/suara',
 }
 
 const JUDUL: Record<ScreenId, string> = {
@@ -39,6 +42,7 @@ const JUDUL: Record<ScreenId, string> = {
   lencana: 'Lemari Lencana',
   siklus: 'Siklus Air',
   untungRugi: 'Wujud di Sekitar Kita',
+  suara: 'Uji Suara',
 }
 
 function layarDariHash(hash: string): ScreenId {
@@ -54,7 +58,7 @@ export default function App() {
     simpanPrediksi,
     simpanSortir,
     simpanKuis,
-    ubahSuara,
+    ubahVolume,
     tutupLencanaBaru,
   } = useProgress()
 
@@ -83,11 +87,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'auto' })
   }, [])
 
-  const alihSuara = useCallback(() => {
-    const mati = !progress.suaraMati
-    void ubahSuara(mati)
-    if (!mati) void mainkan('klik')
-  }, [progress.suaraMati, ubahSuara])
+  const alihVolume = useCallback((level: TingkatVolume) => {
+    void ubahVolume(level)
+    if (level !== 'mati') void mainkan('klik')
+
+  }, [ubahVolume])
 
   let isi
   switch (layar) {
@@ -117,6 +121,9 @@ export default function App() {
     case 'untungRugi':
       isi = <UntungRugiScreen onBack={() => pergi('beranda')} />
       break
+    case 'suara':
+      isi = <SoundTestScreen volume={progress.volume ?? (progress.suaraMati ? 'mati' : 'normal')} onVolume={alihVolume} />
+      break
     default:
       isi = (
         <HomeScreen
@@ -134,8 +141,8 @@ export default function App() {
     <div className={s.app}>
       <TopBar
         judul={JUDUL[layar]}
-        suaraMati={progress.suaraMati}
-        onSuara={alihSuara}
+        volume={progress.volume ?? (progress.suaraMati ? 'mati' : 'normal')}
+        onVolume={alihVolume}
         onKembali={layar === 'beranda' ? undefined : () => pergi('beranda')}
       />
 

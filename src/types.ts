@@ -10,8 +10,9 @@ export type NamaProses =
   | 'mengkristal'
 
 export type Arah = 'panas' | 'dingin'
+export type TingkatVolume = 'mati' | 'pelan' | 'normal'
 
-export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi'
+export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'suara'
 
 export type BendaId = 'es' | 'air' | 'lilin' | 'kapur-barus' | 'panci'
 
@@ -79,6 +80,7 @@ export interface Progress {
   prediksi: Partial<Record<BendaId, HasilPrediksi>>
   lencana: string[]
   suaraMati: boolean
+  volume: TingkatVolume
   kuis: { bintang: number; benar: number; total: number; main: number }
   sortir: {
     selesai: boolean

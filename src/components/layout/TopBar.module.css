@@ -105,6 +105,33 @@
   transform: translateY(2px);
 }
 
+.volumeGrup {
+  display: inline-flex;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.tombolVolume {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.tombolVolume.aktif {
+  background: var(--sky);
+  border-color: var(--line-strong);
+  font-weight: 700;
+}
+
 .suara[aria-pressed='false'] {
   color: var(--ink-soft);
   border-style: dashed;

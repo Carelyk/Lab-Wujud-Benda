@@ -4,6 +4,7 @@ import type {
   CatatanEntry,
   NamaProses,
   Progress,
+  TingkatVolume,
   Wujud,
 } from '../types'
 
@@ -29,6 +30,7 @@ export const progressAwal: Progress = {
   prediksi: {},
   lencana: [],
   suaraMati: false,
+  volume: 'normal',
   kuis: { bintang: 0, benar: 0, total: 0, main: 0 },
   sortir: {
     selesai: false,
@@ -64,6 +66,7 @@ function baca(): Progress {
     return {
       ...salinanAwal(),
       ...data,
+      volume: data.volume ?? (data.suaraMati ? 'mati' : 'normal'),
       catatan: Array.isArray(data.catatan) ? data.catatan : [],
       prediksi: data.prediksi ?? {},
       lencana: Array.isArray(data.lencana) ? data.lencana : [],
@@ -197,7 +200,17 @@ export const penyimpanan = {
 
   async setSuaraMati(nilai: boolean): Promise<Progress> {
     const p = baca()
-    return tulis({ ...p, suaraMati: nilai })
+    return tulis({ ...p, suaraMati: nilai, volume: nilai ? 'mati' : p.volume === 'mati' ? 'normal' : p.volume })
+  },
+
+  async getVolume(): Promise<TingkatVolume> {
+    const p = baca()
+    return p.volume ?? (p.suaraMati ? 'mati' : 'normal')
+  },
+
+  async setVolume(level: TingkatVolume): Promise<Progress> {
+    const p = baca()
+    return tulis({ ...p, volume: level, suaraMati: level === 'mati' })
   },
 
   async reset(): Promise<Progress> {

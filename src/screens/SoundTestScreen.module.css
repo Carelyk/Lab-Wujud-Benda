@@ -1,0 +1,40 @@
+.halaman {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.intro {
+  margin: 0 0 var(--sp-3);
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.volume,
+.suhu,
+.loopBar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.volume button,
+.loopBar button {
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+}
+
+.volume button.aktif {
+  background: var(--sky);
+  border-color: var(--line-strong);
+  font-weight: 700;
+}
+
+.daftar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-2);
+}
