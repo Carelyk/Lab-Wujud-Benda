@@ -96,21 +96,6 @@ export const CONTOH_UNTUNG_RUGI_ANIMASI: ContohUntungRugiAnimasi[] = [
     ],
   },
   {
-    id: 'cetak-cokelat',
-    judul: 'Mencetak Cokelat',
-    kategori: 'untung',
-    proses: 'mencair & membeku',
-    deskripsi: 'Cokelat cair dituangkan ke cetakan lalu didinginkan hingga mengeras menjadi bentuk baru.',
-    pesanTetes: 'Cokelat berbentuk indah dan siap dimakan!',
-    durasiMs: 4000,
-    perluVerifikasi: true,
-    tahap: [
-      { mulai: 0, wujud: 'padat', keterangan: 'Cokelat batangan' },
-      { mulai: 0.4, wujud: 'cair', proses: 'mencair', keterangan: 'Cokelat dipanaskan mencair' },
-      { mulai: 0.85, wujud: 'padat', proses: 'membeku', keterangan: 'Cokelat mengeras di cetakan' },
-    ],
-  },
-  {
     id: 'es-kutub',
     judul: 'Pencairan Es di Kutub',
     kategori: 'rugi',
