@@ -8,10 +8,11 @@ import {
   IconBuku,
   IconEs,
   IconFlask,
-  IconGembok,
+  IconLencana,
   IconPanas,
   IconStar,
 } from '../components/ui/Icons'
+import { DAFTAR_LENCANA } from '../data/badges'
 import type { Progress } from '../types'
 import s from './HomeScreen.module.css'
 
@@ -36,9 +37,18 @@ const LANGKAH = [
 interface Props {
   progress: Progress
   onMulai: () => void
+  onSortir: () => void
+  onKuis: () => void
+  onLencana: () => void
 }
 
-export function HomeScreen({ progress, onMulai }: Props) {
+function bintangTeks(n: number): string {
+  return n > 0 ? `${n} bintang` : 'belum dimainkan'
+}
+
+export function HomeScreen({ progress, onMulai, onSortir, onKuis, onLencana }: Props) {
+  const totalLencana = DAFTAR_LENCANA.length
+
   return (
     <div className={s.beranda}>
       <section className={s.hero}>
@@ -116,41 +126,114 @@ export function HomeScreen({ progress, onMulai }: Props) {
         ))}
       </section>
 
+      <Panel
+        stiker="Ayo main"
+        judul="Mode belajar"
+        ikon={<IconStar size={22} />}
+        aksi={<span className={s.modeJumlah}>4 mode terbuka</span>}
+      >
+        <div className={s.modeDaftar}>
+          <button type="button" className={`${s.modeKartu} ${s.modePanas}`} onClick={onMulai}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <IconFlask size={26} />
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Eksperimen Bebas</span>
+              <span className={s.modeKet}>
+                Panaskan dan dinginkan 5 benda, lalu catat perubahannya.
+              </span>
+            </span>
+            <span className={s.modeMeta}>{progress.catatan.length} catatan</span>
+          </button>
+
+          <button type="button" className={`${s.modeKartu} ${s.modePadat}`} onClick={onSortir}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <IconBasket size={26} />
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Sortir Benda</span>
+              <span className={s.modeKet}>
+                Masukkan 12 benda ke keranjang padat, cair, atau gas.
+              </span>
+            </span>
+            <span className={s.modeMeta}>{bintangTeks(progress.sortir.bintang)}</span>
+          </button>
+
+          <button type="button" className={`${s.modeKartu} ${s.modeBintang}`} onClick={onKuis}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <IconStar size={26} />
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Kuis Bintang</span>
+              <span className={s.modeKet}>Jawab 8 soal acak dan kumpulkan sampai tiga bintang.</span>
+            </span>
+            <span className={s.modeMeta}>{bintangTeks(progress.kuis.bintang)}</span>
+          </button>
+
+          <button type="button" className={`${s.modeKartu} ${s.modeLencana}`} onClick={onLencana}>
+            <span className={s.modeIkon} aria-hidden="true">
+              <IconLencana size={26} />
+            </span>
+            <span className={s.modeTeks}>
+              <span className={s.modeNama}>Lemari Lencana</span>
+              <span className={s.modeKet}>
+                Lihat lencana yang sudah terbuka dan cara membuka sisanya.
+              </span>
+            </span>
+            <span className={s.modeMeta}>
+              {progress.lencana.length} dari {totalLencana}
+            </span>
+          </button>
+        </div>
+      </Panel>
+
       <div className={s.bawah}>
         <NoteBook catatan={progress.catatan} batas={4} />
 
-        <Panel stiker="Segera" judul="Mode berikutnya" ikon={<IconStar size={22} />}>
-          <div className={s.modeDaftar}>
-            <div className={s.modeKartu}>
-              <span className={s.modeIkon} aria-hidden="true">
-                <IconBasket size={26} />
+        <Panel
+          stiker="Progresmu"
+          judul="Yang sudah kamu kumpulkan"
+          ikon={<IconLencana size={22} />}
+        >
+          <ul className={s.statDaftar}>
+            <li className={s.statBaris}>
+              <span className={s.statIkon} aria-hidden="true">
+                <IconBuku size={20} />
               </span>
-              <div className={s.modeTeks}>
-                <p className={s.modeNama}>Sortir Benda</p>
-                <p className={s.modeKet}>
-                  Masukkan benda ke keranjang padat, cair, atau gas.
-                </p>
-              </div>
-              <span className={s.kunci}>
-                <IconGembok size={14} />
-                Tahap 2
+              <span className={s.statTeks}>Catatan ilmuwan</span>
+              <strong className={s.statNilai}>{progress.catatan.length}</strong>
+            </li>
+            <li className={s.statBaris}>
+              <span className={s.statIkon} aria-hidden="true">
+                <IconLencana size={20} />
               </span>
-            </div>
-
-            <div className={s.modeKartu}>
-              <span className={s.modeIkon} aria-hidden="true">
-                <IconStar size={26} />
+              <span className={s.statTeks}>Lencana terbuka</span>
+              <strong className={s.statNilai}>
+                {progress.lencana.length}/{totalLencana}
+              </strong>
+            </li>
+            <li className={s.statBaris}>
+              <span className={s.statIkon} aria-hidden="true">
+                <IconStar size={20} />
               </span>
-              <div className={s.modeTeks}>
-                <p className={s.modeNama}>Kuis Bintang</p>
-                <p className={s.modeKet}>Jawab soal dan kumpulkan sampai tiga bintang.</p>
-              </div>
-              <span className={s.kunci}>
-                <IconGembok size={14} />
-                Tahap 2
+              <span className={s.statTeks}>Kuis terbaik</span>
+              <strong className={s.statNilai}>
+                {progress.kuis.bintang > 0 ? `${progress.kuis.bintang}/3` : '—'}
+              </strong>
+            </li>
+            <li className={s.statBaris}>
+              <span className={s.statIkon} aria-hidden="true">
+                <IconBasket size={20} />
               </span>
-            </div>
-          </div>
+              <span className={s.statTeks}>Sortir terbaik</span>
+              <strong className={s.statNilai}>
+                {progress.sortir.bintang > 0 ? `${progress.sortir.bintang}/3` : '—'}
+              </strong>
+            </li>
+          </ul>
+          <button type="button" className={s.lihatLencana} onClick={onLencana}>
+            Lihat semua lencana
+          </button>
         </Panel>
       </div>
     </div>

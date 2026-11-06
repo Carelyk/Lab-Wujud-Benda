@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { Arah, BendaId, NamaProses, Progress, Wujud } from '../types'
-import { setBisu } from '../utils/sound'
+import { lencanaTerbuka } from '../utils/lencana'
+import { mainkan, setBisu } from '../utils/sound'
 import { penyimpanan, progressAwal } from '../utils/storage'
 
 export interface EntriCatatan {
@@ -10,13 +11,30 @@ export interface EntriCatatan {
   teks: string
 }
 
+export interface HasilSortir {
+  total: number
+  benar: number
+  salah: number
+  bintang: number
+}
+
+export interface HasilKuis {
+  benar: number
+  total: number
+  bintang: number
+}
+
 /**
  * Loads progress once and exposes promise-based actions.
  * Components never talk to storage directly, so the backend can change later.
+ *
+ * Badges are unlocked here: every saved change is checked against the pure
+ * rules in utils/lencana.ts, and only genuinely new badges enter the queue.
  */
 export function useProgress() {
   const [progress, setProgress] = useState<Progress>(progressAwal)
   const [siap, setSiap] = useState(false)
+  const [lencanaBaru, setLencanaBaru] = useState<string[]>([])
 
   useEffect(() => {
     let hidup = true
@@ -46,6 +64,30 @@ export function useProgress() {
     [],
   )
 
+  const simpanSortir = useCallback(async (hasil: HasilSortir) => {
+    const p = await penyimpanan.simpanSortir(hasil)
+    setProgress(p)
+    return p
+  }, [])
+
+  const simpanKuis = useCallback(async (hasil: HasilKuis) => {
+    const p = await penyimpanan.simpanKuis(hasil)
+    setProgress(p)
+    return p
+  }, [])
+
+  const tandaiPartikel = useCallback(async (wujud: Wujud) => {
+    const p = await penyimpanan.tandaiPartikel(wujud)
+    setProgress(p)
+    return p
+  }, [])
+
+  const selesaikanSiklus = useCallback(async () => {
+    const p = await penyimpanan.selesaikanSiklus()
+    setProgress(p)
+    return p
+  }, [])
+
   const bukaLencana = useCallback(async (id: string) => {
     const p = await penyimpanan.bukaLencana(id)
     setProgress(p)
@@ -63,8 +105,48 @@ export function useProgress() {
     const p = await penyimpanan.reset()
     setBisu(false)
     setProgress(p)
+    setLencanaBaru([])
     return p
   }, [])
 
-  return { progress, siap, catat, simpanPrediksi, bukaLencana, ubahSuara, reset }
+  const tutupLencanaBaru = useCallback(() => {
+    setLencanaBaru((q) => q.slice(1))
+  }, [])
+
+  // The only place that turns real actions into badges.
+  useEffect(() => {
+    if (!siap) return
+    const baru = lencanaTerbuka(progress).filter((id) => !progress.lencana.includes(id))
+    if (baru.length === 0) return
+
+    let hidup = true
+    void (async () => {
+      let p = progress
+      for (const id of baru) p = await penyimpanan.bukaLencana(id)
+      if (!hidup) return
+      setProgress(p)
+      setLencanaBaru((q) => [...q, ...baru.filter((id) => !q.includes(id))])
+      void mainkan('buka')
+    })()
+
+    return () => {
+      hidup = false
+    }
+  }, [progress, siap])
+
+  return {
+    progress,
+    siap,
+    lencanaBaru,
+    catat,
+    simpanPrediksi,
+    simpanSortir,
+    simpanKuis,
+    tandaiPartikel,
+    selesaikanSiklus,
+    bukaLencana,
+    tutupLencanaBaru,
+    ubahSuara,
+    reset,
+  }
 }

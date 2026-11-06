@@ -3,7 +3,7 @@
  * To swap in real samples later, replace the body of `bunyikan()` only; the
  * public API (`mainkan`, `siapkan`, `setBisu`) stays the same.
  */
-export type NamaSuara = 'klik' | 'benar' | 'salah' | 'cess' | 'ding'
+export type NamaSuara = 'klik' | 'benar' | 'salah' | 'cess' | 'ding' | 'tring' | 'buka'
 
 let konteks: AudioContext | null = null
 let bisu = false
@@ -116,6 +116,17 @@ function bunyikan(ctx: AudioContext, nama: NamaSuara, t: number): void {
     case 'ding':
       nada(ctx, { freq: 784, mulai: t, durasi: 0.5, volume: 0.08 })
       nada(ctx, { freq: 1175, mulai: t + 0.02, durasi: 0.45, volume: 0.04 })
+      break
+    case 'tring':
+      // short bright bell: "correct, well done"
+      nada(ctx, { freq: 1046, mulai: t, durasi: 0.42, volume: 0.09 })
+      nada(ctx, { freq: 1568, mulai: t + 0.01, durasi: 0.3, volume: 0.035 })
+      break
+    case 'buka':
+      // rising three-note fanfare for a new badge
+      nada(ctx, { freq: 523, mulai: t, durasi: 0.16, tipe: 'triangle', volume: 0.09 })
+      nada(ctx, { freq: 659, mulai: t + 0.13, durasi: 0.16, tipe: 'triangle', volume: 0.09 })
+      nada(ctx, { freq: 880, mulai: t + 0.26, durasi: 0.34, volume: 0.1 })
       break
   }
 }

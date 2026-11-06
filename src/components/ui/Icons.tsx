@@ -170,3 +170,26 @@ export const IconZoom = (p: Props) => (
     <path d="M15.6 15.6 21 21M8.4 10.8h4.8M10.8 8.4v4.8" />
   </Svg>
 )
+
+export const IconLencana = (p: Props) => (
+  <Svg {...p}>
+    <circle cx="12" cy="9.2" r="5.4" />
+    <path d="M8.4 13.6 6.2 21l5.8-3.1L17.8 21l-2.2-7.4" />
+    <path d="M12 6.6l.9 1.8 2 .3-1.4 1.4.3 2-1.8-1-1.8 1 .3-2-1.4-1.4 2-.3z" />
+  </Svg>
+)
+
+export const IconSiklus = (p: Props) => (
+  <Svg {...p}>
+    <path d="M19.4 8.6A8 8 0 0 0 5.2 7.4M4.6 15.4a8 8 0 0 0 14.2 1.2" />
+    <path d="M19.6 4.2v4.6h-4.6M4.4 19.8v-4.6h4.6" />
+    <path d="M12 10.2s2.6 2.8 2.6 4.4a2.6 2.6 0 0 1-5.2 0c0-1.6 2.6-4.4 2.6-4.4z" />
+  </Svg>
+)
+
+export const IconMata = (p: Props) => (
+  <Svg {...p}>
+    <path d="M2.6 12S6 6.2 12 6.2 21.4 12 21.4 12 18 17.8 12 17.8 2.6 12 2.6 12z" />
+    <circle cx="12" cy="12" r="3.2" />
+  </Svg>
+)

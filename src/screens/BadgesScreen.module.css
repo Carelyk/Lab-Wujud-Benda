@@ -1,0 +1,214 @@
+.layar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ---------- intro ---------- */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(14px, 3vw, 30px);
+  align-items: center;
+  padding: clamp(16px, 2.6vw, 28px);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: linear-gradient(150deg, #ffffff 0%, #fffdf3 55%, #f7fcff 100%);
+  box-shadow: var(--shadow-soft);
+}
+
+.introTeks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pita {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: var(--r-pill);
+  background: var(--bintang);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  transform: rotate(-1.4deg);
+  box-shadow: 0 3px 0 var(--bintang-tua);
+}
+
+.judul {
+  font-size: clamp(27px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  max-width: 54ch;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.hitung {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.progres {
+  width: min(340px, 100%);
+  height: 12px;
+  border-radius: var(--r-pill);
+  background: var(--sky-deep);
+  overflow: hidden;
+}
+
+.progresIsi {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--bintang);
+  transition: width 420ms ease;
+}
+
+.introTetes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  max-width: 240px;
+}
+
+.info {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ---------- daftar ---------- */
+.daftar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+
+.kartu {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: 2px solid var(--line);
+  background: var(--surface);
+}
+
+.buka {
+  border-color: var(--bintang);
+  background: linear-gradient(150deg, #fffdf3, #ffffff 65%);
+}
+
+.kunci {
+  border-style: dashed;
+  background: #fbfcfe;
+}
+
+.teks {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.nama {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.kunci .nama {
+  color: var(--ink-faint);
+}
+
+.cara {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.gembok {
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+  color: var(--ink-faint);
+  flex: 0 0 auto;
+}
+
+.statusBuka,
+.statusKunci {
+  grid-column: 2;
+  justify-self: start;
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.statusBuka {
+  background: #fff3dc;
+  border: 1.5px solid var(--bintang-tua);
+  color: #7a4e00;
+}
+
+.statusKunci {
+  background: #f0f4f8;
+  border: 1.5px solid var(--line-strong);
+  color: var(--ink-faint);
+}
+
+.kaki {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (max-width: 720px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .introTetes {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .daftar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kaki > button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progresIsi {
+    transition: none;
+  }
+}

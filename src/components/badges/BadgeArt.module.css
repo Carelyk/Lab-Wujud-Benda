@@ -1,0 +1,109 @@
+.medali {
+  --warna: var(--bintang);
+  --warna-tua: var(--bintang-tua);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.medali::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: var(--warna);
+  border: 3px solid var(--warna-tua);
+  box-shadow:
+    inset 0 -6px 0 rgba(45, 49, 66, 0.12),
+    0 6px 14px -8px rgba(45, 49, 66, 0.6);
+}
+
+.pitaKiri,
+.pitaKanan {
+  position: absolute;
+  top: -4%;
+  width: 20%;
+  height: 34%;
+  background: var(--warna-tua);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+  z-index: 0;
+}
+
+.pitaKiri {
+  left: 22%;
+  transform: rotate(-13deg);
+}
+
+.pitaKanan {
+  right: 22%;
+  transform: rotate(13deg);
+}
+
+.cakram {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--warna-tua);
+}
+
+.terkunci::before {
+  background: #e3ebf2;
+  border-color: #b9c6d2;
+  box-shadow: none;
+}
+
+.terkunci .pitaKiri,
+.terkunci .pitaKanan {
+  background: #c3cfda;
+}
+
+.terkunci .cakram {
+  background: #f4f7fa;
+  color: #7a8698;
+}
+
+.beku {
+  --warna: var(--dingin);
+  --warna-tua: var(--dingin-tua);
+}
+
+.uap {
+  --warna: var(--cair);
+  --warna-tua: var(--cair-tua);
+}
+
+.leleh {
+  --warna: var(--panas);
+  --warna-tua: var(--panas-tua);
+}
+
+.sortir {
+  --warna: var(--padat);
+  --warna-tua: var(--padat-tua);
+}
+
+.kuis {
+  --warna: var(--bintang);
+  --warna-tua: var(--bintang-tua);
+}
+
+.buku {
+  --warna: #8fa2b8;
+  --warna-tua: var(--ink);
+}
+
+.lens {
+  --warna: var(--gas);
+  --warna-tua: var(--gas-tua);
+}
+
+.siklus {
+  --warna: var(--benar);
+  --warna-tua: var(--benar-tua);
+}

@@ -9,7 +9,7 @@ export type NamaProses =
 
 export type Arah = 'panas' | 'dingin'
 
-export type ScreenId = 'beranda' | 'eksperimen'
+export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus'
 
 export type BendaId = 'es' | 'air' | 'lilin' | 'cokelat' | 'panci'
 
@@ -77,6 +77,60 @@ export interface Progress {
   prediksi: Partial<Record<BendaId, HasilPrediksi>>
   lencana: string[]
   suaraMati: boolean
-  kuis: { bintang: number; benar: number; total: number }
-  sortir: { selesai: boolean; benar: number; total: number }
+  kuis: { bintang: number; benar: number; total: number; main: number }
+  sortir: {
+    selesai: boolean
+    benar: number
+    total: number
+    bintang: number
+    salah: number
+    main: number
+  }
+  partikel: { dilihat: Wujud[] }
+  siklus: { selesai: boolean }
+}
+
+/** One benda in the sorting game. */
+export interface ItemSortir {
+  id: string
+  nama: string
+  wujud: Wujud
+  /** Shown after a correct answer: why this wujud is right. */
+  alasan: string
+  /** Shown after a wrong answer: a hint, not a scolding. */
+  petunjuk: string
+  tantangan?: boolean
+  perluVerifikasi: boolean
+}
+
+export interface OpsiKuis {
+  teks: string
+  benar: boolean
+}
+
+export interface SoalKuis {
+  id: string
+  pertanyaan: string
+  opsi: OpsiKuis[]
+  /** Read after answering: why the correct option is correct. */
+  penjelasan: string
+  perluVerifikasi: boolean
+}
+
+export type JenisLencana =
+  | 'beku'
+  | 'uap'
+  | 'leleh'
+  | 'sortir'
+  | 'kuis'
+  | 'buku'
+  | 'lens'
+  | 'siklus'
+
+export interface Lencana {
+  id: string
+  nama: string
+  /** How to earn it, written for a child. */
+  cara: string
+  jenis: JenisLencana
 }
