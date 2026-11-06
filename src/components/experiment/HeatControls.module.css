@@ -9,7 +9,7 @@
   background: var(--sky);
   border: 1px solid var(--line);
   color: var(--ink-soft);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -145,11 +145,5 @@
 
   .duaTombol {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 420px) {
-  .info {
-    font-size: 15px;
   }
 }

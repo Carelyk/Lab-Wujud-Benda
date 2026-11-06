@@ -81,7 +81,7 @@
 }
 
 .kecil {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--ink-faint);
 }
@@ -174,7 +174,7 @@
 
 .langkahTeks {
   margin-top: 3px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.45;
   color: var(--ink-soft);
@@ -230,7 +230,7 @@
 
 .modeKet {
   margin-top: 2px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.4;
   color: var(--ink-soft);

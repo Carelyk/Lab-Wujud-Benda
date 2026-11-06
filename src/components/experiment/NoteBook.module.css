@@ -39,7 +39,7 @@
 .teks {
   flex: 1 1 auto;
   min-width: 0;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -66,7 +66,7 @@
 
 .kosongSub {
   margin-top: 4px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--ink-faint);
 }
