@@ -193,6 +193,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
             benda={benda}
             wujud={fase.wujud}
             uap={fase.uap}
+            suhu={suhu}
             toast={toast}
             onPanas={panaskan}
             onDingin={dinginkan}

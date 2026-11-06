@@ -62,6 +62,22 @@
   animation: netesTetes 1.6s ease-in infinite;
 }
 
+.api {
+  transform-box: view-box;
+  transform-origin: 0 12px;
+  animation: berkedip 1.4s ease-in-out infinite;
+}
+
+@keyframes berkedip {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(1.12) scaleX(0.94);
+  }
+}
+
 @keyframes netesTetes {
   0% {
     transform: translateY(-6px) scale(0.8);

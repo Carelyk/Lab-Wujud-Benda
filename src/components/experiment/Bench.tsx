@@ -10,6 +10,7 @@ interface Props {
   benda: Benda
   wujud: Wujud
   uap: number
+  suhu?: number
   toast: { proses: NamaProses; urutan: number } | null
   onPanas: () => void
   onDingin: () => void
@@ -57,10 +58,15 @@ function GunungEs() {
   )
 }
 
-export function Bench({ benda, wujud, uap, toast, onPanas, onDingin }: Props) {
+export function Bench({ benda, wujud, uap, suhu, toast, onPanas, onDingin }: Props) {
   return (
     <Panel className={s.panel} judul={benda.nama} aksi={<StateBadge wujud={wujud} />}>
       <p className={s.ciri}>{PENJELASAN_WUJUD[wujud]}</p>
+      {benda.id === 'lilin' ? (
+        <p className={s.catatanLilin}>
+          Lilin mencair karena panas. Jangan main api sendiri ya. Ini hanya di layar.
+        </p>
+      ) : null}
 
       <div className={s.panggung}>
         <button
@@ -84,7 +90,7 @@ export function Bench({ benda, wujud, uap, toast, onPanas, onDingin }: Props) {
         </button>
 
         <div className={s.artikel}>
-          <Artwork bendaId={benda.id} wujud={wujud} uap={uap} />
+          <Artwork bendaId={benda.id} wujud={wujud} uap={uap} suhu={suhu} />
         </div>
 
         <div className={s.meja} aria-hidden="true" />

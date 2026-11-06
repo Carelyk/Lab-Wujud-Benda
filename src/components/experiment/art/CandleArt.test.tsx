@@ -1,0 +1,21 @@
+import { renderToStaticMarkup } from 'react-dom/server'
+import { describe, expect, it } from 'vitest'
+
+import { CandleArt } from './CandleArt'
+
+describe('CandleArt flame', () => {
+  it('menampilkan api saat lilin mencair (suhu 60)', () => {
+    const html = renderToStaticMarkup(<CandleArt wujud="cair" uap={0} suhu={60} />)
+    expect(html).toContain('data-testid="candle-flame"')
+  })
+
+  it('menampilkan api saat suhu 100', () => {
+    const html = renderToStaticMarkup(<CandleArt wujud="cair" uap={0} suhu={100} />)
+    expect(html).toContain('data-testid="candle-flame"')
+  })
+
+  it('tidak menampilkan api saat padat (suhu 28)', () => {
+    const html = renderToStaticMarkup(<CandleArt wujud="padat" uap={0} suhu={28} />)
+    expect(html).not.toContain('data-testid="candle-flame"')
+  })
+})

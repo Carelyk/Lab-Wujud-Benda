@@ -11,6 +11,15 @@
   line-height: 1.4;
 }
 
+.catatanLilin {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-style: italic;
+}
+
 .panggung {
   position: relative;
   display: grid;

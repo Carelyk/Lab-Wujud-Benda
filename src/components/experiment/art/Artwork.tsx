@@ -9,17 +9,18 @@ interface Props {
   bendaId: BendaId
   wujud: Wujud
   uap: number
+  suhu?: number
 }
 
 /** Picks the right artwork. Each shape is plain SVG, no image files. */
-export function Artwork({ bendaId, wujud, uap }: Props) {
+export function Artwork({ bendaId, wujud, uap, suhu }: Props) {
   switch (bendaId) {
     case 'es':
       return <IceArt wujud={wujud} uap={uap} />
     case 'air':
       return <WaterArt wujud={wujud} uap={uap} />
     case 'lilin':
-      return <CandleArt wujud={wujud} uap={uap} />
+      return <CandleArt wujud={wujud} uap={uap} suhu={suhu} />
     case 'kapur-barus':
       return <CamphorArt wujud={wujud} uap={uap} />
     case 'panci':

@@ -4,11 +4,15 @@ import s from './art.module.css'
 interface Props {
   wujud: Wujud
   uap: number
+  suhu?: number
 }
 
-export function CandleArt({ wujud, uap }: Props) {
+export function CandleArt({ wujud, suhu }: Props) {
   const cair = wujud !== 'padat'
-  const isPanas = uap > 0 // aktif saat suhu >= titik leleh (55°C)
+  // Flame shows once the candle starts melting (55 °C), and grows with heat.
+  const panas = cair
+  const t = suhu ?? 28
+  const faktor = Math.max(0.7, Math.min(1.7, 0.7 + ((t - 55) / 45) * 1.0))
 
   return (
     <svg viewBox="0 0 240 220" className={s.svg} aria-hidden="true">
@@ -36,25 +40,30 @@ export function CandleArt({ wujud, uap }: Props) {
         <path className={s.drip} d="M138 152c0 0 5 6 5 9a5 5 0 0 1-10 0c0-3 5-9 5-9Z" fill="#FFE7B8" />
       </g>
 
-      {/* Cute Flame on Candle (Hanya hiasan wujud saat panas / mencair) */}
-      {isPanas && (
-        <g transform="translate(120, 55)">
-          {/* Outer orange glow / flame */}
+      {/* Cute flame (appears when heated / melted) */}
+      {panas && (
+        <g transform={`translate(127, 128) scale(${faktor})`} data-testid="candle-flame">
+          {/* outer orange glow */}
           <path
             d="M0 -18 C12 -6 14 6 0 12 C-14 6 -12 -6 0 -18 Z"
             fill="#FFA726"
             stroke="#FB8C00"
             strokeWidth="2"
+            className={s.api}
           />
-          {/* Inner yellow core */}
+          {/* inner yellow core */}
           <path
             d="M0 -10 C6 -3 7 3 0 7 C-7 3 -6 -3 0 -10 Z"
             fill="#FFEE58"
           />
-          {/* Cute face on flame */}
+          {/* pink cheeks */}
+          <circle cx="-5" cy="1" r="1.6" fill="#FF8A80" opacity="0.8" />
+          <circle cx="5" cy="1" r="1.6" fill="#FF8A80" opacity="0.8" />
+          {/* eyes */}
           <circle cx="-3" cy="-2" r="1.2" fill="#3E2723" />
           <circle cx="3" cy="-2" r="1.2" fill="#3E2723" />
-          <path d="M-1 2 Q0 4 1 2" stroke="#3E2723" strokeWidth="1" strokeLinecap="round" fill="none" />
+          {/* smile */}
+          <path d="M-1.5 2 Q0 4 1.5 2" stroke="#3E2723" strokeWidth="1" strokeLinecap="round" fill="none" />
         </g>
       )}
     </svg>
