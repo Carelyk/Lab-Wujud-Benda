@@ -41,7 +41,8 @@ export default defineConfig({
     }),
   ],
   test: {
-    environment: 'node',
+    environment: 'happy-dom',
     include: ['src/**/*.test.{ts,tsx}'],
+    exclude: ['e2e/**', 'node_modules/**'],
   },
 })
