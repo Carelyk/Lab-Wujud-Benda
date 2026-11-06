@@ -51,9 +51,8 @@ describe('data benda', () => {
     }
   })
 
-  it('lilin dan cokelat tidak punya tahap uap', () => {
+  it('lilin dan kapur barus tidak punya tahap uap atau diganti kapur barus', () => {
     expect(BENDA_LIST.find((b) => b.id === 'lilin')?.uap).toBeUndefined()
-    expect(BENDA_LIST.find((b) => b.id === 'cokelat')?.uap).toBeUndefined()
   })
 
   it('setiap konten ditandai perlu diverifikasi guru', () => {
@@ -65,7 +64,7 @@ describe('fasePada', () => {
   const es = BENDA_LIST.find((b) => b.id === 'es')!
   const air = BENDA_LIST.find((b) => b.id === 'air')!
   const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
-  const cokelat = BENDA_LIST.find((b) => b.id === 'cokelat')!
+  const kapurBarus = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
 
   it('es batu: padat di bawah 0, cair di atas 0, gas di 100', () => {
     expect(fasePada(es, -5).wujud).toBe('padat')
@@ -88,11 +87,11 @@ describe('fasePada', () => {
     expect(fasePada(air, -1).wujud).toBe('padat')
   })
 
-  it('lilin meleleh di 55, cokelat di 33', () => {
+  it('lilin meleleh di 55, kapur barus meleleh di 40', () => {
     expect(fasePada(lilin, 54).wujud).toBe('padat')
     expect(fasePada(lilin, 55).wujud).toBe('cair')
-    expect(fasePada(cokelat, 32).wujud).toBe('padat')
-    expect(fasePada(cokelat, 33).wujud).toBe('cair')
+    expect(fasePada(kapurBarus, 35).wujud).toBe('padat')
+    expect(fasePada(kapurBarus, 45).wujud).toBe('cair')
   })
 })
 
@@ -100,18 +99,18 @@ describe('resolvePhase memakai arah perubahan', () => {
   const es = BENDA_LIST.find((b) => b.id === 'es')!
   const air = BENDA_LIST.find((b) => b.id === 'air')!
   const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
-  const cokelat = BENDA_LIST.find((b) => b.id === 'cokelat')!
+  const kapurBarus = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
 
   it('panas: padat menjadi cair = mencair', () => {
     expect(resolvePhase(es, -5, 25).proses).toBe('mencair')
-    expect(resolvePhase(cokelat, 28, 40).proses).toBe('mencair')
+    expect(resolvePhase(kapurBarus, 28, 50).proses).toBe('mencair')
     expect(resolvePhase(lilin, 28, 60).proses).toBe('mencair')
   })
 
   it('dingin: cair menjadi padat = membeku', () => {
     expect(resolvePhase(es, 25, -5).proses).toBe('membeku')
     expect(resolvePhase(air, 25, -10).proses).toBe('membeku')
-    expect(resolvePhase(cokelat, 40, 28).proses).toBe('membeku')
+    expect(resolvePhase(kapurBarus, 50, 28).proses).toBe('membeku')
     expect(resolvePhase(lilin, 60, 28).proses).toBe('membeku')
   })
 

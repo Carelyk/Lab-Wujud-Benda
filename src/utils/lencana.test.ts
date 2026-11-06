@@ -54,7 +54,7 @@ describe('lencanaTerbuka', () => {
         catatan('es', 'mencair'),
         catatan('air', 'mencair'),
         catatan('lilin', 'mencair'),
-        catatan('cokelat', 'mencair'),
+        catatan('kapur-barus', 'mencair'),
       ],
     })
     expect(lencanaTerbuka(empat)).not.toContain('si-pelumer')
@@ -64,7 +64,7 @@ describe('lencanaTerbuka', () => {
         catatan('es', 'mencair'),
         catatan('air', 'mencair'),
         catatan('lilin', 'mencair'),
-        catatan('cokelat', 'mencair'),
+        catatan('kapur-barus', 'mencair'),
         catatan('panci', 'mencair'),
       ],
     })

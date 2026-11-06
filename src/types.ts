@@ -11,7 +11,7 @@ export type Arah = 'panas' | 'dingin'
 
 export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus'
 
-export type BendaId = 'es' | 'air' | 'lilin' | 'cokelat' | 'panci'
+export type BendaId = 'es' | 'air' | 'lilin' | 'kapur-barus' | 'panci'
 
 /** One temperature band of a benda. `mulai` is the lowest °C of the band. */
 export interface Fase {

@@ -9,7 +9,6 @@ import { Bubble, Mascot } from '../components/mascot/Mascot'
 import type { MoodTetes } from '../components/mascot/Mascot'
 import {
   IconAir,
-  IconCokelat,
   IconEs,
   IconLilin,
   IconPanci,
@@ -28,7 +27,7 @@ const IKON: Record<BendaId, ReactNode> = {
   es: <IconEs size={24} />,
   air: <IconAir size={24} />,
   lilin: <IconLilin size={24} />,
-  cokelat: <IconCokelat size={24} />,
+  'kapur-barus': <span style={{ fontSize: '1.2rem' }}>⚪</span>,
   panci: <IconPanci size={24} />,
 }
 

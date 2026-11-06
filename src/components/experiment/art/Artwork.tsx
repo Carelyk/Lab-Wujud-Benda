@@ -1,6 +1,6 @@
 import type { BendaId, Wujud } from '../../../types'
 import { CandleArt } from './CandleArt'
-import { ChocolateArt } from './ChocolateArt'
+import { CamphorArt } from './CamphorArt'
 import { IceArt } from './IceArt'
 import { PotArt } from './PotArt'
 import { WaterArt } from './WaterArt'
@@ -20,9 +20,10 @@ export function Artwork({ bendaId, wujud, uap }: Props) {
       return <WaterArt wujud={wujud} uap={uap} />
     case 'lilin':
       return <CandleArt wujud={wujud} uap={uap} />
-    case 'cokelat':
-      return <ChocolateArt wujud={wujud} uap={uap} />
+    case 'kapur-barus':
+      return <CamphorArt wujud={wujud} uap={uap} />
     case 'panci':
       return <PotArt wujud={wujud} uap={uap} />
   }
 }
+
