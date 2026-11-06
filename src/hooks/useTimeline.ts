@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface UseTimelineOptions {
   durasiMs: number
@@ -8,47 +8,38 @@ interface UseTimelineOptions {
 export function useTimeline({ durasiMs, autoPlay = true }: UseTimelineOptions) {
   const [progress, setProgress] = useState<number>(autoPlay ? 0 : 1)
   const [berjalan, setBerjalan] = useState<boolean>(autoPlay)
-  const animRef = useRef<number | null>(null)
-  const mulaiRef = useRef<number | null>(null)
+  const [key, setKey] = useState<number>(0)
 
-  const stop = useCallback(() => {
-    if (animRef.current) {
-      cancelAnimationFrame(animRef.current)
-      animRef.current = null
-    }
-    setBerjalan(false)
-  }, [])
-
-  const putar = useCallback(() => {
-    stop()
-    setProgress(0)
-    setBerjalan(true)
-    mulaiRef.current = null
+  useEffect(() => {
+    if (!berjalan) return
+    let animId: number
+    const mulai = performance.now()
 
     const frame = (waktu: number) => {
-      if (!mulaiRef.current) mulaiRef.current = waktu
-      const selisih = waktu - mulaiRef.current
+      const selisih = waktu - mulai
       const p = Math.min(1, selisih / durasiMs)
       setProgress(p)
 
       if (p < 1) {
-        animRef.current = requestAnimationFrame(frame)
+        animId = requestAnimationFrame(frame)
       } else {
         setBerjalan(false)
-        animRef.current = null
       }
     }
-    animRef.current = requestAnimationFrame(frame)
-  }, [durasiMs, stop])
 
-  useEffect(() => {
-    if (autoPlay) {
-      putar()
-    }
-    return () => {
-      stop()
-    }
-  }, [autoPlay, putar, stop])
+    animId = requestAnimationFrame(frame)
+    return () => cancelAnimationFrame(animId)
+  }, [durasiMs, berjalan, key])
+
+  const putar = () => {
+    setProgress(0)
+    setBerjalan(true)
+    setKey((k) => k + 1)
+  }
+
+  const stop = () => {
+    setBerjalan(false)
+  }
 
   return { progress, berjalan, putar, stop }
 }
