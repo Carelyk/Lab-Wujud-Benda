@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import { CONTOH_UNTUNG_RUGI, type ContohUntungRugi } from '../data/untungRugi'
-import { Bubble, Mascot } from '../components/mascot/Mascot'
+import { UntungRugiPopup } from '../components/sekitar/UntungRugiPopup'
+import { CONTOH_UNTUNG_RUGI_ANIMASI } from '../data/untungRugiAnimasi'
+import type { ContohUntungRugiAnimasi } from '../data/untungRugiAnimasi'
+import { BigButton } from '../components/ui/BigButton'
+import { Panel } from '../components/ui/Panel'
+import { IconBuku } from '../components/ui/Icons'
 import { mainkan } from '../utils/sound'
 import s from './UntungRugiScreen.module.css'
 
@@ -9,97 +13,89 @@ interface Props {
 }
 
 export function UntungRugiScreen({ onBack }: Props) {
-  const [tab, setTab] = useState<'untung' | 'rugi'>('untung')
-  const [selected, setSelected] = useState<ContohUntungRugi | null>(null)
-  const [dibuka, setDibuka] = useState<Set<string>>(new Set())
+  const [aktif, setAktif] = useState<ContohUntungRugiAnimasi | null>(null)
+  const [filter, setFilter] = useState<'semua' | 'untung' | 'rugi'>('semua')
 
-  const items = CONTOH_UNTUNG_RUGI.filter((item) => item.kategori === tab)
-
-  const handleOpen = (item: ContohUntungRugi) => {
-    setSelected(item)
-    setDibuka((prev) => new Set(prev).add(item.id))
-    void mainkan('pop')
-  }
+  const daftar = CONTOH_UNTUNG_RUGI_ANIMASI.filter((c) => {
+    if (filter === 'untung') return c.kategori === 'untung'
+    if (filter === 'rugi') return c.kategori === 'rugi'
+    return true
+  })
 
   return (
-    <div className={s.container}>
-      <header className={s.header}>
-        <button onClick={onBack} className={s.backBtn}>
-          ← Beranda
-        </button>
-        <h1>🌍 Wujud di Sekitar Kita</h1>
-        <div className={s.badgeCounter}>
-          Dibuka: {dibuka.size} / {CONTOH_UNTUNG_RUGI.length}
+    <div className={s.layar}>
+      <div className={s.kepala}>
+        <div>
+          <span className={s.pita}>Wujud di Sekitar Kita</span>
+          <h1 className={s.judul}>Manfaat & Kerugian Perubahan Wujud</h1>
+          <p className={s.sub}>Klik salah satu contoh untuk melihat animasi dan penjelasan lengkapnya.</p>
         </div>
-      </header>
+        <BigButton nada="netral" onClick={onBack}>
+          ← Kembali ke Beranda
+        </BigButton>
+      </div>
 
-      <div className={s.tabRow}>
+      <div className={s.filterBaris} role="group" aria-label="Filter contoh">
         <button
-          className={`${s.tab} ${tab === 'untung' ? s.activeUntung : ''}`}
+          type="button"
+          className={`${s.filterTombol} ${filter === 'semua' ? s.filterAktif : ''}`}
           onClick={() => {
-            setTab('untung')
             void mainkan('klik')
+            setFilter('semua')
           }}
         >
-          👍 Menguntungkan ({CONTOH_UNTUNG_RUGI.filter((i) => i.kategori === 'untung').length})
+          Semua ({CONTOH_UNTUNG_RUGI_ANIMASI.length})
         </button>
         <button
-          className={`${s.tab} ${tab === 'rugi' ? s.activeRugi : ''}`}
+          type="button"
+          className={`${s.filterTombol} ${filter === 'untung' ? s.filterAktif : ''}`}
           onClick={() => {
-            setTab('rugi')
             void mainkan('klik')
+            setFilter('untung')
           }}
         >
-          👎 Merugikan ({CONTOH_UNTUNG_RUGI.filter((i) => i.kategori === 'rugi').length})
+          ✨ Menguntungkan
+        </button>
+        <button
+          type="button"
+          className={`${s.filterTombol} ${filter === 'rugi' ? s.filterAktif : ''}`}
+          onClick={() => {
+            void mainkan('klik')
+            setFilter('rugi')
+          }}
+        >
+          ⚠️ Merugikan
         </button>
       </div>
 
       <div className={s.grid}>
-        {items.map((item, idx) => (
-          <div
-            key={item.id}
-            className={`${s.card} ${tab === 'untung' ? s.cardUntung : s.cardRugi} ${
-              idx % 2 === 0 ? s.rotate1 : s.rotate2
-            }`}
-            onClick={() => handleOpen(item)}
+        {daftar.map((c) => (
+          <Panel
+            key={c.id}
+            stiker={c.kategori === 'untung' ? 'Untung' : 'Rugi'}
+            judul={c.judul}
+            ikon={<IconBuku size={22} />}
+            className={s.kartuPanel}
           >
-            <div className={s.cardTop}>
-              <span className={s.processTag}>{item.proses}</span>
-              <span className={s.checkMark}>{dibuka.has(item.id) ? '⭐' : '📌'}</span>
+            <p className={s.kartuDeskripsi}>{c.deskripsi}</p>
+            <div className={s.kartuBawah}>
+              <span className={s.badgeProses}>Proses: {c.proses}</span>
+              <button
+                type="button"
+                className={s.tombolAnimasi}
+                onClick={() => {
+                  void mainkan('buka')
+                  setAktif(c)
+                }}
+              >
+                ▶ Lihat Animasi
+              </button>
             </div>
-            <h3>{item.judul}</h3>
-            <p className={s.snippet}>{item.deskripsi.substring(0, 60)}...</p>
-            <span className={s.tapHint}>Ketuk untuk lihat cerita →</span>
-          </div>
+          </Panel>
         ))}
       </div>
 
-      {selected && (
-        <div className={s.modalOverlay} onClick={() => setSelected(null)}>
-          <div className={s.modalContent} onClick={(e) => e.stopPropagation()}>
-            <span className={s.modalBadge}>{selected.kategori === 'untung' ? '👍 Menguntungkan' : '👎 Merugikan'}</span>
-            <h2>{selected.judul}</h2>
-            <div className={s.processPill}>Proses: {selected.proses}</div>
-            <p className={s.desc}>{selected.deskripsi}</p>
-            
-            <div className={s.tetesBox}>
-              <Mascot mood="senang" size={60} />
-              <Bubble>{selected.pesanTetes}</Bubble>
-            </div>
-
-            <button onClick={() => setSelected(null)} className={s.closeBtn}>
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className={s.footerMascot}>
-        <Mascot mood="senang" size={70} />
-        <Bubble>
-          Perubahan wujud ada di sekitar kita setiap hari! Pilih kartu di atas untuk melihat manfaat atau akibatnya.
-        </Bubble>
-      </div>
+      {aktif ? <UntungRugiPopup contoh={aktif} onTutup={() => setAktif(null)} /> : null}
     </div>
   )
 }

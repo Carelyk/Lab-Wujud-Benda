@@ -1,0 +1,16 @@
+.sceneContainer {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--latar);
+  border: 2px solid var(--aksen);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.svgCanvas {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
