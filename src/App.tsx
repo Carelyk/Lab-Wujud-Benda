@@ -146,7 +146,7 @@ export default function App() {
       ) : null}
 
       <footer className={s.kaki}>
-        <p>Dibuat untuk belajar IPAS kelas 4 SD. Tanpa iklan dan tanpa pelacak.</p>
+        <p>Dirancang Oleh : Zefanya Rizqita Siathen</p>
       </footer>
     </div>
   )
