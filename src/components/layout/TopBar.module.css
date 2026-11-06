@@ -1,0 +1,134 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 10px clamp(12px, 3vw, 28px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.kiri {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.kembali {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 48px;
+  padding: 8px 14px 8px 11px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  transition:
+    transform 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.kembali:hover {
+  background: var(--sky);
+  border-color: var(--line-strong);
+}
+
+.kembali:active {
+  transform: translateY(2px);
+}
+
+.merek {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.lambang {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  color: #ffffff;
+  background: linear-gradient(160deg, #5cc8f5, #2f9bff);
+  box-shadow: 0 3px 0 #1f7fcb;
+}
+
+.merekTeks {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suara {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.suara:hover {
+  background: var(--sky);
+  border-color: var(--line-strong);
+}
+
+.suara:active {
+  transform: translateY(2px);
+}
+
+.suara[aria-pressed='false'] {
+  color: var(--ink-soft);
+  border-style: dashed;
+}
+
+@media (max-width: 560px) {
+  .merekPanjang {
+    display: none;
+  }
+
+  .kembali span {
+    display: none;
+  }
+
+  .kembali {
+    padding: 8px 11px;
+  }
+
+  .merek {
+    font-size: 17px;
+  }
+
+  .suara {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+}

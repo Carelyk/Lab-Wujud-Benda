@@ -1,0 +1,262 @@
+/* Shared UI pieces: buttons, panels, state badges, pills. */
+
+/* ---------------- buttons ---------------- */
+.tombol {
+  --tone: var(--ink);
+  --tone-tua: #1a1d28;
+  --tone-teks: #ffffff;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 14px 22px;
+  border-radius: var(--r-md);
+  background: var(--tone);
+  color: var(--tone-teks);
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  box-shadow: 0 6px 0 var(--tone-tua);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+}
+
+.tombol:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.tombol:active:not(:disabled) {
+  transform: translateY(5px);
+  box-shadow: 0 1px 0 var(--tone-tua);
+}
+
+/* tone variants come before :disabled so the disabled look wins */
+.panas {
+  --tone: var(--panas);
+  --tone-tua: var(--panas-tua);
+  /* near-black instead of --ink: keeps AA contrast on the fixed #ff5a3c */
+  --tone-teks: #1b1e27;
+}
+
+.dingin {
+  --tone: var(--dingin);
+  --tone-tua: var(--dingin-tua);
+  --tone-teks: var(--ink);
+}
+
+.netral {
+  --tone: var(--ink);
+  --tone-tua: #171a24;
+  --tone-teks: #ffffff;
+}
+
+.benar {
+  --tone: var(--benar);
+  --tone-tua: var(--benar-tua);
+  --tone-teks: var(--ink);
+}
+
+.bintang {
+  --tone: var(--bintang);
+  --tone-tua: var(--bintang-tua);
+  --tone-teks: var(--ink);
+}
+
+.tombol:disabled {
+  background: #cfdde9;
+  color: #78839a;
+  box-shadow: 0 5px 0 #b7c8d8;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.lebar {
+  width: 100%;
+}
+
+.ikon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.isi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.teks {
+  display: block;
+}
+
+.sub {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ---------------- panel ---------------- */
+.panel {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid rgba(185, 214, 233, 0.65);
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-soft);
+}
+
+.kepala {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+}
+
+.judulBlok {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.stiker {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: var(--r-pill);
+  background: var(--bintang);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  transform: rotate(-1.6deg);
+  box-shadow: 0 3px 0 var(--bintang-tua);
+}
+
+.judul {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(21px, 2.3vw, 26px);
+  font-weight: 600;
+}
+
+.judulIkon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--sky);
+  border: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.aksi {
+  margin-left: auto;
+}
+
+/* ---------------- state badge ---------------- */
+.lencanaWujud {
+  --warna: var(--padat);
+  --warna-teks: #7a4e00;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 15px 5px 11px;
+  border: 2px solid var(--warna);
+  border-radius: var(--r-pill);
+  background: #fff3dc;
+  color: var(--warna-teks);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.padat {
+  --warna: var(--padat);
+  --warna-teks: #7a4e00;
+  background: #fff3dc;
+}
+
+.cair {
+  --warna: var(--cair);
+  --warna-teks: #0a4f9c;
+  background: #e7f2ff;
+}
+
+.gas {
+  --warna: var(--gas);
+  --warna-teks: #513a9c;
+  background: #f2ecff;
+}
+
+.titik {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--warna);
+  flex: 0 0 auto;
+}
+
+.wujudKecil {
+  font-size: 16px;
+  padding: 2px 11px 2px 8px;
+  gap: 7px;
+  border-width: 1.5px;
+}
+
+.wujudKecil .titik {
+  width: 10px;
+  height: 10px;
+}
+
+/* ---------------- pill ---------------- */
+.pil {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--sky);
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.pilIkon {
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: var(--sp-4);
+    border-radius: var(--r-md);
+  }
+
+  .tombol {
+    min-height: 54px;
+    padding: 12px 16px;
+    font-size: 19px;
+    gap: 9px;
+  }
+}

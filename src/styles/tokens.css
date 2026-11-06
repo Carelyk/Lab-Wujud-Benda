@@ -1,0 +1,67 @@
+/* Design tokens. Every colour, radius, shadow and spacing step lives here. */
+:root {
+  /* palette (fixed by the brief) */
+  --sky: #eaf6ff;
+  --surface: #ffffff;
+  --ink: #2d3142;
+  --panas: #ff5a3c;
+  --dingin: #5cc8f5;
+  --padat: #f5a524;
+  --cair: #2f9bff;
+  --gas: #a78bfa;
+  --benar: #3ccb7f;
+  --salah: #ff8fa3;
+  --bintang: #ffd166;
+
+  /* derived tints, still inside the palette */
+  --ink-soft: #5a6072;
+  /* dark enough for 4.5:1 on both white and --sky (WCAG AA) */
+  --ink-faint: #666e80;
+  --line: #d9e8f4;
+  --line-strong: #b9d6e9;
+  --sky-deep: #d7ecfb;
+  --panas-tua: #d94428;
+  --dingin-tua: #2a9ad8;
+  --padat-tua: #b97511;
+  --cair-tua: #1668c4;
+  --gas-tua: #7d5fd6;
+  --benar-tua: #22a161;
+  --salah-tua: #d9647a;
+  --bintang-tua: #d9a531;
+  --kertas: #fffdf6;
+
+  /* radii */
+  --r-sm: 16px;
+  --r-md: 20px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* soft shadows, no grey haze */
+  --shadow-soft: 0 18px 34px -26px rgba(45, 49, 66, 0.55);
+  --shadow-lift: 0 26px 48px -28px rgba(45, 49, 66, 0.5);
+  --shadow-tap: 0 6px 0 var(--line-strong);
+
+  /* type */
+  --font-display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+
+  /* spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* layout */
+  --lebar: 1140px;
+  --teks-min: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gerak-cepat: 0.001ms;
+  }
+}

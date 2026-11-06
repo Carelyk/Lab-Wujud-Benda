@@ -1,0 +1,115 @@
+.toast {
+  --warna: var(--panas);
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 62px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  max-width: min(92%, 380px);
+  padding: 12px 18px 12px 14px;
+  border: 2px solid var(--warna);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+  pointer-events: none;
+  animation:
+    masuk 280ms cubic-bezier(0.3, 1.5, 0.6, 1) both,
+    keluar 320ms 2500ms ease both;
+}
+
+.ikon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--warna);
+  color: #ffffff;
+}
+
+.isi {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.judul {
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.ket {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.mencair {
+  --warna: var(--panas);
+}
+
+.membeku {
+  --warna: var(--dingin);
+}
+
+.menguap,
+.mendidih {
+  --warna: var(--gas);
+}
+
+.mengembun {
+  --warna: var(--cair);
+}
+
+@keyframes masuk {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes keluar {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .toast {
+    top: 44px;
+    padding: 10px 14px 10px 12px;
+    gap: 10px;
+  }
+
+  .judul {
+    font-size: 21px;
+  }
+
+  .ket {
+    font-size: 15px;
+  }
+
+  .ikon {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -1,0 +1,155 @@
+.panel {
+  padding: var(--sp-4);
+}
+
+.info {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--sky);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.baris {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-4);
+}
+
+.kendali {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.duaTombol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sliderBlok {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* big native range: 56px tall means an easy target for small fingers */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 54px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 22px;
+  border-radius: var(--r-pill);
+  border: 2px solid #ffffff;
+  background: linear-gradient(
+    90deg,
+    var(--dingin) 0%,
+    #d8eefb 28%,
+    #fff1ec 55%,
+    #ffd9cf 76%,
+    var(--panas) 100%
+  );
+  box-shadow: inset 0 2px 6px rgba(45, 49, 66, 0.16);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 38px;
+  height: 38px;
+  margin-top: -10px;
+  border-radius: 50%;
+  border: 4px solid var(--ink);
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(45, 49, 66, 0.32);
+}
+
+.slider::-moz-range-track {
+  height: 18px;
+  border-radius: var(--r-pill);
+  border: 2px solid #ffffff;
+  background: linear-gradient(
+    90deg,
+    var(--dingin) 0%,
+    #d8eefb 28%,
+    #fff1ec 55%,
+    #ffd9cf 76%,
+    var(--panas) 100%
+  );
+  box-shadow: inset 0 2px 6px rgba(45, 49, 66, 0.16);
+}
+
+.slider::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 4px solid var(--ink);
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(45, 49, 66, 0.32);
+}
+
+.skala {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink-faint);
+}
+
+.ulang {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  border: 2px dashed var(--line-strong);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 800;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.ulang:hover {
+  background: var(--sky);
+  color: var(--ink);
+}
+
+.ulang:active {
+  transform: translateY(2px);
+}
+
+@media (max-width: 520px) {
+  .baris {
+    gap: var(--sp-3);
+  }
+
+  .duaTombol {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .info {
+    font-size: 15px;
+  }
+}

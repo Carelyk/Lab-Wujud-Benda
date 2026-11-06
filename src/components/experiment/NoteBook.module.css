@@ -1,0 +1,90 @@
+.jumlah {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  background: var(--sky);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.daftar {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.baris {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: #f7fbff;
+  border: 1px solid var(--line);
+  animation: masuk 260ms ease both;
+}
+
+.emoji {
+  flex: 0 0 auto;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.teks {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.centang {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--benar);
+  color: #ffffff;
+}
+
+.kosong {
+  padding: 14px;
+  border-radius: var(--r-md);
+  border: 2px dashed var(--line-strong);
+  background: #f9fcff;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.kosongSub {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.sisa {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink-faint);
+}
+
+@keyframes masuk {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,135 @@
+.layar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* benda picker */
+.pilih {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex: 1 1 132px;
+  min-height: 58px;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 500;
+  box-shadow: 0 4px 0 rgba(185, 214, 233, 0.75);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.tab:hover {
+  border-color: var(--line-strong);
+  background: #f6fbff;
+}
+
+.tab:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.aktif,
+.aktif:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+  box-shadow: 0 5px 0 #171a24;
+}
+
+.aktif:active {
+  transform: translateY(5px);
+  box-shadow: none;
+}
+
+.tabIkon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.tabTeks {
+  white-space: nowrap;
+}
+
+/* two columns on wide screens, one column on phones */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.utama,
+.sisi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+
+/* mascot card */
+.kartuTetes {
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #f2fbff 0%, #ffffff 62%);
+}
+
+.tetesBaris {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.bubble {
+  width: 100%;
+  max-width: 100%;
+}
+
+.petunjuk {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px dashed var(--line-strong);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .pilih {
+    gap: 7px;
+  }
+
+  .tab {
+    flex: 1 1 96px;
+    min-height: 54px;
+    padding: 8px 10px;
+    gap: 7px;
+    font-size: 17px;
+  }
+}

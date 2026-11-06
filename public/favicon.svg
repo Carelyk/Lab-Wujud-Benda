@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="tetes" x1="0" y1="0" x2=".7" y2="1">
+      <stop offset="0" stop-color="#93E2FF" />
+      <stop offset=".55" stop-color="#5CC8F5" />
+      <stop offset="1" stop-color="#2F9BFF" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M32 4S10 28 10 41a22 22 0 0 0 44 0C54 28 32 4 32 4Z"
+    fill="url(#tetes)"
+    stroke="#1F7FCB"
+    stroke-width="3"
+  />
+  <circle cx="25" cy="40" r="3.4" fill="#2D3142" />
+  <circle cx="39" cy="40" r="3.4" fill="#2D3142" />
+  <path
+    d="M27 47q5 5 10 0"
+    stroke="#2D3142"
+    stroke-width="3"
+    stroke-linecap="round"
+    fill="none"
+  />
+</svg>

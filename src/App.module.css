@@ -1,0 +1,22 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: var(--lebar);
+  margin: 0 auto;
+  padding: clamp(16px, 2.6vw, 30px) clamp(14px, 3vw, 28px) clamp(32px, 5vw, 56px);
+}
+
+.kaki {
+  padding: 18px 16px 28px;
+  border-top: 1px dashed var(--line-strong);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-faint);
+}

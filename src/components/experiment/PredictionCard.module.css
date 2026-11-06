@@ -1,0 +1,90 @@
+.tanya {
+  margin-bottom: var(--sp-3);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.opsi {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tombol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 8px 6px;
+  border-radius: var(--r-md);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.tombol:hover {
+  border-color: var(--line-strong);
+  background: var(--sky);
+}
+
+.tombol:active {
+  transform: translateY(2px);
+}
+
+.dipilih {
+  border-color: var(--ink);
+  background: var(--sky);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.status {
+  margin-top: var(--sp-3);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.hasil {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: var(--sp-2);
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.benar {
+  border: 2px solid var(--benar);
+  background: #eafaf1;
+}
+
+.salah {
+  border: 2px solid var(--salah);
+  background: #fff1f4;
+}
+
+.hasilIkon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.benar .hasilIkon {
+  background: var(--benar-tua);
+}
+
+.salah .hasilIkon {
+  background: var(--salah-tua);
+}
