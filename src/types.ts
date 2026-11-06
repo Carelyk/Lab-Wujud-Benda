@@ -31,7 +31,6 @@ export interface Prediksi {
 export interface Benda {
   id: BendaId
   nama: string
-  emoji: string
   /** One short kid-friendly line, shown by the mascot. */
   keterangan: string
   /** Realistic starting temperature in °C. */
