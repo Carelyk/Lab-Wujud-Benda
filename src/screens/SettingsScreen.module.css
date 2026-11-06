@@ -1,0 +1,91 @@
+.layar {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.kepala {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--latar);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--aksen);
+}
+
+.pita {
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(245, 165, 36, 0.2);
+  color: var(--teks);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+}
+
+.judul {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--teks);
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.sub {
+  font-size: 0.95rem;
+  color: var(--teks);
+  opacity: 0.8;
+  margin: 0;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.barisOpsi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: var(--teks);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .barisOpsi {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.grupTombol {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tombolOpsi {
+  min-height: 48px;
+  padding: 0 1rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--aksen);
+  background: var(--latar);
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--teks);
+  transition: all 0.2s;
+}
+
+.tombolOpsi.aktif {
+  background: var(--aksen);
+  border-color: var(--teks);
+}
+
+.teksInfo {
+  color: var(--teks);
+  margin-bottom: 1rem;
+}
