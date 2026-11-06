@@ -120,10 +120,6 @@ working offline after the first visit.
   `workbox-build` build-time dependencies (`deepmerge`, `glob`, `minimatch`).
   They are not shipped to the browser; the only fix npm offers is downgrading
   `vite-plugin-pwa`, which drops Vite 8 support. Revisit when upstream updates.
-- `oxlint` reports 6 non-blocking `react(refs)` / `set-state-in-effect` warnings in
-  `useSuhuBertahap.ts` and `ExperimentScreen.tsx`. The animation loop needs a
-  self-referencing callback and refs to stay off the render path, so these are
-  accepted for now.
 
 ## Credits
 

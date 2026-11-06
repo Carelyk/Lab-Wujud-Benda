@@ -89,3 +89,46 @@ export function ambangSuhu(benda: Benda): number[] {
   if (benda.uap && benda.uap.tipis < benda.uap.didih) semua.push(benda.uap.tipis)
   return [...new Set(semua)].sort((a, b) => a - b)
 }
+
+export interface LangkahSuhu {
+  /** Temperature the animation should show after this step. */
+  berikut: number
+  /** True when the step stopped on a threshold and should hold for a moment. */
+  tahan: boolean
+  /** True when this step reached the target. */
+  selesai: boolean
+}
+
+/**
+ * One animation step. Pure, so the "never skip a threshold" rule is testable
+ * without a browser: a jump from -20 to 120 still produces stops at 0, 30, 100.
+ */
+export function langkahSuhu(
+  benda: Benda,
+  dari: number,
+  tujuan: number,
+  dt: number,
+  kecepatan: number,
+): LangkahSuhu {
+  if (Math.abs(tujuan - dari) < 0.05) {
+    return { berikut: tujuan, tahan: false, selesai: true }
+  }
+
+  const arah = tujuan > dari ? 1 : -1
+  let berikut = dari + arah * kecepatan * dt
+
+  if ((arah > 0 && berikut > tujuan) || (arah < 0 && berikut < tujuan)) {
+    berikut = tujuan
+  }
+
+  const lewat = ambangSuhu(benda).filter((a) =>
+    arah > 0 ? a > dari && a <= berikut : a < dari && a >= berikut,
+  )
+
+  if (lewat.length > 0) {
+    berikut = arah > 0 ? lewat[0] : lewat[lewat.length - 1]
+    return { berikut, tahan: true, selesai: Math.abs(tujuan - berikut) < 0.05 }
+  }
+
+  return { berikut, tahan: false, selesai: Math.abs(tujuan - berikut) < 0.05 }
+}

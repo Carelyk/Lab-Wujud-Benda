@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BENDA_LIST } from '../data/objects'
 import type { Benda, NamaProses } from '../types'
-import { ambangSuhu, fasePada, resolvePhase } from './fase'
+import { ambangSuhu, fasePada, langkahSuhu, resolvePhase } from './fase'
 
 const SEMUA_PROSES: NamaProses[] = [
   'mencair',
@@ -54,6 +54,10 @@ describe('data benda', () => {
   it('lilin dan cokelat tidak punya tahap uap', () => {
     expect(BENDA_LIST.find((b) => b.id === 'lilin')?.uap).toBeUndefined()
     expect(BENDA_LIST.find((b) => b.id === 'cokelat')?.uap).toBeUndefined()
+  })
+
+  it('setiap konten ditandai perlu diverifikasi guru', () => {
+    for (const b of BENDA_LIST) expect(b.perluVerifikasi).toBe(true)
   })
 })
 
@@ -188,5 +192,53 @@ describe('ambangSuhu', () => {
       const a = ambangSuhu(b)
       expect(new Set(a).size).toBe(a.length)
     }
+  })
+})
+
+describe('langkahSuhu tidak melewati ambang', () => {
+  function jalankan(benda: Benda, dari: number, tujuan: number, kecepatan = 42) {
+    const berhenti: number[] = []
+    const proses: NamaProses[] = []
+    let suhu = dari
+    let tahan = false
+
+    for (let i = 0; i < 5000; i++) {
+      if (tahan) {
+        tahan = false
+        continue
+      }
+      const hasil = langkahSuhu(benda, suhu, tujuan, 0.05, kecepatan)
+      if (hasil.tahan) berhenti.push(hasil.berikut)
+      const p = resolvePhase(benda, suhu, hasil.berikut)
+      if (p.proses) proses.push(p.proses)
+      suhu = hasil.berikut
+      tahan = hasil.tahan
+      if (hasil.selesai) break
+    }
+
+    return { suhu, berhenti, proses }
+  }
+
+  it('lompatan -20 ke 120 tetap berhenti di 0, 30, dan 100', () => {
+    const es = BENDA_LIST.find((b) => b.id === 'es')!
+    const hasil = jalankan(es, -20, 120)
+    expect(hasil.berhenti).toEqual([0, 30, 100])
+    expect(hasil.proses).toEqual(expect.arrayContaining(['mencair', 'menguap', 'mendidih']))
+    expect(hasil.suhu).toBe(120)
+  })
+
+  it('lompatan 120 ke -20 tetap berhenti di 100, 30, dan 0', () => {
+    const air = BENDA_LIST.find((b) => b.id === 'air')!
+    const hasil = jalankan(air, 120, -20)
+    expect(hasil.berhenti).toEqual([100, 30, 0])
+    expect(hasil.proses).toEqual(expect.arrayContaining(['mengembun', 'membeku']))
+    expect(hasil.suhu).toBe(-20)
+  })
+
+  it('berhenti tepat di target tanpa melewatinya', () => {
+    const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
+    const hasil = jalankan(lilin, 28, 55)
+    expect(hasil.suhu).toBe(55)
+    expect(hasil.berhenti).toEqual([55])
   })
 })

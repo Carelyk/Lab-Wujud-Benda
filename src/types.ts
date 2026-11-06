@@ -43,6 +43,11 @@ export interface Benda {
    */
   uap?: { tipis: number; didih: number }
   prediksi: Prediksi
+  /**
+   * true = a number or sentence should be checked against the grade-4 IPAS
+   * book before classroom use. Collected in README ("Perlu diverifikasi").
+   */
+  perluVerifikasi?: boolean
 }
 
 export interface Perubahan {

@@ -49,7 +49,10 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
   const urutanRef = useRef(0)
   const sudahDinilai = useRef<Set<BendaId>>(new Set())
   const progressRef = useRef(progress)
-  progressRef.current = progress
+
+  useEffect(() => {
+    progressRef.current = progress
+  }, [progress])
 
   const onPerubahan = useCallback(
     (p: Perubahan) => {
@@ -84,7 +87,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
     [bendaId, catat],
   )
 
-  const { suhu, target, bergerak, aturTarget, tambah, ulang } = useSuhuBertahap({
+  const { suhu, target, bergerak, aturTarget, tambah, ulang, pindah } = useSuhuBertahap({
     benda,
     onPerubahan,
     kurangiGerak,
@@ -107,6 +110,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi }: Props) {
     void mainkan('klik')
     setToast(null)
     setHasil(null)
+    pindah(BENDA[id])
     setBendaId(id)
   }
 

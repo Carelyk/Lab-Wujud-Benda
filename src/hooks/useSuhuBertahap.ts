@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Benda, Perubahan } from '../types'
-import { ambangSuhu, resolvePhase } from '../utils/fase'
+import { langkahSuhu, resolvePhase } from '../utils/fase'
 
 interface Opsi {
   benda: Benda
@@ -15,6 +15,10 @@ interface Opsi {
  * threshold (0 °C, 30 °C, 100 °C, ...) and holds for a moment. So even when a
  * child drags the slider from -20 to 120 at once, every single process gets
  * its own label, sound and notebook line.
+ *
+ * The animation loop lives in one effect and only touches refs, so React does
+ * not re-create it on every render. The parent switches benda with `pindah()`,
+ * which resets the engine without an extra render pass.
  */
 export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
   const [suhu, setSuhu] = useState(benda.suhuAwal)
@@ -27,68 +31,79 @@ export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
   const terakhirRef = useRef(0)
   const tahanRef = useRef(0)
 
+  // Latest props for the loop. Written in an effect, never during render.
   const cbRef = useRef(onPerubahan)
-  cbRef.current = onPerubahan
   const bendaRef = useRef(benda)
-  bendaRef.current = benda
   const reduksiRef = useRef(kurangiGerak)
-  reduksiRef.current = kurangiGerak
+  const langkahRef = useRef<(now: number) => void>(() => undefined)
 
-  const langkah = useCallback((now: number) => {
-    const dt = Math.min(0.05, Math.max(0, (now - terakhirRef.current) / 1000))
-    terakhirRef.current = now
+  useEffect(() => {
+    cbRef.current = onPerubahan
+    bendaRef.current = benda
+    reduksiRef.current = kurangiGerak
+  }, [onPerubahan, benda, kurangiGerak])
 
-    if (now < tahanRef.current) {
-      rafRef.current = requestAnimationFrame(langkah)
-      return
-    }
+  // One long-lived loop. It reads refs only, so it never needs to be rebuilt.
+  useEffect(() => {
+    let frame: number | null = null
 
-    const b = bendaRef.current
-    const dari = suhuRef.current
-    const tujuan = targetRef.current
+    const langkah = (now: number) => {
+      const dt = Math.min(0.05, Math.max(0, (now - terakhirRef.current) / 1000))
+      terakhirRef.current = now
 
-    if (Math.abs(tujuan - dari) < 0.05) {
-      if (dari !== tujuan) {
-        suhuRef.current = tujuan
-        setSuhu(tujuan)
+      if (now < tahanRef.current) {
+        frame = requestAnimationFrame(langkah)
+        rafRef.current = frame
+        return
       }
+
+      const b = bendaRef.current
+      const dari = suhuRef.current
+      const tujuan = targetRef.current
+      const kecepatan = reduksiRef.current ? 300 : 42
+      const hasil = langkahSuhu(b, dari, tujuan, dt, kecepatan)
+
+      if (Math.abs(tujuan - dari) < 0.05) {
+        if (dari !== tujuan) {
+          suhuRef.current = tujuan
+          setSuhu(tujuan)
+        }
+        frame = null
+        rafRef.current = null
+        setBergerak(false)
+        return
+      }
+
+      if (hasil.tahan) {
+        tahanRef.current = now + (reduksiRef.current ? 260 : 600)
+      }
+
+      const perubahan = resolvePhase(b, dari, hasil.berikut)
+      suhuRef.current = hasil.berikut
+      setSuhu(hasil.berikut)
+
+      if (perubahan.proses) cbRef.current(perubahan, dari, hasil.berikut)
+
+      frame = requestAnimationFrame(langkah)
+      rafRef.current = frame
+    }
+
+    langkahRef.current = langkah
+
+    return () => {
+      langkahRef.current = () => undefined
+      if (frame !== null) cancelAnimationFrame(frame)
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
       rafRef.current = null
-      setBergerak(false)
-      return
     }
-
-    const arah = tujuan > dari ? 1 : -1
-    const kecepatan = reduksiRef.current ? 300 : 42
-    let berikut = dari + arah * kecepatan * dt
-
-    if ((arah > 0 && berikut > tujuan) || (arah < 0 && berikut < tujuan)) {
-      berikut = tujuan
-    }
-
-    const lewat = ambangSuhu(b).filter((a) =>
-      arah > 0 ? a > dari && a <= berikut : a < dari && a >= berikut,
-    )
-
-    if (lewat.length > 0) {
-      berikut = arah > 0 ? lewat[0] : lewat[lewat.length - 1]
-      tahanRef.current = now + (reduksiRef.current ? 260 : 600)
-    }
-
-    const perubahan = resolvePhase(b, dari, berikut)
-    suhuRef.current = berikut
-    setSuhu(berikut)
-
-    if (perubahan.proses) cbRef.current(perubahan, dari, berikut)
-
-    rafRef.current = requestAnimationFrame(langkah)
   }, [])
 
   const mulaiLoop = useCallback(() => {
     if (rafRef.current !== null) return
     setBergerak(true)
     terakhirRef.current = performance.now()
-    rafRef.current = requestAnimationFrame(langkah)
-  }, [langkah])
+    rafRef.current = requestAnimationFrame((now) => langkahRef.current(now))
+  }, [])
 
   const aturTarget = useCallback(
     (nilai: number) => {
@@ -110,30 +125,31 @@ export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
 
   const ulang = useCallback(() => {
     const b = bendaRef.current
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    rafRef.current = null
     targetRef.current = b.suhuAwal
-    setTarget(b.suhuAwal)
     suhuRef.current = b.suhuAwal
+    tahanRef.current = 0
+    setTarget(b.suhuAwal)
     setSuhu(b.suhuAwal)
-    tahanRef.current = 0
     setBergerak(false)
   }, [])
 
-  // Switching benda resets everything to that benda's realistic start.
-  useEffect(() => {
-    suhuRef.current = benda.suhuAwal
-    targetRef.current = benda.suhuAwal
+  /**
+   * Call from the event that selects another benda. It snaps every value to
+   * the new benda's realistic start before the next render reads `suhu`.
+   */
+  const pindah = useCallback((baru: Benda) => {
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    rafRef.current = null
+    targetRef.current = baru.suhuAwal
+    suhuRef.current = baru.suhuAwal
     tahanRef.current = 0
-    setSuhu(benda.suhuAwal)
-    setTarget(benda.suhuAwal)
+    terakhirRef.current = performance.now()
+    setTarget(baru.suhuAwal)
+    setSuhu(baru.suhuAwal)
     setBergerak(false)
-  }, [benda.id, benda.suhuAwal])
-
-  useEffect(() => {
-    return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-      rafRef.current = null
-    }
   }, [])
 
-  return { suhu, target, bergerak, aturTarget, tambah, ulang }
+  return { suhu, target, bergerak, aturTarget, tambah, ulang, pindah }
 }

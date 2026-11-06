@@ -31,6 +31,7 @@ export const BENDA_LIST: Benda[] = [
       { mulai: 100, wujud: 'gas' },
     ],
     uap: { tipis: 30, didih: 100 },
+    perluVerifikasi: true,
     prediksi: {
       pertanyaan: 'Menurutmu, es batu yang dipanaskan akan jadi apa?',
       benar: 'cair',
@@ -50,6 +51,7 @@ export const BENDA_LIST: Benda[] = [
       { mulai: 100, wujud: 'gas' },
     ],
     uap: { tipis: 30, didih: 100 },
+    perluVerifikasi: true,
     prediksi: {
       pertanyaan: 'Menurutmu, air yang dipanaskan terus akan jadi apa?',
       benar: 'gas',
@@ -67,6 +69,7 @@ export const BENDA_LIST: Benda[] = [
       { mulai: -20, wujud: 'padat' },
       { mulai: 55, wujud: 'cair' },
     ],
+    perluVerifikasi: true,
     prediksi: {
       pertanyaan: 'Menurutmu, lilin yang dipanaskan akan jadi apa?',
       benar: 'cair',
@@ -84,6 +87,7 @@ export const BENDA_LIST: Benda[] = [
       { mulai: -20, wujud: 'padat' },
       { mulai: 33, wujud: 'cair' },
     ],
+    perluVerifikasi: true,
     prediksi: {
       pertanyaan: 'Menurutmu, cokelat yang dipanaskan akan jadi apa?',
       benar: 'cair',
@@ -103,6 +107,7 @@ export const BENDA_LIST: Benda[] = [
       { mulai: 100, wujud: 'gas' },
     ],
     uap: { tipis: 30, didih: 100 },
+    perluVerifikasi: true,
     prediksi: {
       pertanyaan: 'Menurutmu, air di panci yang dipanaskan terus akan jadi apa?',
       benar: 'gas',
