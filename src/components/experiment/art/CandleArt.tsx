@@ -6,8 +6,9 @@ interface Props {
   uap: number
 }
 
-export function CandleArt({ wujud }: Props) {
+export function CandleArt({ wujud, uap }: Props) {
   const cair = wujud !== 'padat'
+  const isPanas = uap > 0 // aktif saat suhu >= titik leleh (55°C)
 
   return (
     <svg viewBox="0 0 240 220" className={s.svg} aria-hidden="true">
@@ -34,6 +35,28 @@ export function CandleArt({ wujud }: Props) {
         <path d="M120 135l7-6" stroke="#6B5340" strokeWidth="3.5" strokeLinecap="round" />
         <path className={s.drip} d="M138 152c0 0 5 6 5 9a5 5 0 0 1-10 0c0-3 5-9 5-9Z" fill="#FFE7B8" />
       </g>
+
+      {/* Cute Flame on Candle (Hanya hiasan wujud saat panas / mencair) */}
+      {isPanas && (
+        <g transform="translate(120, 55)">
+          {/* Outer orange glow / flame */}
+          <path
+            d="M0 -18 C12 -6 14 6 0 12 C-14 6 -12 -6 0 -18 Z"
+            fill="#FFA726"
+            stroke="#FB8C00"
+            strokeWidth="2"
+          />
+          {/* Inner yellow core */}
+          <path
+            d="M0 -10 C6 -3 7 3 0 7 C-7 3 -6 -3 0 -10 Z"
+            fill="#FFEE58"
+          />
+          {/* Cute face on flame */}
+          <circle cx="-3" cy="-2" r="1.2" fill="#3E2723" />
+          <circle cx="3" cy="-2" r="1.2" fill="#3E2723" />
+          <path d="M-1 2 Q0 4 1 2" stroke="#3E2723" strokeWidth="1" strokeLinecap="round" fill="none" />
+        </g>
+      )}
     </svg>
   )
 }
