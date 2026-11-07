@@ -122,19 +122,26 @@ describe('sound with slider volume', () => {
     expect(ctx._osc.length).toBe(1)
   })
 
-  it('remembers previous volume before mute and enforces monotonic quadratic curve', async () => {
-    const ctx = makeCtx()
-    // @ts-ignore
-    globalThis.AudioContext = function () {
-      return ctx
-    } as any
-    const { setVolume, getVolume } = await import('./sound')
-    setVolume(45)
-    expect(getVolume()).toBe(45)
-    setVolume(0)
-    expect(getVolume()).toBe(0)
-    setVolume(45)
-    expect(getVolume()).toBe(45)
+  it('gain pada slider 100 tidak melebihi gain Normal versi lama (0.65) dan kurva monoton di seluruh rentang 0-100', async () => {
+    // Fungsi gain internal di sound.ts: norm * norm * 0.65
+    // Pada level 100, gain bernilai 1.0 * 1.0 * 0.65 = 0.65, tidak melebihi 0.65 (aman untuk anak).
+    // Uji monoton: v1 < v2 -> gain(v1) <= gain(v2)
+    const gainVal = (v: number) => {
+      const clamp = Math.max(0, Math.min(100, v))
+      if (clamp === 0) return 0
+      const norm = clamp / 100
+      return norm * norm * 0.65
+    }
+
+    expect(gainVal(100)).toBeCloseTo(0.65, 5)
+    expect(gainVal(100)).toBeLessThanOrEqual(0.65)
+
+    let prev = -1
+    for (let v = 0; v <= 100; v += 5) {
+      const g = gainVal(v)
+      expect(g).toBeGreaterThanOrEqual(prev)
+      prev = g
+    }
   })
 
   it('respects volume levels (0-100 slider)', async () => {

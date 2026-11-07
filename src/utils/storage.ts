@@ -76,7 +76,7 @@ function migrasiCatatanLama(mentahCatatan: any[]): CatatanEntry[] {
     let arah: Arah = c.arah || 'panas'
 
     const teksLama = typeof c.teks === 'string' ? c.teks : ''
-    const bersihTeks = teksLama.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u00F0\u0178\u00E2\u20ac\u00C3\u00C2]/gu, '').trim()
+    const bersihTeks = teksLama.replace(/\\u[0-9a-fA-F]{4}/gu, '').trim()
 
     if (bersihTeks.includes('es') || bersihTeks.includes('Es')) bendaId = 'es'
     else if (bersihTeks.includes('air') || bersihTeks.includes('Air')) bendaId = 'air'

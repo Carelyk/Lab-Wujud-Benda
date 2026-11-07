@@ -35,17 +35,52 @@ test('Playwright C1-C3: Slider Volume, Popover 360px, Migrasi v1, dan Validasi T
     await tombolPopover.click()
     await page1.waitForTimeout(300)
     await page1.screenshot({ path: 'preview/shots/topbar-popover-terbuka-360.png' })
+    await page1.screenshot({ path: 'preview/shots/slider-closeup-360.png' })
   }
 
   // Buka #/pengaturan dan #/suara serta ambil screenshot
-  await page1.setViewportSize({ width: 1440, height: 900 })
-  await page1.goto('http://localhost:5173/#/pengaturan')
-  await page1.waitForTimeout(300)
-  await page1.screenshot({ path: 'preview/shots/pengaturan-1440.png', fullPage: true })
-
+  await page1.setViewportSize({ width: 360, height: 780 })
   await page1.goto('http://localhost:5173/#/suara')
   await page1.waitForTimeout(300)
-  await page1.screenshot({ path: 'preview/shots/suara-1440.png', fullPage: true })
+  await page1.screenshot({ path: 'preview/shots/suara-360.png', fullPage: true })
+
+  await page1.goto('http://localhost:5173/#/pengaturan')
+  await page1.waitForTimeout(300)
+  await page1.screenshot({ path: 'preview/shots/pengaturan-360.png', fullPage: true })
+
+  // Bukti ukur scrollWidth <= clientWidth & ukuran touch target >= 48px pada rute utama
+  const rutesUkur = ['#/', '#/eksperimen', '#/sekitar', '#/pengaturan', '#/suara']
+  for (const rute of rutesUkur) {
+    await page1.goto(`http://localhost:5173/${rute}`)
+    await page1.waitForTimeout(200)
+    const metrics = await page1.evaluate(() => {
+      return {
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }
+    })
+    expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth)
+  }
+
+  // Cek boundingBox tombol utama & popover >= 48px
+  const tombolUtama = page1.locator('header button').first()
+  if (await tombolUtama.count() > 0) {
+    const box = await tombolUtama.boundingBox()
+    if (box) {
+      expect(box.width).toBeGreaterThanOrEqual(48)
+      expect(box.height).toBeGreaterThanOrEqual(48)
+    }
+  }
+
+  if (await tombolPopover.count() > 0) {
+    await tombolPopover.click()
+    await page1.waitForTimeout(200)
+    const boxPop = await tombolPopover.boundingBox()
+    if (boxPop) {
+      expect(boxPop.width).toBeGreaterThanOrEqual(48)
+      expect(boxPop.height).toBeGreaterThanOrEqual(48)
+    }
+  }
 
   await context1.close()
 
