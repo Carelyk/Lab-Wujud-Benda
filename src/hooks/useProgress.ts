@@ -57,8 +57,8 @@ export function useProgress() {
   }, [])
 
   const simpanPrediksi = useCallback(
-    async (bendaId: BendaId, jawaban: Wujud, tepat: boolean) => {
-      const p = await penyimpanan.simpanPrediksi(bendaId, jawaban, tepat)
+    async (bendaId: BendaId, jawaban: Wujud) => {
+      const p = await penyimpanan.simpanPrediksi(bendaId, jawaban)
       setProgress(p)
       return p
     },
@@ -66,25 +66,25 @@ export function useProgress() {
   )
 
   const simpanSortir = useCallback(async (hasil: HasilSortir) => {
-    const p = await penyimpanan.simpanSortir(hasil)
+    const p = await penyimpanan.simpanSortir(hasil.benar, hasil.total, hasil.salah, hasil.bintang)
     setProgress(p)
     return p
   }, [])
 
   const simpanKuis = useCallback(async (hasil: HasilKuis) => {
-    const p = await penyimpanan.simpanKuis(hasil)
+    const p = await penyimpanan.simpanKuis(hasil.benar > 0 && hasil.benar === hasil.total, hasil.total, hasil.bintang)
     setProgress(p)
     return p
   }, [])
 
   const tandaiPartikel = useCallback(async (wujud: Wujud) => {
-    const p = await penyimpanan.tandaiPartikel(wujud)
+    const p = await penyimpanan.tandaiPartikelDilihat(wujud)
     setProgress(p)
     return p
   }, [])
 
   const selesaikanSiklus = useCallback(async () => {
-    const p = await penyimpanan.selesaikanSiklus()
+    const p = await penyimpanan.tandaiSiklusSelesai()
     setProgress(p)
     return p
   }, [])
@@ -97,7 +97,7 @@ export function useProgress() {
 
   const ubahSuara = useCallback(async (mati: boolean) => {
     setVolumeSuara(mati ? 'mati' : 'normal')
-    const p = await penyimpanan.setVolume(mati ? 'mati' : 'normal')
+    const p = await penyimpanan.setSuaraMati(mati)
     setProgress(p)
     return p
   }, [])
@@ -110,7 +110,7 @@ export function useProgress() {
   }, [])
 
   const reset = useCallback(async () => {
-    const p = await penyimpanan.reset()
+    const p = await penyimpanan.resetSemua()
     setBisu(false)
     setVolumeSuara('normal')
     setProgress(p)

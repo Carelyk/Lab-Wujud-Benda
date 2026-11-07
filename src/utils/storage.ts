@@ -90,7 +90,7 @@ function migrasiCatatanLama(mentahCatatan: any[]): CatatanEntry[] {
 
     // Pemetaan teks lama yang mungkin mengandung mojibake / rusak
     const teksLama = typeof c.teks === 'string' ? c.teks : ''
-    const bersihTeks = teksLama.replace(/[ðŸâ€ÃÂ⚪🍫🔍✨⚠️💧🔄☁️🔇🔉🔊⚡🌀]/g, '').trim()
+    const bersihTeks = teksLama.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u00F0\u0178\u00E2\u20ac\u00C3\u00C2]/gu, '').trim()
 
     if (bersihTeks.includes('es') || bersihTeks.includes('Es')) bendaId = 'es'
     else if (bersihTeks.includes('air') || bersihTeks.includes('Air')) bendaId = 'air'
@@ -263,6 +263,7 @@ export const penyimpanan = {
     const p = baca()
     if (p.partikel.dilihat.includes(wujud)) return p
     p.partikel.dilihat = [...p.partikel.dilihat, wujud]
+    return tulis(p)
   },
 
   async tandaiSiklusSelesai(): Promise<Progress> {

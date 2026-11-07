@@ -36,7 +36,7 @@ export function UntungRugiPopup({ contoh, onTutup }: Props) {
         <div className={s.kepala}>
           <h2 className={s.judul}>{contoh.judul}</h2>
           <span className={`${s.kategori} ${s[contoh.kategori]}`}>
-            {contoh.kategori === 'untung' ? '✨ Menguntungkan' : '⚠️ Merugikan'}
+            {contoh.kategori === 'untung' ? 'Menguntungkan' : 'Merugikan'}
           </span>
         </div>
 
@@ -60,7 +60,6 @@ export function UntungRugiPopup({ contoh, onTutup }: Props) {
           <p className={s.prosesLabel}>Proses: <strong>{contoh.proses}</strong></p>
           <p className={s.deskripsi}>{contoh.deskripsi}</p>
           <div className={s.pesanTetes}>
-            <span role="img" aria-label="Tetes">💧</span>
             <p>{contoh.pesanTetes}</p>
           </div>
         </div>
@@ -73,7 +72,7 @@ export function UntungRugiPopup({ contoh, onTutup }: Props) {
               onClick={putar}
               disabled={berjalan}
             >
-              🔄 Putar lagi
+              Putar lagi
             </button>
           )}
           <button type="button" className={s.tombolTutup} onClick={onTutup}>

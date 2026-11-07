@@ -9,6 +9,7 @@ import {
   IconEs,
   IconFlask,
   IconLencana,
+  IconMenguap,
   IconPanas,
   IconSiklus,
   IconStar,
@@ -198,7 +199,7 @@ export function HomeScreen({
 
           <button type="button" className={`${s.modeKartu} ${s.modeHijau}`} onClick={onUntungRugi}>
             <span className={s.modeIkon} aria-hidden="true">
-              <span style={{ fontSize: '1.4rem' }}>🌍</span>
+              <IconMenguap size={26} />
             </span>
             <span className={s.modeTeks}>
               <span className={s.modeNama}>Wujud di Sekitar Kita</span>

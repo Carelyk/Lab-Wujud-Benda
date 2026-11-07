@@ -36,7 +36,7 @@ export function SiklusAirScreen({ progress, onBack, onSelesai, tandaiPartikel }:
         <button type="button" className={s.backBtn} onClick={onBack}>
           ← Beranda
         </button>
-        <h1>☁️ Siklus Air</h1>
+        <h1>Siklus Air</h1>
         <div className={s.badgeCounter}>
           {progress.siklus.selesai ? 'Selesai' : 'Belum selesai'}
         </div>

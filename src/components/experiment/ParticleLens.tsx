@@ -13,7 +13,7 @@ export function ParticleLens({ wujud, suhu }: Props) {
   return (
     <div className={s.lensContainer} aria-label="Kaca Pembesar Partikel">
       <div className={s.lensHeader}>
-        <span className={s.badge}>🔍 Mata Ilmuwan</span>
+        <span className={s.badge}>Mata Ilmuwan</span>
         <span className={s.info}>
           {wujud === 'padat' && 'Partikel rapat, teratur, dan bergetar di tempat.'}
           {wujud === 'cair' && 'Partikel lebih renggang dan saling bergeseran.'}

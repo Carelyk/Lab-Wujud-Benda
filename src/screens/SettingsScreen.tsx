@@ -68,7 +68,7 @@ export function SettingsScreen({ onBack }: Props) {
                   className={`${s.tombolOpsi} ${volume === v ? s.aktif : ''}`}
                   onClick={() => void handleSuara(v)}
                 >
-                  {v === 'mati' ? '🔇 Mati' : v === 'pelan' ? '🔉 Pelan' : '🔊 Normal'}
+                  {v === 'mati' ? 'Mati' : v === 'pelan' ? 'Pelan' : 'Normal'}
                 </button>
               ))}
             </div>
@@ -83,7 +83,7 @@ export function SettingsScreen({ onBack }: Props) {
               className={`${s.tombolOpsi} ${kurangiGerak ? s.aktif : ''}`}
               onClick={handleGerak}
             >
-              {kurangiGerak ? '⚡ Aktif (Tenang)' : '🌀 Mati (Normal)'}
+              {kurangiGerak ? 'Aktif (Tenang)' : 'Mati (Normal)'}
             </button>
           </div>
         </Panel>
@@ -94,7 +94,7 @@ export function SettingsScreen({ onBack }: Props) {
             nada="netral"
             onClick={() => handleBacakan('Halo! Selamat datang di Laboratorium Wujud Benda. Mari belajar wujud padat, cair, dan gas dengan gembira!')}
           >
-            🔊 Bacakan Sambutan Tetes
+            Bacakan Sambutan Tetes
           </BigButton>
         </Panel>
       </div>

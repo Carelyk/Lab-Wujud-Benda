@@ -12,9 +12,10 @@ import {
   IconAir,
   IconCokelat,
   IconEs,
+  IconKapurBarus,
   IconLilin,
   IconPanci,
-} from '../components/ui/Icons'
+} from '../components/ui/SvgIcons'
 import { Panel } from '../components/ui/Panel'
 import { LABEL_WUJUD, teksCatatan } from '../data/labels'
 import { BENDA, BENDA_LIST } from '../data/objects'
@@ -30,7 +31,7 @@ const IKON: Record<BendaId, ReactNode> = {
   air: <IconAir size={24} />,
   lilin: <IconLilin size={24} />,
   cokelat: <IconCokelat size={24} />,
-  'kapur-barus': <span style={{ fontSize: '1.2rem' }}>⚪</span>,
+  'kapur-barus': <IconKapurBarus size={24} />,
   panci: <IconPanci size={24} />,
 }
 

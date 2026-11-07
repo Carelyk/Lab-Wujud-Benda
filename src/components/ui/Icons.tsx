@@ -101,11 +101,10 @@ export const IconCokelat = (p: Props) => (
   </Svg>
 )
 
-export const IconPanci = (p: Props) => (
+export const IconMenguap = (p: Props) => (
   <Svg {...p}>
-    <path d="M4.5 10h15v4.8a5 5 0 0 1-5 5h-5a5 5 0 0 1-5-5z" />
-    <path d="M2 11h2.5M19.5 11H22" />
-    <path d="M9 7c0-1.1 1-1.3 1-2.4M13.5 7c0-1.1 1-1.3 1-2.4" />
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z" />
   </Svg>
 )
 

@@ -54,7 +54,7 @@ export function UntungRugiScreen({ onBack }: Props) {
             setFilter('untung')
           }}
         >
-          ✨ Menguntungkan
+          Menguntungkan
         </button>
         <button
           type="button"
@@ -64,7 +64,7 @@ export function UntungRugiScreen({ onBack }: Props) {
             setFilter('rugi')
           }}
         >
-          ⚠️ Merugikan
+          Merugikan
         </button>
       </div>
 
