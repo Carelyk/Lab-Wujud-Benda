@@ -58,7 +58,6 @@ Everything is data; components never hard-code content.
 {
   id: 'kaca',                    // also used as the artwork id
   nama: 'Kaca',
-  emoji: '🪟',
   keterangan: 'One short sentence for the tooltip.',
   suhuAwal: 25,                  // realistic starting temperature
   suhuMin: -20,

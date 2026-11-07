@@ -1,7 +1,7 @@
-import { BENDA } from '../../data/objects'
 import type { CatatanEntry } from '../../types'
 import { Panel } from '../ui/Panel'
 import { IconBuku, IconCentang } from '../ui/Icons'
+import { renderIconBenda } from '../ui/SvgIcons'
 import s from './NoteBook.module.css'
 
 interface Props {
@@ -31,8 +31,8 @@ export function NoteBook({ catatan, batas = 8 }: Props) {
         <ul className={s.daftar}>
           {tampil.map((e) => (
             <li key={e.id} className={s.baris}>
-              <span className={s.emoji} aria-hidden="true">
-                {BENDA[e.bendaId]?.emoji ?? '🔬'}
+              <span className={s.ikon} aria-hidden="true">
+                {renderIconBenda(e.bendaId, 20)}
               </span>
               <span className={s.teks}>{e.teks}</span>
               <span className={s.centang}>

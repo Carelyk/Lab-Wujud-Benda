@@ -30,10 +30,11 @@
   animation: masuk 260ms ease both;
 }
 
-.emoji {
+.ikon {
   flex: 0 0 auto;
-  font-size: 20px;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .teks {
