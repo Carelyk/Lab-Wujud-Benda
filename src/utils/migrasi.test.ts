@@ -1,13 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { penyimpanan, formatSubjekCatatan, progressAwal } from './storage'
+import { formatSubjekCatatan, progressAwal } from './storage'
+import type { BendaId, NamaProses, Arah } from '../types'
 
 describe('Migrasi Data v1 ke v2 & Validasi Ketat', () => {
   it('berhasil memigrasi catatan rusak/mengandung emoji ke teks bersih, lencana/kuis/sortir/partikel utuh', () => {
     const dataV1 = {
       ...progressAwal,
       catatan: [
-        { id: 'c1', bendaId: 'air', proses: 'mengembun', arah: 'dingin', teks: '\u00F0\u0178\u2019\u00A7 Air + Dingin = Mengembun', waktu: 1000 },
-        { id: 'c2', bendaId: 'es', proses: 'mencair', arah: 'panas', teks: 'Es + Panas = Mencair', waktu: 2000 },
+        { id: 'c1', bendaId: 'air' as BendaId, proses: 'mengembun' as NamaProses, arah: 'dingin' as Arah, teks: '\u00F0\u0178\u2019\u00A7 Air + Dingin = Mengembun', waktu: 1000 },
+        { id: 'c2', bendaId: 'es' as BendaId, proses: 'mencair' as NamaProses, arah: 'panas' as Arah, teks: 'Es + Panas = Mencair', waktu: 2000 },
       ],
       lencana: ['beku', 'uap'],
       kuis: { bintang: 3, benar: 5, total: 5, main: 1 },
@@ -15,25 +16,21 @@ describe('Migrasi Data v1 ke v2 & Validasi Ketat', () => {
       partikel: { dilihat: ['padat', 'cair'] },
     }
 
-    const catatanMigrasi = (storageInternalMigrasi: any) => {
-      // Test storage migrasi function logic directly through helper or simulate baca
-      return dataV1.catatan.map((c, idx) => {
-        let bendaId = c.bendaId
-        let proses = c.proses
-        let arah = c.arah
-        const teksBaru = formatSubjekCatatan(bendaId, proses, arah)
-        return {
-          id: c.id || `migrasi-${bendaId}-${proses}-${idx}`,
-          bendaId,
-          proses,
-          arah,
-          teks: teksBaru,
-          waktu: c.waktu,
-        }
-      })
-    }
+    const hasilCatatan = dataV1.catatan.map((c, idx) => {
+      const bendaId = c.bendaId
+      const proses = c.proses
+      const arah = c.arah
+      const teksBaru = formatSubjekCatatan(bendaId, proses, arah)
+      return {
+        id: c.id || `migrasi-${bendaId}-${proses}-${idx}`,
+        bendaId,
+        proses,
+        arah,
+        teks: teksBaru,
+        waktu: c.waktu,
+      }
+    })
 
-    const hasilCatatan = catatanMigrasi(dataV1.catatan)
     expect(hasilCatatan[0].teks).toBe('Uap air + Dingin = Mengembun')
     expect(dataV1.lencana).toEqual(['beku', 'uap'])
     expect(dataV1.kuis.benar).toBe(5)
@@ -48,7 +45,7 @@ describe('Migrasi Data v1 ke v2 & Validasi Ketat', () => {
   })
 
   it('catatan tak dikenal tidak membuat crash dan diformat aman', () => {
-    const subjek = formatSubjekCatatan('es' as any, 'mencair', 'panas')
+    const subjek = formatSubjekCatatan('es', 'mencair', 'panas')
     expect(subjek).toBe('Es + Panas = Mencair')
   })
 
