@@ -87,7 +87,7 @@ function makeCtx(): Ctx {
   return ctx
 }
 
-describe('sound', () => {
+describe('sound with slider volume', () => {
   beforeEach(() => {
     vi.resetModules()
     // @ts-ignore
@@ -105,34 +105,19 @@ describe('sound', () => {
     hentikanSemuaLoop()
   })
 
-  it('respects mute', async () => {
-    const ctx = makeCtx()
-    // @ts-ignore
-    globalThis.AudioContext = function () {
-      return ctx
-    } as any
-    const { mainkan, setBisu } = await import('./sound')
-    setBisu(true)
-    await mainkan('pop')
-    expect(ctx._osc.length).toBe(0)
-    setBisu(false)
-    await mainkan('pop')
-    expect(ctx._osc.length).toBe(1)
-  })
-
-  it('respects volume levels', async () => {
+  it('respects mute and volume levels (0-100 slider)', async () => {
     const ctx = makeCtx()
     // @ts-ignore
     globalThis.AudioContext = function () {
       return ctx
     } as any
     const { mainkan, setVolume, getVolume } = await import('./sound')
-    setVolume('mati')
-    expect(getVolume()).toBe('mati')
+    setVolume(0)
+    expect(getVolume()).toBe(0)
     await mainkan('pop')
     expect(ctx._osc.length).toBe(0)
-    setVolume('normal')
-    expect(getVolume()).toBe('normal')
+    setVolume(60)
+    expect(getVolume()).toBe(60)
     await mainkan('pop')
     expect(ctx._osc.length).toBe(1)
   })
@@ -145,7 +130,6 @@ describe('sound', () => {
     } as any
     const { mainkan } = await import('./sound')
     for (let i = 0; i < 7; i++) void mainkan('pop')
-    // allow microtasks
     await new Promise((r) => setTimeout(r, 0))
     expect(ctx._osc.length).toBeLessThanOrEqual(6)
     expect(ctx._osc.length).toBe(6)

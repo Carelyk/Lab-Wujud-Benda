@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BigButton } from '../components/ui/BigButton'
 import { Panel } from '../components/ui/Panel'
-import { mainkan } from '../utils/sound'
+import { mainkan, setVolume as setVolumeSuara } from '../utils/sound'
 import { penyimpanan } from '../utils/storage'
 import s from './SettingsScreen.module.css'
 
@@ -10,20 +10,20 @@ interface Props {
 }
 
 export function SettingsScreen({ onBack }: Props) {
-  const [volume, setVolume] = useState<'mati' | 'pelan' | 'normal'>('normal')
+  const [volume, setVolume] = useState<number>(60)
   const [kurangiGerak, setKurangiGerak] = useState<boolean>(false)
 
   useEffect(() => {
     void penyimpanan.ambil().then((p) => {
-      setVolume(p.volume ?? 'normal')
+      setVolume(p.volume ?? 60)
       setKurangiGerak(p.suaraMati ?? false)
     })
   }, [])
 
-  const handleSuara = async (val: 'mati' | 'pelan' | 'normal') => {
+  const handleVolumeChange = async (val: number) => {
     setVolume(val)
+    setVolumeSuara(val)
     await penyimpanan.setVolume(val)
-    void mainkan('klik')
   }
 
   const handleGerak = () => {
@@ -59,18 +59,43 @@ export function SettingsScreen({ onBack }: Props) {
       <div className={s.grid}>
         <Panel judul="Pengaturan Suara" stiker="Audio">
           <div className={s.barisOpsi}>
-            <span>Pilih Volume Suara Efek:</span>
-            <div className={s.grupTombol}>
-              {(['mati', 'pelan', 'normal'] as const).map((v) => (
+            <span>Geser untuk Atur Volume ({volume}%):</span>
+            <div className={s.sliderGrup}>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={volume}
+                onChange={(e) => void handleVolumeChange(Number(e.target.value))}
+                onMouseUp={() => void mainkan('klik')}
+                onTouchEnd={() => void mainkan('klik')}
+                aria-label="Volume"
+                aria-valuetext={`Volume ${volume} persen`}
+                className={s.rangeBesar}
+              />
+              <div className={s.tombolCepatGrup}>
                 <button
-                  key={v}
                   type="button"
-                  className={`${s.tombolOpsi} ${volume === v ? s.aktif : ''}`}
-                  onClick={() => void handleSuara(v)}
+                  className={`${s.tombolCepat} ${volume === 0 ? s.aktif : ''}`}
+                  onClick={() => void handleVolumeChange(0)}
                 >
-                  {v === 'mati' ? 'Mati' : v === 'pelan' ? 'Pelan' : 'Normal'}
+                  Mati (0%)
                 </button>
-              ))}
+                <button
+                  type="button"
+                  className={`${s.tombolCepat} ${volume === 30 ? s.aktif : ''}`}
+                  onClick={() => void handleVolumeChange(30)}
+                >
+                  30%
+                </button>
+                <button
+                  type="button"
+                  className={`${s.tombolCepat} ${volume === 60 ? s.aktif : ''}`}
+                  onClick={() => void handleVolumeChange(60)}
+                >
+                  60%
+                </button>
+              </div>
             </div>
           </div>
         </Panel>
@@ -83,7 +108,7 @@ export function SettingsScreen({ onBack }: Props) {
               className={`${s.tombolOpsi} ${kurangiGerak ? s.aktif : ''}`}
               onClick={handleGerak}
             >
-              {kurangiGerak ? 'Aktif (Tenang)' : 'Mati (Normal)'}
+              {kurangiGerak ? 'Aktif (Tenang)' : 'Mati (Biasa)'}
             </button>
           </div>
         </Panel>

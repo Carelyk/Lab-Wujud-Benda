@@ -1,5 +1,6 @@
 import type { TingkatVolume } from '../../types'
-import { IconKembali, IconSuaraMati, IconSuaraNyala, IconTetes } from '../ui/Icons'
+import { IconKembali, IconTetes } from '../ui/Icons'
+import { VolumeControl } from '../ui/VolumeControl'
 import s from './TopBar.module.css'
 
 interface Props {
@@ -8,12 +9,6 @@ interface Props {
   onVolume: (level: TingkatVolume) => void
   onKembali?: () => void
 }
-
-const LEVELS: { level: TingkatVolume; label: string }[] = [
-  { level: 'mati', label: 'Mati' },
-  { level: 'pelan', label: 'Pelan' },
-  { level: 'normal', label: 'Normal' },
-]
 
 export function TopBar({ judul, volume, onVolume, onKembali }: Props) {
   return (
@@ -42,20 +37,8 @@ export function TopBar({ judul, volume, onVolume, onKembali }: Props) {
         </span>
       </div>
 
-      <div className={s.volumeGrup} role="group" aria-label="Volume">
-        {LEVELS.map(({ level, label }) => (
-          <button
-            key={level}
-            type="button"
-            className={volume === level ? `${s.tombolVolume} ${s.aktif}` : s.tombolVolume}
-            onClick={() => onVolume(level)}
-            aria-pressed={volume === level}
-            title={label}
-          >
-            {level === 'mati' ? <IconSuaraMati size={18} /> : <IconSuaraNyala size={18} />}
-            <span>{label}</span>
-          </button>
-        ))}
+      <div className={s.volumeGrup}>
+        <VolumeControl volume={volume} onVolume={onVolume} />
       </div>
     </header>
   )

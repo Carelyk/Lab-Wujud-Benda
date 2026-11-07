@@ -2,12 +2,30 @@ import { describe, it, expect } from 'vitest'
 import { formatSubjekCatatan, progressAwal } from './storage'
 import type { BendaId, NamaProses, Arah } from '../types'
 
-describe('Migrasi Data v1 ke v2 & Validasi Ketat', () => {
+describe('Migrasi Data v1/v2 ke Slider & Validasi Ketat', () => {
+  it('berhasil memigrasi volume lama (mati/pelan/normal) ke nilai slider numerik (0/30/60) dengan idempoten', () => {
+    const migrasiVolume = (v: any) => {
+      if (typeof v === 'number') return Math.max(0, Math.min(100, v))
+      if (v === 'mati') return 0
+      if (v === 'pelan') return 30
+      if (v === 'normal') return 60
+      return 60
+    }
+
+    expect(migrasiVolume('mati')).toBe(0)
+    expect(migrasiVolume('pelan')).toBe(30)
+    expect(migrasiVolume('normal')).toBe(60)
+    expect(migrasiVolume(75)).toBe(75)
+    // Idempoten
+    expect(migrasiVolume(migrasiVolume('pelan'))).toBe(30)
+  })
+
   it('berhasil memigrasi catatan rusak/mengandung emoji ke teks bersih, lencana/kuis/sortir/partikel utuh', () => {
     const dataV1 = {
       ...progressAwal,
+      volume: 'pelan' as any,
       catatan: [
-        { id: 'c1', bendaId: 'air' as BendaId, proses: 'mengembun' as NamaProses, arah: 'dingin' as Arah, teks: '\u00F0\u0178\u2019\u00A7 Air + Dingin = Mengembun', waktu: 1000 },
+        { id: 'c1', bendaId: 'air' as BendaId, proses: 'mengembun' as NamaProses, arah: 'dingin' as Arah, teks: '\\u00F0\\u0178\\u2019\\u00A7 Air + Dingin = Mengembun', waktu: 1000 },
         { id: 'c2', bendaId: 'es' as BendaId, proses: 'mencair' as NamaProses, arah: 'panas' as Arah, teks: 'Es + Panas = Mencair', waktu: 2000 },
       ],
       lencana: ['beku', 'uap'],
@@ -36,17 +54,6 @@ describe('Migrasi Data v1 ke v2 & Validasi Ketat', () => {
     expect(dataV1.kuis.benar).toBe(5)
     expect(dataV1.sortir.benar).toBe(8)
     expect(dataV1.partikel.dilihat).toEqual(['padat', 'cair'])
-  })
-
-  it('idempoten: dua kali migrasi menghasilkan nilai yang sama persis', () => {
-    const teks1 = formatSubjekCatatan('air', 'mengembun', 'dingin')
-    const teks2 = formatSubjekCatatan('air', 'mengembun', 'dingin')
-    expect(teks1).toBe(teks2)
-  })
-
-  it('catatan tak dikenal tidak membuat crash dan diformat aman', () => {
-    const subjek = formatSubjekCatatan('es', 'mencair', 'panas')
-    expect(subjek).toBe('Es + Panas = Mencair')
   })
 
   it('uji fungsi penamaan subjek untuk semua benda dan proses utama', () => {

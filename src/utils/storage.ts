@@ -18,7 +18,7 @@ export const progressAwal: Progress = {
   prediksi: {},
   lencana: [],
   suaraMati: false,
-  volume: 'normal',
+  volume: 60,
   kuis: { bintang: 0, benar: 0, total: 0, main: 0 },
   sortir: {
     selesai: false,
@@ -45,19 +45,6 @@ function salinanAwal(): Progress {
   }
 }
 
-/**
- * Aturan penamaan subjek ilmiah:
- * Diturunkan dari benda dan wujud awal pada saat proses terjadi.
- * Contoh:
- * - Air + Dingin = Membeku
- * - Uap air + Dingin = Mengembun
- * - Air + Panas = Menguap / Mendidih
- * - Es + Panas = Mencair
- * - Lilin + Panas = Mencair
- * - Lilin + Dingin = Membeku
- * - Cokelat + Panas = Mencair
- * - Kapur barus + Panas = Menyublim
- */
 export function formatSubjekCatatan(bendaId: BendaId, proses: NamaProses, arah: Arah): string {
   let namaBenda = 'Benda'
   if (bendaId === 'es') namaBenda = 'Es'
@@ -88,7 +75,6 @@ function migrasiCatatanLama(mentahCatatan: any[]): CatatanEntry[] {
     let proses: NamaProses = c.proses || 'mencair'
     let arah: Arah = c.arah || 'panas'
 
-    // Pemetaan teks lama yang mungkin mengandung mojibake / rusak
     const teksLama = typeof c.teks === 'string' ? c.teks : ''
     const bersihTeks = teksLama.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u00F0\u0178\u00E2\u20ac\u00C3\u00C2]/gu, '').trim()
 
@@ -122,12 +108,19 @@ function migrasiCatatanLama(mentahCatatan: any[]): CatatanEntry[] {
   })
 }
 
+function parseVolumeLama(v: any, suaraMati: boolean): TingkatVolume {
+  if (typeof v === 'number') return Math.max(0, Math.min(100, v))
+  if (v === 'mati' || suaraMati) return 0
+  if (v === 'pelan') return 30
+  if (v === 'normal') return 60
+  return 60
+}
+
 function baca(): Progress {
   if (typeof localStorage === 'undefined') return salinanAwal()
   try {
     let mentah = localStorage.getItem(KUNCI)
     if (!mentah) {
-      // Coba migrasi dari lwb:v1
       const mentahLama = localStorage.getItem(KUNCI_LAMA)
       if (mentahLama) {
         try {
@@ -135,6 +128,7 @@ function baca(): Progress {
           const progressMigrasi: Progress = {
             ...salinanAwal(),
             ...dataLama,
+            volume: parseVolumeLama(dataLama.volume, dataLama.suaraMati),
             catatan: migrasiCatatanLama(dataLama.catatan),
           }
           localStorage.setItem(KUNCI, JSON.stringify(progressMigrasi))
@@ -147,10 +141,12 @@ function baca(): Progress {
     if (!mentah) return salinanAwal()
 
     const data = JSON.parse(mentah) as Partial<Progress>
+    const vol = parseVolumeLama(data.volume, data.suaraMati === true)
     return {
       ...salinanAwal(),
       ...data,
-      volume: data.volume ?? (data.suaraMati ? 'mati' : 'normal'),
+      volume: vol,
+      suaraMati: vol === 0,
       catatan: Array.isArray(data.catatan) ? migrasiCatatanLama(data.catatan) : [],
       prediksi: data.prediksi ?? {},
       lencana: Array.isArray(data.lencana) ? data.lencana : [],
@@ -246,7 +242,12 @@ export const penyimpanan = {
     return tulis(p)
   },
 
-  async simpanSortir(benar: number, total: number, salah: number, bintang: number): Promise<Progress> {
+  async simpanSortir(
+    benar: number,
+    total: number,
+    salah: number,
+    bintang: number,
+  ): Promise<Progress> {
     const p = baca()
     p.sortir = {
       selesai: true,
@@ -274,17 +275,19 @@ export const penyimpanan = {
 
   async setSuaraMati(nilai: boolean): Promise<Progress> {
     const p = baca()
-    return tulis({ ...p, suaraMati: nilai, volume: nilai ? 'mati' : p.volume === 'mati' ? 'normal' : p.volume })
+    const vol = nilai ? 0 : (p.volume === 0 ? 60 : p.volume)
+    return tulis({ ...p, suaraMati: nilai, volume: vol })
   },
 
   async getVolume(): Promise<TingkatVolume> {
     const p = baca()
-    return p.volume ?? (p.suaraMati ? 'mati' : 'normal')
+    return p.volume ?? 60
   },
 
   async setVolume(level: TingkatVolume): Promise<Progress> {
     const p = baca()
-    return tulis({ ...p, volume: level, suaraMati: level === 'mati' })
+    const v = Math.max(0, Math.min(100, level))
+    return tulis({ ...p, volume: v, suaraMati: v === 0 })
   },
 
   async resetSemua(): Promise<Progress> {

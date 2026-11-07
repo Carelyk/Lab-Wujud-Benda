@@ -56,6 +56,7 @@ export default function App() {
   const {
     progress,
     lencanaBaru,
+    bersihkanLencanaBaru,
     catat,
     simpanPrediksi,
     simpanSortir,
@@ -63,7 +64,6 @@ export default function App() {
     tandaiPartikel,
     selesaikanSiklus,
     ubahVolume,
-    tutupLencanaBaru,
   } = useProgress()
 
   useEffect(() => {
@@ -72,7 +72,6 @@ export default function App() {
     return () => window.removeEventListener('hashchange', saatHashBerubah)
   }, [])
 
-  // Mobile browsers only allow audio after a real gesture.
   useEffect(() => {
     const buka = () => {
       void siapkanSuara()
@@ -93,8 +92,7 @@ export default function App() {
 
   const alihVolume = useCallback((level: TingkatVolume) => {
     void ubahVolume(level)
-    if (level !== 'mati') void mainkan('klik')
-
+    if (level > 0) void mainkan('klik')
   }, [ubahVolume])
 
   let isi
@@ -129,7 +127,7 @@ export default function App() {
       isi = <UntungRugiScreen onBack={() => pergi('beranda')} />
       break
     case 'suara':
-      isi = <SoundTestScreen volume={progress.volume ?? (progress.suaraMati ? 'mati' : 'normal')} onVolume={alihVolume} />
+      isi = <SoundTestScreen volume={progress.volume ?? 60} onVolume={alihVolume} />
       break
     default:
       isi = (
@@ -139,30 +137,27 @@ export default function App() {
           onSortir={() => pergi('sortir')}
           onKuis={() => pergi('kuis')}
           onLencana={() => pergi('lencana')}
-          onUntungRugi={() => pergi('untungRugi')}
           onSiklus={() => pergi('siklus')}
+          onUntungRugi={() => pergi('untungRugi')}
         />
       )
+      break
   }
 
+  const judul = JUDUL[layar]
+
   return (
-    <div className={s.app}>
+    <div className={s.wadah}>
       <TopBar
-        judul={JUDUL[layar]}
-        volume={progress.volume ?? (progress.suaraMati ? 'mati' : 'normal')}
+        judul={judul}
+        volume={progress.volume ?? 60}
         onVolume={alihVolume}
-        onKembali={layar === 'beranda' ? undefined : () => pergi('beranda')}
+        onKembali={layar !== 'beranda' ? () => pergi('beranda') : undefined}
       />
-
-      <main className={s.main}>{isi}</main>
-
+      <main className={s.utama}>{isi}</main>
       {lencanaBaru.length > 0 ? (
-        <BadgePopup id={lencanaBaru[0]} onTutup={tutupLencanaBaru} />
+        <BadgePopup id={lencanaBaru[0]} onTutup={bersihkanLencanaBaru} />
       ) : null}
-
-      <footer className={s.kaki}>
-        <p>Dirancang Oleh : Zefanya Rizqita Siathen</p>
-      </footer>
     </div>
   )
 }

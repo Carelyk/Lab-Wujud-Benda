@@ -10,7 +10,7 @@ export type NamaProses =
   | 'mengkristal'
 
 export type Arah = 'panas' | 'dingin'
-export type TingkatVolume = 'mati' | 'pelan' | 'normal'
+export type TingkatVolume = number // 0 - 100
 
 export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'suara'
 

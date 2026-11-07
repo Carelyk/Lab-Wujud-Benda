@@ -12,32 +12,31 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  background: var(--latar);
+  background: #ffffff;
   padding: 1.25rem;
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--aksen);
+  border-radius: var(--r-lg);
+  border: 2px solid var(--line);
 }
 
 .pita {
   font-size: 0.85rem;
   font-weight: 700;
-  background: rgba(245, 165, 36, 0.2);
-  color: var(--teks);
+  background: var(--sky);
+  color: var(--ink-soft);
   padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--r-pill);
 }
 
 .judul {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--teks);
+  color: var(--ink);
   margin: 0.5rem 0 0.25rem 0;
 }
 
 .sub {
   font-size: 0.95rem;
-  color: var(--teks);
-  opacity: 0.8;
+  color: var(--ink-soft);
   margin: 0;
 }
 
@@ -49,43 +48,75 @@
 
 .barisOpsi {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  color: var(--teks);
+  flex-direction: column;
+  gap: 12px;
+  color: var(--ink);
   font-weight: 600;
 }
 
-@media (max-width: 600px) {
-  .barisOpsi {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.sliderGrup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
 
-.grupTombol {
-  display: flex;
-  gap: 0.5rem;
+.rangeBesar {
+  width: 100%;
+  height: 12px;
+  accent-color: var(--sky-dark, #2f9bff);
+  cursor: pointer;
+}
+
+.tombolCepatGrup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tombolCepat {
+  min-height: 48px;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: #f7fbff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.tombolCepat:hover {
+  background: var(--sky);
+  border-color: var(--line-strong);
+}
+
+.tombolCepat.aktif {
+  background: var(--sky-dark, #2f9bff);
+  border-color: var(--sky-dark, #2f9bff);
+  color: #ffffff;
 }
 
 .tombolOpsi {
   min-height: 48px;
   padding: 0 1rem;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--aksen);
-  background: var(--latar);
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: #f7fbff;
   font-weight: 700;
   cursor: pointer;
-  color: var(--teks);
+  color: var(--ink-soft);
   transition: all 0.2s;
 }
 
 .tombolOpsi.aktif {
-  background: var(--aksen);
-  border-color: var(--teks);
+  background: var(--sky-dark, #2f9bff);
+  border-color: var(--sky-dark, #2f9bff);
+  color: #ffffff;
 }
 
 .teksInfo {
-  color: var(--teks);
+  color: var(--ink-soft);
   margin-bottom: 1rem;
 }

@@ -1,0 +1,143 @@
+.kontainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tombolUtama {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 8px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.tombolUtama:hover {
+  background: var(--sky);
+  border-color: var(--line-strong);
+}
+
+.tombolUtama:active {
+  transform: translateY(2px);
+}
+
+.sliderInline {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tombolPopover {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.range {
+  width: 90px;
+  height: 8px;
+  accent-color: var(--sky-dark, #2f9bff);
+  cursor: pointer;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 220px;
+  padding: 16px;
+  border-radius: var(--r-md);
+  background: #ffffff;
+  border: 2px solid var(--line);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: popIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.popoverHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.nilaiBadge {
+  background: var(--sky);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+}
+
+.rangeBesar {
+  width: 100%;
+  height: 10px;
+  accent-color: var(--sky-dark, #2f9bff);
+  cursor: pointer;
+}
+
+.popoverFooter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.tombolCepat {
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #f7fbff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.tombolCepat:hover {
+  background: var(--sky);
+  color: var(--ink);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .sliderInline {
+    display: none;
+  }
+  .tombolPopover {
+    display: inline-flex;
+  }
+}

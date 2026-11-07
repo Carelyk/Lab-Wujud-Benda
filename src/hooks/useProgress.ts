@@ -24,13 +24,6 @@ export interface HasilKuis {
   bintang: number
 }
 
-/**
- * Loads progress once and exposes promise-based actions.
- * Components never talk to storage directly, so the backend can change later.
- *
- * Badges are unlocked here: every saved change is checked against the pure
- * rules in utils/lencana.ts, and only genuinely new badges enter the queue.
- */
 export function useProgress() {
   const [progress, setProgress] = useState<Progress>(progressAwal)
   const [siap, setSiap] = useState(false)
@@ -40,8 +33,9 @@ export function useProgress() {
     let hidup = true
     void penyimpanan.ambil().then((p) => {
       if (!hidup) return
-      setBisu(p.suaraMati)
-      setVolumeSuara(p.volume ?? (p.suaraMati ? 'mati' : 'normal'))
+      const vol = p.volume ?? 60
+      setBisu(vol === 0)
+      setVolumeSuara(vol)
       setProgress(p)
       setSiap(true)
     })
@@ -96,7 +90,8 @@ export function useProgress() {
   }, [])
 
   const ubahSuara = useCallback(async (mati: boolean) => {
-    setVolumeSuara(mati ? 'mati' : 'normal')
+    const vol = mati ? 0 : 60
+    setVolumeSuara(vol)
     const p = await penyimpanan.setSuaraMati(mati)
     setProgress(p)
     return p
@@ -112,41 +107,39 @@ export function useProgress() {
   const reset = useCallback(async () => {
     const p = await penyimpanan.resetSemua()
     setBisu(false)
-    setVolumeSuara('normal')
+    setVolumeSuara(60)
     setProgress(p)
     setLencanaBaru([])
     return p
   }, [])
 
-  const tutupLencanaBaru = useCallback(() => {
-    setLencanaBaru((q) => q.slice(1))
-  }, [])
-
-  // The only place that turns real actions into badges.
   useEffect(() => {
     if (!siap) return
-    const baru = lencanaTerbuka(progress).filter((id) => !progress.lencana.includes(id))
-    if (baru.length === 0) return
-
-    let hidup = true
-    void (async () => {
-      let p = progress
-      for (const id of baru) p = await penyimpanan.bukaLencana(id)
-      if (!hidup) return
-      setProgress(p)
-      setLencanaBaru((q) => [...q, ...baru.filter((id) => !q.includes(id))])
-      void mainkan('buka')
-    })()
-
-    return () => {
-      hidup = false
+    const lama = progress.lencana
+    const baru = lencanaTerbuka(progress)
+    const adaBaru = baru.filter((id) => !lama.includes(id))
+    if (adaBaru.length > 0) {
+      void mainkan('lencanaKilau')
+      for (const id of adaBaru) {
+        void penyimpanan.bukaLencana(id)
+      }
+      setProgress((prev) => ({
+        ...prev,
+        lencana: Array.from(new Set([...prev.lencana, ...adaBaru])),
+      }))
+      setLencanaBaru(adaBaru)
     }
   }, [progress, siap])
+
+  const bersihkanLencanaBaru = useCallback(() => {
+    setLencanaBaru([])
+  }, [])
 
   return {
     progress,
     siap,
     lencanaBaru,
+    bersihkanLencanaBaru,
     catat,
     simpanPrediksi,
     simpanSortir,
@@ -154,7 +147,6 @@ export function useProgress() {
     tandaiPartikel,
     selesaikanSiklus,
     bukaLencana,
-    tutupLencanaBaru,
     ubahSuara,
     ubahVolume,
     reset,

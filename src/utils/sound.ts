@@ -11,7 +11,6 @@
 import type { TingkatVolume } from '../types'
 
 export type NamaSuara =
-  // existing (kept for backwards compatibility)
   | 'klik'
   | 'benar'
   | 'salah'
@@ -22,58 +21,46 @@ export type NamaSuara =
   | 'pop'
   | 'splash'
   | 'suhu'
-  // experiment: ice
   | 'esKrek'
   | 'esTik'
   | 'esKring'
-  // experiment: water
   | 'airGelembung'
   | 'airCess'
   | 'airTikEmbun'
-  // experiment: candle
   | 'lilinTik'
   | 'lilinDesis'
   | 'lilinPuf'
-  // experiment: camphor
   | 'kapurShhh'
   | 'kapurPyuu'
-  // temperature / environment
   | 'suhuTik'
   | 'matahariBling'
   | 'gunungBrrr'
-  // mascot Tetes
   | 'tetesSenang'
   | 'tetesBingung'
   | 'tetesPanas'
   | 'tetesDingin'
-  // UI
   | 'uiKlik'
   | 'uiWhoosh'
   | 'uiBuka'
   | 'uiTutup'
   | 'uiTab'
-  // sorting
   | 'sortirAmbil'
   | 'sortirMasuk'
   | 'sortirBenar'
   | 'sortirSalah'
   | 'sortirKembali'
-  // quiz
   | 'kuisPilih'
   | 'kuisBenar'
   | 'kuisSalah'
   | 'kuisBintang'
   | 'kuisSkor'
-  // badges
   | 'lencanaKilau'
-  // water cycle + particle lens
   | 'siklusMatahari'
   | 'siklusAwan'
   | 'siklusHujan'
   | 'siklusSalju'
   | 'lensaZoom'
   | 'partikelDesis'
-  // "wujud di sekitar kita"
   | 'sekitarPop'
   | 'sekitarHujan'
   | 'sekitarEsKrim'
@@ -94,11 +81,9 @@ interface LangkahNada {
 
 interface EfekConfig {
   langkah: LangkahNada[]
-  /** Looping effects repeat this often (ms). */
   intervalMs?: number
 }
 
-/** Central parameter table. Edit numbers here, not in synthesis code. */
 export const KONFIG_SUARA: Record<NamaSuara, EfekConfig> = {
   klik: { langkah: [{ freq: 560, durasi: 0.06, tipe: 'triangle', volume: 0.06 }] },
   benar: {
@@ -287,8 +272,8 @@ const THROTTLE_MS: Partial<Record<NamaSuara, number>> = {
 }
 
 let konteks: AudioContext | null = null
-let bisu = false
-let tingkatVolume: TingkatVolume = 'normal'
+let nilaiVolume = 60 // 0 - 100
+let sebelumMute = 60
 let masterGain: GainNode | null = null
 let kompressor: DynamicsCompressorNode | null = null
 let suaraAktif = 0
@@ -313,10 +298,12 @@ function ambilKonteks(): AudioContext | null {
   return konteks
 }
 
-function gainUntukTingkat(t: TingkatVolume): number {
-  if (t === 'mati') return 0
-  if (t === 'pelan') return 0.35
-  return 0.65
+// Kurva kuadratik monoton: aman untuk anak (maks 0.65, tidak lebih nyaring dari normal lama)
+function gainDariVolume(v: number): number {
+  const clamp = Math.max(0, Math.min(100, v))
+  if (clamp === 0) return 0
+  const norm = clamp / 100
+  return norm * norm * 0.65
 }
 
 function pastikanGraf(ctx: AudioContext): void {
@@ -336,7 +323,6 @@ function pastikanGraf(ctx: AudioContext): void {
       masterGain.connect(ctx.destination)
     }
   } catch {
-    // Some mocks may not implement these nodes; fall back to direct destination.
     if (!masterGain) masterGain = ctx.createGain()
     try {
       masterGain.connect(ctx.destination)
@@ -344,7 +330,7 @@ function pastikanGraf(ctx: AudioContext): void {
       /* ignore */
     }
   }
-  if (masterGain) masterGain.gain.value = gainUntukTingkat(tingkatVolume)
+  if (masterGain) masterGain.gain.value = gainDariVolume(nilaiVolume)
 }
 
 function tujuan(ctx: AudioContext): AudioNode {
@@ -422,33 +408,34 @@ export async function siapkanSuara(): Promise<void> {
 }
 
 export function setBisu(nilai: boolean): void {
-  bisu = nilai
   if (nilai) {
-    tingkatVolume = 'mati'
+    if (nilaiVolume > 0) sebelumMute = nilaiVolume
+    nilaiVolume = 0
     hentikanSemuaLoop()
-  } else if (tingkatVolume === 'mati') {
-    tingkatVolume = 'normal'
+  } else {
+    nilaiVolume = sebelumMute > 0 ? sebelumMute : 60
   }
-  if (masterGain) masterGain.gain.value = gainUntukTingkat(tingkatVolume)
+  if (masterGain) masterGain.gain.value = gainDariVolume(nilaiVolume)
 }
 
 export function sedangBisu(): boolean {
-  return bisu || tingkatVolume === 'mati'
+  return nilaiVolume === 0
 }
 
 export function setVolume(tingkat: TingkatVolume): void {
-  tingkatVolume = tingkat
-  bisu = tingkat === 'mati'
-  if (tingkat === 'mati') hentikanSemuaLoop()
-  if (masterGain) masterGain.gain.value = gainUntukTingkat(tingkat)
+  const v = Math.max(0, Math.min(100, tingkat))
+  if (v > 0) sebelumMute = v
+  nilaiVolume = v
+  if (v === 0) hentikanSemuaLoop()
+  if (masterGain) masterGain.gain.value = gainDariVolume(v)
 }
 
 export function getVolume(): TingkatVolume {
-  return tingkatVolume
+  return nilaiVolume
 }
 
 export async function mainkan(nama: NamaSuara, _opsi?: { suhu?: number }): Promise<void> {
-  if (bisu || tingkatVolume === 'mati') return
+  if (nilaiVolume === 0) return
   const ctx = ambilKonteks()
   if (!ctx) return
   const sekarangMs = (ctx.currentTime || 0) * 1000
@@ -464,7 +451,7 @@ export async function mainkan(nama: NamaSuara, _opsi?: { suhu?: number }): Promi
   if (suaraAktif >= MAKS_SUARA_BERSAMAAN) return
 
   pastikanGraf(ctx)
-  if (masterGain) masterGain.gain.value = gainUntukTingkat(tingkatVolume)
+  if (masterGain) masterGain.gain.value = gainDariVolume(nilaiVolume)
 
   suaraAktif += 1
   const t0 = (ctx.currentTime || 0) + 0.01
@@ -504,7 +491,7 @@ export function mulaiLoop(
   nama: NamaSuara,
   _opsi?: { suhu?: number; intervalMs?: number },
 ): () => void {
-  if (bisu || tingkatVolume === 'mati') return () => {}
+  if (nilaiVolume === 0) return () => {}
   if (suaraAktif >= MAKS_SUARA_BERSAMAAN) return () => {}
   suaraAktif += 1
   const interval = _opsi?.intervalMs ?? KONFIG_SUARA[nama].intervalMs ?? 300
@@ -525,10 +512,9 @@ export function mulaiLoop(
     suaraAktif = Math.max(0, suaraAktif - 1)
   }
   const handle = (ambilGlobal().setInterval ?? globalThis.setInterval)(() => {
-    if (berhenti || bisu || tingkatVolume === 'mati') return
+    if (berhenti || nilaiVolume === 0) return
     void mainkan(nama, _opsi)
   }, interval)
-  // play once immediately
   void mainkan(nama, _opsi)
   loopAktif.set(id, () => {
     const g = ambilGlobal()
@@ -553,7 +539,6 @@ export function hentikanSemuaLoop(): void {
   loopAktif.clear()
 }
 
-// stop loops when the tab is hidden
 const g = ambilGlobal()
 if (g?.document?.addEventListener) {
   g.document.addEventListener('visibilitychange', () => {

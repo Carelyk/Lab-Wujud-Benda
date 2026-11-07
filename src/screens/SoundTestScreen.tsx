@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BigButton } from '../components/ui/BigButton'
 import { Panel } from '../components/ui/Panel'
-import { adalahLoop, mainkan, mulaiLoop, KONFIG_SUARA } from '../utils/sound'
+import { adalahLoop, mainkan, mulaiLoop, KONFIG_SUARA, setVolume as setVolumeSuara } from '../utils/sound'
 import type { NamaSuara } from '../utils/sound'
 import type { TingkatVolume } from '../types'
 import s from './SoundTestScreen.module.css'
@@ -59,24 +59,30 @@ export function SoundTestScreen({ volume, onVolume }: { volume: TingkatVolume; o
     setLoopAktif(null)
   }
 
+  const handleSlider = (val: number) => {
+    onVolume(val)
+    setVolumeSuara(val)
+  }
+
   return (
     <div className={s.halaman}>
       <Panel judul="Uji Suara" ikon={null}>
         <p className={s.intro}>
-          Halaman tersembunyi untuk menilai efek suara. Tekan tombol untuk memutar.
+          Halaman tersembunyi untuk menilai efek suara. Geser slider volume atau tekan tombol.
         </p>
         <div className={s.volume}>
-          <span>Volume:</span>
-          {(['mati', 'pelan', 'normal'] as TingkatVolume[]).map((l) => (
-            <button
-              key={l}
-              type="button"
-              className={volume === l ? s.aktif : ''}
-              onClick={() => onVolume(l)}
-            >
-              {l}
-            </button>
-          ))}
+          <label htmlFor="volume-slider">Volume ({volume}%):</label>
+          <input
+            id="volume-slider"
+            type="range"
+            min={0}
+            max={100}
+            value={volume}
+            onChange={(e) => handleSlider(Number(e.target.value))}
+            onMouseUp={() => void mainkan('klik')}
+            onTouchEnd={() => void mainkan('klik')}
+            style={{ width: '100%', accentColor: '#2f9bff', cursor: 'pointer' }}
+          />
         </div>
         <div className={s.suhu}>
           <label htmlFor="suhu-suara">Suhu simulasi: {suhu} °C</label>
