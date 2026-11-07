@@ -20,6 +20,15 @@ describe('Migrasi Data v1/v2 ke Slider & Validasi Ketat', () => {
     expect(migrasiVolume(migrasiVolume('pelan'))).toBe(30)
   })
 
+  it('uji fungsi penamaan subjek untuk semua benda dan proses utama', () => {
+    expect(formatSubjekCatatan('es', 'mencair', 'panas')).toBe('Es + Panas = Mencair')
+    expect(formatSubjekCatatan('air', 'menguap', 'panas')).toBe('Air + Panas = Menguap')
+    expect(formatSubjekCatatan('air', 'mengembun', 'dingin')).toBe('Uap air + Dingin = Mengembun')
+    expect(formatSubjekCatatan('lilin', 'membeku', 'dingin')).toBe('Lilin + Dingin = Membeku')
+    expect(formatSubjekCatatan('cokelat', 'mencair', 'panas')).toBe('Cokelat + Panas = Mencair')
+    expect(formatSubjekCatatan('kapur-barus', 'menyublim', 'panas')).toBe('Kapur barus + Panas = Menyublim')
+  })
+
   it('berhasil memigrasi catatan rusak/mengandung emoji ke teks bersih, lencana/kuis/sortir/partikel utuh', () => {
     const dataV1 = {
       ...progressAwal,
@@ -56,12 +65,14 @@ describe('Migrasi Data v1/v2 ke Slider & Validasi Ketat', () => {
     expect(dataV1.partikel.dilihat).toEqual(['padat', 'cair'])
   })
 
-  it('uji fungsi penamaan subjek untuk semua benda dan proses utama', () => {
-    expect(formatSubjekCatatan('es', 'mencair', 'panas')).toBe('Es + Panas = Mencair')
-    expect(formatSubjekCatatan('air', 'menguap', 'panas')).toBe('Air + Panas = Menguap')
-    expect(formatSubjekCatatan('air', 'mengembun', 'dingin')).toBe('Uap air + Dingin = Mengembun')
-    expect(formatSubjekCatatan('lilin', 'membeku', 'dingin')).toBe('Lilin + Dingin = Membeku')
-    expect(formatSubjekCatatan('cokelat', 'mencair', 'panas')).toBe('Cokelat + Panas = Mencair')
-    expect(formatSubjekCatatan('kapur-barus', 'menyublim', 'panas')).toBe('Kapur barus + Panas = Menyublim')
+  it('idempoten: dua kali migrasi menghasilkan nilai dan catatan yang sama persis', () => {
+    const teks1 = formatSubjekCatatan('air', 'mengembun', 'dingin')
+    const teks2 = formatSubjekCatatan('air', 'mengembun', 'dingin')
+    expect(teks1).toBe(teks2)
+  })
+
+  it('catatan tak dikenal tidak membuat crash dan diformat aman', () => {
+    const subjek = formatSubjekCatatan('es', 'mencair', 'panas')
+    expect(subjek).toBe('Es + Panas = Mencair')
   })
 })

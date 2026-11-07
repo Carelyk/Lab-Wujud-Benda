@@ -115,38 +115,6 @@ export function VolumeControl({ volume, onVolume }: Props) {
             aria-valuetext={`Volume ${volume} persen`}
             className={s.rangeBesar}
           />
-          <div className={s.popoverFooter}>
-            <button
-              type="button"
-              className={s.tombolCepat}
-              onClick={() => {
-                onVolume(0)
-                void mainkan('klik')
-              }}
-            >
-              0%
-            </button>
-            <button
-              type="button"
-              className={s.tombolCepat}
-              onClick={() => {
-                onVolume(30)
-                void mainkan('klik')
-              }}
-            >
-              30%
-            </button>
-            <button
-              type="button"
-              className={s.tombolCepat}
-              onClick={() => {
-                onVolume(60)
-                void mainkan('klik')
-              }}
-            >
-              60%
-            </button>
-          </div>
         </div>
       )}
     </div>

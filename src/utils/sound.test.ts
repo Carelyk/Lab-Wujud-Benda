@@ -105,7 +105,39 @@ describe('sound with slider volume', () => {
     hentikanSemuaLoop()
   })
 
-  it('respects mute and volume levels (0-100 slider)', async () => {
+  it('respects mute (0 slider or mute toggle)', async () => {
+    const ctx = makeCtx()
+    // @ts-ignore
+    globalThis.AudioContext = function () {
+      return ctx
+    } as any
+    const { mainkan, setVolume, getVolume } = await import('./sound')
+    setVolume(0)
+    expect(getVolume()).toBe(0)
+    await mainkan('pop')
+    expect(ctx._osc.length).toBe(0)
+    setVolume(50)
+    expect(getVolume()).toBe(50)
+    await mainkan('pop')
+    expect(ctx._osc.length).toBe(1)
+  })
+
+  it('remembers previous volume before mute and enforces monotonic quadratic curve', async () => {
+    const ctx = makeCtx()
+    // @ts-ignore
+    globalThis.AudioContext = function () {
+      return ctx
+    } as any
+    const { setVolume, getVolume } = await import('./sound')
+    setVolume(45)
+    expect(getVolume()).toBe(45)
+    setVolume(0)
+    expect(getVolume()).toBe(0)
+    setVolume(45)
+    expect(getVolume()).toBe(45)
+  })
+
+  it('respects volume levels (0-100 slider)', async () => {
     const ctx = makeCtx()
     // @ts-ignore
     globalThis.AudioContext = function () {
