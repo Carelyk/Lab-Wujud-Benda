@@ -129,8 +129,8 @@ function EsKrimLeleh({ p }: { p: number }) {
       </g>
       <path d="M0 226H400V300H0Z" fill="#D5C8B8" stroke="#2D3142" strokeWidth="3" />
 
-      <path d="M166 126h86l-43 101z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
-      <path d="M178 154h62M185 139l45 54M232 139l-45 54" stroke="#B97820" strokeWidth="3" />
+      <path d="M178 126h86l-43 101z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
+      <path d="M190 154h62M197 139l45 54M244 139l-45 54" stroke="#B97820" strokeWidth="3" />
       <path
         d={`M178 120c0-28 18-48 43-48s43 20 43 48c0 ${17 * leleh} -14 ${23 * leleh} -26 ${20 * leleh} -9 ${-2 * leleh} -13 ${20 * leleh} -26 ${16 * leleh} -14 ${-4 * leleh} -34 ${-5 * leleh} -34 ${-16 * leleh}z`}
         fill="#FF9AB6"

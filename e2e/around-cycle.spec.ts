@@ -125,6 +125,9 @@ test('semua 10 popup sekitar aman di HP dan Smart TV sentuh', async ({ browser }
       const ukuranTutup = await tombolTutup.boundingBox()
       expect(ukuranTutup!.width).toBeGreaterThanOrEqual(44)
       expect(ukuranTutup!.height).toBeGreaterThanOrEqual(44)
+      if (perangkat.nama === 'smart-tv' && indeks === 6) {
+        await dialog.screenshot({ path: 'preview/shots/es-krim-meleleh-cone.png' })
+      }
       await tombolTutup.click()
       await expect(dialog).toBeHidden()
     }
