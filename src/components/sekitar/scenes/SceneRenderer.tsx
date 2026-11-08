@@ -58,8 +58,8 @@ function EsKrim({ p }: { p: number }) {
       </g>
 
       <g opacity={jadi} transform={`translate(${(1 - jadi) * 16} 0)`}>
-        <path d="M145 220l47-112 47 112z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
-        <path d="M160 184h64M168 164l47 38M215 164l-47 38" stroke="#B97820" strokeWidth="3" opacity=".75" />
+        <path d="M145 126h94l-47 98z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
+        <path d="M157 153h70M166 139l51 55M218 139l-51 55" stroke="#B97820" strokeWidth="3" opacity=".75" />
         <circle cx="174" cy="111" r="35" fill="#FFB3CC" stroke="#2D3142" strokeWidth="4" />
         <circle cx="211" cy="111" r="35" fill="#FFF0B3" stroke="#2D3142" strokeWidth="4" />
         <path d="M160 106c8-18 24-22 35-17" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" opacity=".55" />
@@ -129,8 +129,8 @@ function EsKrimLeleh({ p }: { p: number }) {
       </g>
       <path d="M0 226H400V300H0Z" fill="#D5C8B8" stroke="#2D3142" strokeWidth="3" />
 
-      <path d="M166 222l43-105 43 105z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
-      <path d="M178 190h62M185 170l45 37M232 170l-45 37" stroke="#B97820" strokeWidth="3" />
+      <path d="M166 126h86l-43 101z" fill="#E8A83E" stroke="#2D3142" strokeWidth="4" />
+      <path d="M178 154h62M185 139l45 54M232 139l-45 54" stroke="#B97820" strokeWidth="3" />
       <path
         d={`M178 120c0-28 18-48 43-48s43 20 43 48c0 ${17 * leleh} -14 ${23 * leleh} -26 ${20 * leleh} -9 ${-2 * leleh} -13 ${20 * leleh} -26 ${16 * leleh} -14 ${-4 * leleh} -34 ${-5 * leleh} -34 ${-16 * leleh}z`}
         fill="#FF9AB6"

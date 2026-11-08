@@ -101,6 +101,7 @@ test('label proses menunggu visual, berurutan, dan tidak menumpuk', async ({ pag
   await expect(toast).toHaveCount(0)
   await page.waitForTimeout(500)
   await expect(toast).toContainText('Mencair')
+  await art.locator('xpath=../..').screenshot({ path: 'preview/shots/label-mencair-t1500.png' })
   await page.waitForTimeout(3500)
   const rekam = await page.evaluate(
     () => (globalThis as typeof globalThis & { ujiTempo?: { faseCair: number | null; mencair: number | null; maksToast: number } }).ujiTempo,
@@ -120,24 +121,4 @@ test('label proses menunggu visual, berurutan, dan tidak menumpuk', async ({ pag
   await aturSuhu(page, 'Air', 20)
   await expect(toast).toContainText('Mengembun', { timeout: 5000 })
   await expect(toast).toHaveCount(1)
-})
-
-test('screenshot label mencair menunjukkan urutan waktu', async ({ browser }) => {
-  test.setTimeout(45000)
-  fs.mkdirSync('preview/shots', { recursive: true })
-  const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })
-  const page = await context.newPage()
-  await page.goto('/#/eksperimen')
-  const art = page.locator('[data-testid="experiment-art"]')
-  const panggung = art.locator('xpath=../..')
-  const toast = page.locator('[data-testid="process-toast"]')
-
-  await aturSuhu(page, 'Es batu', 0)
-  await expect(art).toHaveAttribute('data-fase', 'cair', { timeout: 3000 })
-  await panggung.screenshot({ path: 'preview/shots/label-mencair-t0.png' })
-  await page.waitForTimeout(500)
-  await panggung.screenshot({ path: 'preview/shots/label-mencair-t500.png' })
-  await expect(toast).toContainText('Mencair', { timeout: 3000 })
-  await panggung.screenshot({ path: 'preview/shots/label-mencair-t1500.png' })
-  await context.close()
 })

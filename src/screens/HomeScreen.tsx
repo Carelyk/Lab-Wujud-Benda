@@ -22,7 +22,7 @@ const LANGKAH = [
   {
     ikon: <IconEs size={24} />,
     judul: 'Pilih benda',
-    teks: 'Es batu, air, lilin, cokelat, atau air di panci.',
+    teks: 'Es batu, air, lilin, uap air, kapur barus, atau air di panci.',
   },
   {
     ikon: <IconPanas size={24} />,

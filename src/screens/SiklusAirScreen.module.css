@@ -1,1 +1,131 @@
 .halaman{display:grid;gap:20px}.header{display:flex;justify-content:space-between;align-items:end;gap:12px}.header h1{margin:5px 0 0;font-family:var(--font-display);font-size:clamp(30px,4vw,42px)}.pita{font-weight:800;color:#2F9BFF}.diorama{width:min(100%,880px);margin-inline:auto;border:3px solid #2D3142;border-radius:20px;overflow:hidden;background:#EAF6FF}.diorama svg{display:block;width:100%;height:auto;aspect-ratio:600/340}.caption{width:min(100%,880px);margin-inline:auto;font-size:19px;line-height:1.45}.lompat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.lompat button,.kontrol button,.pilihWujud button{min-height:48px;border:2px solid #B9D6E9;border-radius:12px;background:#FFF;font:700 16px var(--font-body);color:#2D3142}.lompat .aktif,.pilihWujud .aktif{border-color:#2F9BFF;background:#EAF6FF}.slider{width:100%;min-height:44px;accent-color:#2F9BFF}.kontrol{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.kontrol label{min-height:48px;display:flex;align-items:center;gap:8px;font-weight:700}.petunjuk{font-size:18px;line-height:1.4}.pilihWujud{display:flex;gap:8px;text-transform:capitalize}.suhuBaris{display:grid;gap:6px;margin:14px 0;font-weight:700}.suhuBaris input{width:100%;min-height:44px}.aksi{display:flex;justify-content:center}.footerMascot{display:flex;align-items:center;gap:16px}.footerMascot>*:last-child{flex:1}@media(max-width:600px){.header{align-items:start}.lompat{grid-template-columns:1fr 1fr}.lompat button{font-size:14px}.footerMascot{align-items:start}.kontrol{display:grid;grid-template-columns:1fr 1fr}.kontrol label{grid-column:span 2}}
+
+.pilihanCerita {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kelompokCerita {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  min-width: 0;
+  padding: 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--r-md);
+  background: #f9fcff;
+}
+
+.kelompokCerita legend {
+  padding: 0 7px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.kelompokCerita legend span {
+  display: inline-grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.kelompokCerita button {
+  display: grid;
+  gap: 2px;
+  min-height: 70px;
+  padding: 10px 12px;
+  text-align: left;
+  border: 2px solid var(--line);
+  border-radius: 13px;
+  background: #fff;
+  color: var(--ink);
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.kelompokCerita button:hover {
+  transform: translateY(-2px);
+  border-color: var(--cair);
+}
+
+.kelompokCerita button.pilihanAktif {
+  border-color: var(--cair);
+  background: var(--sky);
+  box-shadow: 0 3px 0 rgba(47, 155, 255, .2);
+}
+
+.kelompokCerita strong {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.kelompokCerita small {
+  color: var(--ink-faint);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.ringkasanCerita {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: 2px dashed var(--cair);
+  background: linear-gradient(90deg, #eef9ff, #fffdf2);
+}
+
+.ringkasanCerita span {
+  color: var(--cair-tua);
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.ringkasanCerita p {
+  margin-top: 3px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .pilihanCerita {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kelompokCerita {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .kelompokCerita legend {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .kelompokCerita {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ringkasanCerita {
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+
+  .ringkasanCerita p {
+    font-size: 16px;
+  }
+}

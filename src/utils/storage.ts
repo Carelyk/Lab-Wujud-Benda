@@ -12,6 +12,7 @@ const KUNCI = 'lwb:v2'
 const KUNCI_LAMA = 'lwb:v1'
 const MAKS_CATATAN = 24
 const WUJUD: Wujud[] = ['padat', 'cair', 'gas']
+const BENDA_ID: BendaId[] = ['es', 'air', 'lilin', 'cokelat', 'kristal-es', 'kapur-barus', 'panci']
 
 export const progressAwal: Progress = {
   catatan: [],
@@ -52,6 +53,7 @@ export function formatSubjekCatatan(bendaId: BendaId, proses: NamaProses, arah: 
     namaBenda = arah === 'dingin' && proses === 'mengembun' ? 'Uap air' : 'Air'
   } else if (bendaId === 'lilin') namaBenda = 'Lilin'
   else if (bendaId === 'cokelat') namaBenda = 'Cokelat'
+  else if (bendaId === 'kristal-es') namaBenda = proses === 'mengkristal' ? 'Uap air' : 'Kristal es'
   else if (bendaId === 'kapur-barus') namaBenda = 'Kapur barus'
   else if (bendaId === 'panci') namaBenda = 'Air panci'
 
@@ -71,19 +73,23 @@ export function formatSubjekCatatan(bendaId: BendaId, proses: NamaProses, arah: 
 function migrasiCatatanLama(mentahCatatan: any[]): CatatanEntry[] {
   if (!Array.isArray(mentahCatatan)) return []
   return mentahCatatan.map((c, idx) => {
-    let bendaId: BendaId = c.bendaId || 'air'
+    const idTersimpan = BENDA_ID.includes(c.bendaId) ? (c.bendaId as BendaId) : null
+    let bendaId: BendaId = idTersimpan ?? 'air'
     let proses: NamaProses = c.proses || 'mencair'
     let arah: Arah = c.arah || 'panas'
 
     const teksLama = typeof c.teks === 'string' ? c.teks : ''
     const bersihTeks = teksLama.replace(/\\u[0-9a-fA-F]{4}/gu, '').trim()
 
-    if (bersihTeks.includes('es') || bersihTeks.includes('Es')) bendaId = 'es'
-    else if (bersihTeks.includes('air') || bersihTeks.includes('Air')) bendaId = 'air'
-    else if (bersihTeks.includes('lilin') || bersihTeks.includes('Lilin')) bendaId = 'lilin'
-    else if (bersihTeks.includes('cokelat') || bersihTeks.includes('Cokelat')) bendaId = 'cokelat'
-    else if (bersihTeks.includes('kapur') || bersihTeks.includes('barus')) bendaId = 'kapur-barus'
-    else if (bersihTeks.includes('panci') || bersihTeks.includes('Panci')) bendaId = 'panci'
+    if (!idTersimpan) {
+      if (bersihTeks.includes('kristal') || bersihTeks.includes('Kristal')) bendaId = 'kristal-es'
+      else if (bersihTeks.includes('panci') || bersihTeks.includes('Panci')) bendaId = 'panci'
+      else if (bersihTeks.includes('kapur') || bersihTeks.includes('barus')) bendaId = 'kapur-barus'
+      else if (bersihTeks.includes('cokelat') || bersihTeks.includes('Cokelat')) bendaId = 'cokelat'
+      else if (bersihTeks.includes('lilin') || bersihTeks.includes('Lilin')) bendaId = 'lilin'
+      else if (bersihTeks.includes('es') || bersihTeks.includes('Es')) bendaId = 'es'
+      else if (bersihTeks.includes('air') || bersihTeks.includes('Air')) bendaId = 'air'
+    }
 
     if (bersihTeks.includes('membeku') || bersihTeks.includes('Beku')) proses = 'membeku'
     else if (bersihTeks.includes('mencair') || bersihTeks.includes('Leleh')) proses = 'mencair'

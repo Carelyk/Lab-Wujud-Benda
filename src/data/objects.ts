@@ -57,20 +57,21 @@ export const BENDA_LIST: Benda[] = [
     },
   },
   {
-    id: 'cokelat',
-    nama: 'Cokelat',
-    keterangan: 'Cokelat padat saat dingin. Coba panaskan perlahan.',
-    suhuAwal: 25,
-    suhuMin: 0,
-    suhuMaks: 60,
+    id: 'kristal-es',
+    nama: 'Uap & kristal es',
+    keterangan: 'Uap air yang sangat dingin dapat langsung menjadi kristal es. Coba dinginkan.',
+    suhuAwal: 20,
+    suhuMin: -20,
+    suhuMaks: 40,
     fase: [
-      { mulai: 0, wujud: 'padat' },
-      { mulai: 33, wujud: 'cair' },
+      { mulai: -20, wujud: 'padat' },
+      { mulai: 0, wujud: 'gas' },
     ],
     perluVerifikasi: true,
     prediksi: {
-      pertanyaan: 'Menurutmu, cokelat yang dipanaskan akan jadi apa?',
-      benar: 'cair',
+      pertanyaan: 'Menurutmu, uap air yang sangat dingin akan langsung menjadi apa?',
+      benar: 'padat',
+      arah: 'dingin',
     },
   },
   {
@@ -111,7 +112,26 @@ export const BENDA_LIST: Benda[] = [
   },
 ]
 
-export const BENDA: Record<BendaId, Benda> = BENDA_LIST.reduce((acc, benda) => {
+/** Kept only so progress saved before chocolate was replaced still loads safely. */
+const COKELAT_LEGACY: Benda = {
+  id: 'cokelat',
+  nama: 'Cokelat',
+  keterangan: 'Contoh lama yang tetap dikenali dari progres tersimpan.',
+  suhuAwal: 25,
+  suhuMin: 0,
+  suhuMaks: 60,
+  fase: [
+    { mulai: 0, wujud: 'padat' },
+    { mulai: 33, wujud: 'cair' },
+  ],
+  perluVerifikasi: true,
+  prediksi: {
+    pertanyaan: 'Menurutmu, cokelat yang dipanaskan akan jadi apa?',
+    benar: 'cair',
+  },
+}
+
+export const BENDA: Record<BendaId, Benda> = [...BENDA_LIST, COKELAT_LEGACY].reduce((acc, benda) => {
   acc[benda.id] = benda
   return acc
 }, {} as Record<BendaId, Benda>)

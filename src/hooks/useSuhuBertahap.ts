@@ -66,8 +66,10 @@ export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
 
       if (Math.abs(tujuan - dari) < 0.05) {
         if (dari !== tujuan) {
+          const perubahanAkhir = resolvePhase(b, dari, tujuan)
           suhuRef.current = tujuan
           setSuhu(tujuan)
+          if (perubahanAkhir.proses) cbRef.current(perubahanAkhir, dari, tujuan)
         }
         frame = null
         rafRef.current = null

@@ -105,6 +105,7 @@ export const renderIconBenda = (bendaId: string, size = 24, className?: string) 
     case 'lilin': return <IconLilin size={size} className={className} />
     case 'kapur-barus': return <IconKapurBarus size={size} className={className} />
     case 'cokelat': return <IconCokelat size={size} className={className} />
+    case 'kristal-es': return <IconMengkristal size={size} className={className} />
     case 'panci': return <IconPanci size={size} className={className} />
     default: return <IconAir size={size} className={className} />
   }

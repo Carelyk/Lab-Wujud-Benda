@@ -26,6 +26,10 @@ test('siklus air memiliki diorama dan kontrol empat tahap', async ({ page }) => 
   await expect(page.getByRole('button', { name: /1\. Penguapan/ })).toBeVisible()
   await page.getByRole('button', { name: /3\. Turunnya/ }).click()
   await expect(page.getByText('Tahap 3 dari 4')).toBeVisible()
+  await page.getByRole('button', { name: /Danau/ }).click()
+  await page.getByRole('button', { name: /Hutan/ }).click()
+  await page.getByRole('button', { name: /Meresap ke tanah/ }).click()
+  await expect(page.getByText(/Danau → uap air → awan → hujan di Hutan → meresap ke tanah → laut/)).toBeVisible()
 })
 
 test('layout desktop tidak melebar dan popup tetap di tengah', async ({ page }) => {
@@ -68,4 +72,89 @@ test('eksperimen memandu 6 proses dan kedua permainan berisi 10 tantangan', asyn
 
   await page.goto('/#/kuis')
   await expect(page.getByText(/10 soal tentang wujud benda/)).toBeVisible()
+})
+
+test('kristal es mewakili mengkristal dan lilin mencair sendiri', async ({ page }) => {
+  test.setTimeout(30000)
+  await page.goto('/#/eksperimen')
+
+  await page.getByRole('button', { name: 'Uap & kristal es' }).click()
+  await expect(page.locator('[data-testid="experiment-art"]')).toHaveAttribute('data-fase', 'gas')
+  await page.getByRole('button', { name: 'Padat', exact: true }).click()
+  await page.getByRole('button', { name: 'Dingin', exact: true }).click()
+  await expect(page.locator('[data-testid="process-toast"]')).toContainText('Mengkristal', { timeout: 7000 })
+  await expect(page.locator('[data-testid="experiment-art"]')).toHaveAttribute('data-fase', 'padat')
+
+  await page.getByRole('button', { name: 'Lilin', exact: true }).click()
+  await expect(page.locator('[data-testid="candle-flame"]')).toBeVisible()
+  await expect(page.locator('[data-testid="experiment-art"]')).toHaveAttribute('data-fase', 'cair', { timeout: 15000 })
+})
+
+test('semua 10 popup sekitar aman di HP dan Smart TV sentuh', async ({ browser }) => {
+  test.setTimeout(45000)
+  fs.mkdirSync('preview/shots', { recursive: true })
+
+  for (const perangkat of [
+    { nama: 'hp', width: 360, height: 780 },
+    { nama: 'smart-tv', width: 1920, height: 1080 },
+  ]) {
+    const context = await browser.newContext({
+      viewport: { width: perangkat.width, height: perangkat.height },
+      hasTouch: true,
+    })
+    const page = await context.newPage()
+    await page.goto('/#/sekitar')
+    const pemicu = page.getByRole('button', { name: 'Lihat Animasi' })
+    await expect(pemicu).toHaveCount(10)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+
+    await page.screenshot({ path: `preview/shots/sekitar-${perangkat.nama}.png`, fullPage: true })
+
+    for (let indeks = 0; indeks < 10; indeks += 1) {
+      await pemicu.nth(indeks).click()
+      const dialog = page.locator('[data-testid="sekitar-popup"]')
+      await expect(dialog).toBeVisible()
+      const kotak = await dialog.boundingBox()
+      expect(kotak).not.toBeNull()
+      expect(kotak!.x).toBeGreaterThanOrEqual(0)
+      expect(kotak!.y).toBeGreaterThanOrEqual(0)
+      expect(kotak!.x + kotak!.width).toBeLessThanOrEqual(perangkat.width + 1)
+      expect(kotak!.y + kotak!.height).toBeLessThanOrEqual(perangkat.height + 1)
+
+      const tombolTutup = dialog.getByRole('button', { name: 'Tutup animasi' })
+      const ukuranTutup = await tombolTutup.boundingBox()
+      expect(ukuranTutup!.width).toBeGreaterThanOrEqual(44)
+      expect(ukuranTutup!.height).toBeGreaterThanOrEqual(44)
+      await tombolTutup.click()
+      await expect(dialog).toBeHidden()
+    }
+
+    await context.close()
+  }
+})
+
+test('cerita siklus air responsif di HP dan Smart TV sentuh', async ({ browser }) => {
+  fs.mkdirSync('preview/shots', { recursive: true })
+  for (const perangkat of [
+    { nama: 'hp', width: 360, height: 780 },
+    { nama: 'smart-tv', width: 1920, height: 1080 },
+  ]) {
+    const context = await browser.newContext({
+      viewport: { width: perangkat.width, height: perangkat.height },
+      hasTouch: true,
+    })
+    const page = await context.newPage()
+    await page.goto('/#/siklus')
+    await expect(page.getByRole('heading', { name: 'Pilih perjalanan setetes air' })).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+    const tombolCerita = page.getByRole('button', { name: /Laut|Sungai|Danau|Desa|Hutan|Pegunungan|Lewat sungai|Meresap ke tanah/ })
+    const jumlah = await tombolCerita.count()
+    expect(jumlah).toBeGreaterThanOrEqual(8)
+    for (let i = 0; i < jumlah; i += 1) {
+      const kotak = await tombolCerita.nth(i).boundingBox()
+      expect(kotak!.height).toBeGreaterThanOrEqual(44)
+    }
+    await page.screenshot({ path: `preview/shots/siklus-cerita-${perangkat.nama}.png`, fullPage: true })
+    await context.close()
+  }
 })

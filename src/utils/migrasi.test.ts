@@ -26,6 +26,7 @@ describe('Migrasi Data v1/v2 ke Slider & Validasi Ketat', () => {
     expect(formatSubjekCatatan('air', 'mengembun', 'dingin')).toBe('Uap air + Dingin = Mengembun')
     expect(formatSubjekCatatan('lilin', 'membeku', 'dingin')).toBe('Lilin + Dingin = Membeku')
     expect(formatSubjekCatatan('cokelat', 'mencair', 'panas')).toBe('Cokelat + Panas = Mencair')
+    expect(formatSubjekCatatan('kristal-es', 'mengkristal', 'dingin')).toBe('Uap air + Dingin = Mengkristal')
     expect(formatSubjekCatatan('kapur-barus', 'menyublim', 'panas')).toBe('Kapur barus + Panas = Menyublim')
   })
 

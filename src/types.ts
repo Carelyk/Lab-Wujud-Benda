@@ -14,7 +14,14 @@ export type TingkatVolume = number // 0 - 100
 
 export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'galeri' | 'suara'
 
-export type BendaId = 'es' | 'air' | 'lilin' | 'cokelat' | 'kapur-barus' | 'panci'
+export type BendaId =
+  | 'es'
+  | 'air'
+  | 'lilin'
+  | 'cokelat'
+  | 'kristal-es'
+  | 'kapur-barus'
+  | 'panci'
 
 /** One temperature band of a benda. `mulai` is the lowest °C of the band. */
 export interface Fase {
@@ -24,8 +31,10 @@ export interface Fase {
 
 export interface Prediksi {
   pertanyaan: string
-  /** Wujud after the first change when the benda is heated. */
+  /** Wujud after the intended temperature change. */
   benar: Wujud
+  /** Defaults to heating; the crystal experiment is intentionally cooling. */
+  arah?: Arah
 }
 
 export interface Benda {

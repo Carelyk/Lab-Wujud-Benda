@@ -58,6 +58,7 @@ describe('data benda', () => {
 describe('fasePada', () => {
   const es = BENDA_LIST.find((b) => b.id === 'es')!
   const air = BENDA_LIST.find((b) => b.id === 'air')!
+  const kristal = BENDA_LIST.find((b) => b.id === 'kristal-es')!
   const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
   const kapurBarus = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
 
@@ -82,6 +83,11 @@ describe('fasePada', () => {
     expect(fasePada(air, -1).wujud).toBe('padat')
   })
 
+  it('uap air langsung menjadi kristal es saat didinginkan', () => {
+    expect(fasePada(kristal, 20).wujud).toBe('gas')
+    expect(fasePada(kristal, -1).wujud).toBe('padat')
+  })
+
   it('lilin meleleh di 55, kapur barus menyublim di 40', () => {
     expect(fasePada(lilin, 54).wujud).toBe('padat')
     expect(fasePada(lilin, 55).wujud).toBe('cair')
@@ -93,6 +99,7 @@ describe('fasePada', () => {
 describe('resolvePhase memakai arah perubahan', () => {
   const es = BENDA_LIST.find((b) => b.id === 'es')!
   const air = BENDA_LIST.find((b) => b.id === 'air')!
+  const kristal = BENDA_LIST.find((b) => b.id === 'kristal-es')!
   const lilin = BENDA_LIST.find((b) => b.id === 'lilin')!
   const kapurBarus = BENDA_LIST.find((b) => b.id === 'kapur-barus')!
 
@@ -107,6 +114,7 @@ describe('resolvePhase memakai arah perubahan', () => {
     expect(resolvePhase(air, 25, -10).proses).toBe('membeku')
     expect(resolvePhase(kapurBarus, 50, 28).proses).toBe('mengkristal')
     expect(resolvePhase(lilin, 60, 28).proses).toBe('membeku')
+    expect(resolvePhase(kristal, 20, -1).proses).toBe('mengkristal')
   })
 
   it('uap tipis: cair ke cair di atas 30 = menguap', () => {

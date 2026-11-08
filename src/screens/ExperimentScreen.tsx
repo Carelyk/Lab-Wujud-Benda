@@ -14,6 +14,7 @@ import {
   IconEs,
   IconKapurBarus,
   IconLilin,
+  IconMengkristal,
   IconPanci,
 } from '../components/ui/SvgIcons'
 import { Panel } from '../components/ui/Panel'
@@ -33,6 +34,7 @@ const IKON: Record<BendaId, ReactNode> = {
   air: <IconAir size={24} />,
   lilin: <IconLilin size={24} />,
   cokelat: <IconCokelat size={24} />,
+  'kristal-es': <IconMengkristal size={24} />,
   'kapur-barus': <IconKapurBarus size={24} />,
   panci: <IconPanci size={24} />,
 }
@@ -60,11 +62,13 @@ const MISI_PROSES: Array<{
   },
   {
     proses: 'mengkristal',
-    bendaId: 'kapur-barus',
+    bendaId: 'kristal-es',
     alur: 'Gas → Padat',
-    petunjuk: 'Jadikan gas dulu, lalu dinginkan.',
+    petunjuk: 'Pilih uap air, lalu dinginkan.',
   },
 ]
+
+const JEDA_LILIN_OTOMATIS_MS = 8000
 
 interface Props {
   progress: Progress
@@ -131,9 +135,10 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
       })
       schedulerRef.current?.antrikan({ proses: p.proses, arah: p.arah })
 
-      // Only a real wujud change while heating answers the prediction.
+      // Predictions normally use heat; the crystal mission intentionally uses cooling.
       const berubahWujud = p.dariWujud !== p.keWujud
-      if (!berubahWujud || p.arah !== 'panas' || sudahDinilai.current.has(bendaId)) return
+      const arahPrediksi = b.prediksi.arah ?? 'panas'
+      if (!berubahWujud || p.arah !== arahPrediksi || sudahDinilai.current.has(bendaId)) return
 
       const pred = progressRef.current.prediksi[bendaId]
       if (!pred) return
@@ -151,6 +156,15 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
     onPerubahan,
     kurangiGerak,
   })
+
+  useEffect(() => {
+    if (bendaId !== 'lilin' || bergerak || target !== benda.suhuAwal) return
+    const id = window.setTimeout(() => {
+      void mainkan('lilinDesis')
+      aturTarget(60)
+    }, JEDA_LILIN_OTOMATIS_MS)
+    return () => window.clearTimeout(id)
+  }, [aturTarget, benda.suhuAwal, bendaId, bergerak, target])
 
   const fase = fasePada(benda, suhu)
   const ambang = ambangSuhu(benda)
