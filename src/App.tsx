@@ -162,6 +162,9 @@ export default function App() {
         onKembali={layar !== 'beranda' ? () => pergi('beranda') : undefined}
       />
       <main className={s.utama}>{isi}</main>
+      <footer className={s.kaki}>
+        <strong>Dirancang Oleh : Zefanya Rizqita Siathen</strong>
+      </footer>
       {lencanaBaru.length > 0 ? (
         <BadgePopup id={lencanaBaru[0]} onTutup={bersihkanLencanaBaru} />
       ) : null}

@@ -14,10 +14,17 @@
 }
 
 .kaki {
+  width: min(100% - 28px, var(--lebar));
+  margin: 0 auto;
   padding: 18px 16px 28px;
   border-top: 1px dashed var(--line-strong);
   text-align: center;
-  font-size: 15px;
+  font-size: clamp(15px, 1.6vw, 18px);
   font-weight: 700;
   color: var(--ink-faint);
+}
+
+.kaki strong {
+  font-family: var(--font-display);
+  font-weight: 600;
 }
