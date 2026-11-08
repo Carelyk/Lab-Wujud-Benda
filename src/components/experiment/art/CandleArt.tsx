@@ -51,7 +51,7 @@ export function CandleArt({ wujud, suhu }: Props) {
 
       {/* The flame base is always translated to the current wick endpoint. */}
       {cair && (
-        <g transform={`translate(120 ${ujungSumbu - 12}) scale(${faktorApi})`}>
+        <g transform={`translate(120 ${ujungSumbu}) scale(${faktorApi}) translate(0 -12)`}>
           <g className={s.api} data-testid="candle-flame">
           {/* outer orange glow */}
           <path
