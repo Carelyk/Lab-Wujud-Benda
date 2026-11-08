@@ -112,6 +112,15 @@ The build uses `base: './'`, so `dist/` works on a domain root or in a subfolder
 The app ships a small service worker (vite-plugin-pwa, auto-update) so it keeps
 working offline after the first visit.
 
+## Menyetel tempo label
+
+Tempo di layar Eksperimen dipusatkan di `src/data/tempo.ts`.
+`JEDA_LABEL_MS` memberi waktu anak melihat benda mulai berubah sebelum label
+muncul. `DURASI_LABEL_MIN_MS` menentukan waktu baca minimum, `FADE_LABEL_MS`
+lama hilangnya label, `JEDA_AMBANG_MS` lama berhenti pada setiap ambang, dan
+`LAJU_SUHU_PER_DETIK` mengatur laju termometer. Ubah angka di satu file itu
+dan jalankan test sebelum dipakai di kelas.
+
 ## Known issues
 
 - `npm audit` reports 6 advisories (2 low, 4 moderate) that all come from

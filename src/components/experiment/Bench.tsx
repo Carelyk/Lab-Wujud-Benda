@@ -11,7 +11,7 @@ interface Props {
   wujud: Wujud
   uap: number
   suhu?: number
-  toast: { proses: NamaProses; urutan: number } | null
+  toast: { proses: NamaProses; urutan: number; keluar: boolean } | null
   onPanas: () => void
   onDingin: () => void
 }
@@ -89,13 +89,13 @@ export function Bench({ benda, wujud, uap, suhu, toast, onPanas, onDingin }: Pro
           <span className={s.pemicuTeks}>Panas</span>
         </button>
 
-        <div className={s.artikel}>
+        <div className={s.artikel} data-testid="experiment-art" data-fase={wujud}>
           <Artwork bendaId={benda.id} wujud={wujud} uap={uap} suhu={suhu} />
         </div>
 
         <div className={s.meja} aria-hidden="true" />
 
-        {toast ? <ProcessToast key={toast.urutan} proses={toast.proses} /> : null}
+        {toast ? <ProcessToast key={toast.urutan} proses={toast.proses} keluar={toast.keluar} /> : null}
       </div>
     </Panel>
   )

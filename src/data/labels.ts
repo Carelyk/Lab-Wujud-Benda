@@ -37,6 +37,16 @@ export const LABEL_ARAH: Record<Arah, string> = {
   dingin: 'Dingin',
 }
 
+export const KOMENTAR_PROSES: Record<NamaProses, string> = {
+  mencair: 'Lihat, benda mulai melunak dan berubah menjadi cair.',
+  membeku: 'Lihat, cairannya mulai mengeras menjadi padat.',
+  menguap: 'Perhatikan uap tipis yang mulai naik dari air.',
+  mendidih: 'Gelembung dan uapnya banyak. Air sedang mendidih.',
+  mengembun: 'Uap yang mendingin berubah lagi menjadi titik air.',
+  menyublim: 'Kapur barus berubah langsung dari padat menjadi gas.',
+  mengkristal: 'Gas yang sangat dingin dapat berubah menjadi padat.',
+}
+
 /** "Es batu + Panas = Mencair" — the line saved in the scientist notebook. */
 export function teksCatatan(benda: Benda, proses: NamaProses, arah: Arah): string {
   return `${benda.nama} + ${LABEL_ARAH[arah]} = ${LABEL_PROSES[proses]}`

@@ -17,13 +17,15 @@ import {
   IconPanci,
 } from '../components/ui/SvgIcons'
 import { Panel } from '../components/ui/Panel'
-import { LABEL_WUJUD, teksCatatan } from '../data/labels'
+import { KOMENTAR_PROSES, LABEL_WUJUD, teksCatatan } from '../data/labels'
+import { FADE_LABEL_MS } from '../data/tempo'
 import { BENDA, BENDA_LIST } from '../data/objects'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useSuhuBertahap } from '../hooks/useSuhuBertahap'
 import type { BendaId, NamaProses, Perubahan, Progress, Wujud } from '../types'
 import { ambangSuhu, fasePada } from '../utils/fase'
 import { mainkan } from '../utils/sound'
+import { LabelScheduler } from '../utils/labelScheduler'
 import s from './ExperimentScreen.module.css'
 
 const IKON: Record<BendaId, ReactNode> = {
@@ -44,7 +46,8 @@ interface Props {
 
 export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartikel }: Props) {
   const [bendaId, setBendaId] = useState<BendaId>('es')
-  const [toast, setToast] = useState<{ proses: NamaProses; urutan: number } | null>(null)
+  const [toast, setToast] = useState<{ proses: NamaProses; urutan: number; keluar: boolean } | null>(null)
+  const [prosesTampil, setProsesTampil] = useState<NamaProses | null>(null)
   const [hasil, setHasil] = useState<{ tepat: boolean; jawaban: Wujud } | null>(null)
 
   const benda = BENDA[bendaId]
@@ -53,20 +56,41 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
   const urutanRef = useRef(0)
   const sudahDinilai = useRef<Set<BendaId>>(new Set())
   const progressRef = useRef(progress)
+  const schedulerRef = useRef<LabelScheduler | null>(null)
+  const tampilkanRef = useRef<(proses: NamaProses) => void>(() => undefined)
 
   useEffect(() => {
     progressRef.current = progress
   }, [progress])
 
+  useEffect(() => {
+    tampilkanRef.current = (proses) => {
+      urutanRef.current += 1
+      setToast({ proses, urutan: urutanRef.current, keluar: false })
+      setProsesTampil(proses)
+      const beruap = proses === 'menguap' || proses === 'mendidih'
+      void mainkan(beruap ? 'cess' : 'ding')
+    }
+  }, [])
+
+  useEffect(() => {
+    const scheduler = new LabelScheduler({
+      onTampil: (label) => tampilkanRef.current(label.proses),
+      onSelesai: () => {
+        setProsesTampil(null)
+        setToast((sekarang) => (sekarang ? { ...sekarang, keluar: true } : null))
+      },
+    })
+    schedulerRef.current = scheduler
+    return () => {
+      scheduler.dispose()
+      schedulerRef.current = null
+    }
+  }, [])
+
   const onPerubahan = useCallback(
     (p: Perubahan) => {
       if (!p.proses || !p.arah) return
-
-      urutanRef.current += 1
-      setToast({ proses: p.proses, urutan: urutanRef.current })
-
-      const beruap = p.proses === 'menguap' || p.proses === 'mendidih'
-      void mainkan(beruap ? 'cess' : 'ding')
 
       const b = BENDA[bendaId]
       void catat({
@@ -75,6 +99,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
         arah: p.arah,
         teks: teksCatatan(b, p.proses, p.arah),
       })
+      schedulerRef.current?.antrikan({ proses: p.proses, arah: p.arah })
 
       // Only a real wujud change while heating answers the prediction.
       const berubahWujud = p.dariWujud !== p.keWujud
@@ -91,7 +116,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
     [bendaId, catat],
   )
 
-  const { suhu, target, bergerak, aturTarget, tambah, ulang, pindah } = useSuhuBertahap({
+  const { suhu, target, bergerak, aturTarget, ulang, pindah } = useSuhuBertahap({
     benda,
     onPerubahan,
     kurangiGerak,
@@ -106,17 +131,27 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
     void tandaiPartikel(fase.wujud)
   }, [fase.wujud, tandaiPartikel])
 
-  // The toast disappears on its own, shortly after its exit animation.
   useEffect(() => {
-    if (!toast) return
-    const id = window.setTimeout(() => setToast(null), 3000)
+    if (!toast?.keluar) return
+    const id = window.setTimeout(() => setToast(null), FADE_LABEL_MS)
     return () => window.clearTimeout(id)
-  }, [toast])
+  }, [toast?.keluar])
+
+  const aturDenganArah = useCallback(
+    (nilai: number) => {
+      if (nilai > target) schedulerRef.current?.batalkanArah('dingin')
+      if (nilai < target) schedulerRef.current?.batalkanArah('panas')
+      aturTarget(nilai)
+    },
+    [aturTarget, target],
+  )
 
   const gantiBenda = (id: BendaId) => {
     if (id === bendaId) return
     void mainkan('klik')
+    schedulerRef.current?.reset()
     setToast(null)
+    setProsesTampil(null)
     setHasil(null)
     pindah(BENDA[id])
     setBendaId(id)
@@ -131,22 +166,24 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
 
   const panaskan = () => {
     void mainkan('klik')
-    aturTarget(benda.suhuMaks)
+    aturDenganArah(benda.suhuMaks)
   }
 
   const dinginkan = () => {
     void mainkan('klik')
-    aturTarget(benda.suhuMin)
+    aturDenganArah(benda.suhuMin)
   }
 
   const sapu = (delta: number) => {
     void mainkan('klik')
-    tambah(delta)
+    aturDenganArah(target + delta)
   }
 
   const ulangi = () => {
     void mainkan('klik')
+    schedulerRef.current?.reset()
     setToast(null)
+    setProsesTampil(null)
     ulang()
   }
 
@@ -162,7 +199,9 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
           ? 'dingin'
           : 'senang'
 
-  const ucapan = hasil
+  const ucapan = prosesTampil
+    ? KOMENTAR_PROSES[prosesTampil]
+    : hasil
     ? hasil.tepat
       ? `Tepat! ${benda.nama} berubah menjadi ${LABEL_WUJUD[benda.prediksi.benar].toLowerCase()}.`
       : `Belum tepat. ${benda.nama} berubah menjadi ${LABEL_WUJUD[benda.prediksi.benar].toLowerCase()}. Coba lagi, ya!`
@@ -215,7 +254,7 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
             bergerak={bergerak}
             ambang={ambang}
             onTarget={(n) => {
-              aturTarget(n)
+              aturDenganArah(n)
             }}
             onTambah={sapu}
             onUlang={ulangi}

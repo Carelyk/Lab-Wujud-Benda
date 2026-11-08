@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Benda, Perubahan } from '../types'
+import { JEDA_AMBANG_MS, LAJU_SUHU_PER_DETIK } from '../data/tempo'
 import { langkahSuhu, resolvePhase } from '../utils/fase'
 
 interface Opsi {
@@ -60,7 +61,7 @@ export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
       const b = bendaRef.current
       const dari = suhuRef.current
       const tujuan = targetRef.current
-      const kecepatan = reduksiRef.current ? 300 : 42
+      const kecepatan = reduksiRef.current ? 300 : LAJU_SUHU_PER_DETIK
       const hasil = langkahSuhu(b, dari, tujuan, dt, kecepatan)
 
       if (Math.abs(tujuan - dari) < 0.05) {
@@ -75,7 +76,7 @@ export function useSuhuBertahap({ benda, onPerubahan, kurangiGerak }: Opsi) {
       }
 
       if (hasil.tahan) {
-        tahanRef.current = now + (reduksiRef.current ? 260 : 600)
+        tahanRef.current = now + (reduksiRef.current ? 0 : JEDA_AMBANG_MS)
       }
 
       const perubahan = resolvePhase(b, dari, hasil.berikut)

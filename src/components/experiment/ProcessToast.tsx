@@ -16,12 +16,18 @@ const IKON: Record<NamaProses, ReactNode> = {
 
 interface Props {
   proses: NamaProses
+  keluar?: boolean
 }
 
 /** Big label that pops over the bench whenever the wujud changes. */
-export function ProcessToast({ proses }: Props) {
+export function ProcessToast({ proses, keluar = false }: Props) {
   return (
-    <div className={`${s.toast} ${s[proses]}`} role="status">
+    <div
+      className={`${s.toast} ${s[proses]} ${keluar ? s.keluar : ''}`}
+      data-testid="process-toast"
+      role="status"
+      aria-live="polite"
+    >
       <span className={s.ikon}>{IKON[proses]}</span>
       <span className={s.isi}>
         <strong className={s.judul}>{LABEL_PROSES[proses]}!</strong>

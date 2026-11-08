@@ -5,14 +5,14 @@ test('Playwright C1-C3: Slider Volume, Popover 360px, Migrasi v1, dan Validasi T
   // 1. Konteks localStorage Kosong
   const context1 = await browser.newContext()
   const page1 = await context1.newPage()
-  await page1.goto('http://localhost:5173/')
+  await page1.goto('/')
   await page1.waitForSelector('h1')
 
   const ruteList = ['#/', '#/eksperimen', '#/sortir', '#/kuis', '#/lencana', '#/sekitar', '#/siklus', '#/pengaturan', '#/suara', '#/ikon']
   const emojiOrMojibakeRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u00F0\u0178\u00E2\u20ac\u00C3\u00C2]/u
 
   for (const rute of ruteList) {
-    await page1.goto(`http://localhost:5173/${rute}`)
+    await page1.goto(`/${rute}`)
     await page1.waitForTimeout(200)
     const text = await page1.evaluate(() => document.body.innerText)
     expect(emojiOrMojibakeRegex.test(text)).toBe(false)
@@ -22,7 +22,7 @@ test('Playwright C1-C3: Slider Volume, Popover 360px, Migrasi v1, dan Validasi T
 
   // Uji Slider Volume di TopBar & Cek 360px popover
   await page1.setViewportSize({ width: 360, height: 780 })
-  await page1.goto('http://localhost:5173/')
+  await page1.goto('/')
   await page1.waitForTimeout(300)
 
   // Ambil screenshot TopBar tertutup
@@ -40,18 +40,18 @@ test('Playwright C1-C3: Slider Volume, Popover 360px, Migrasi v1, dan Validasi T
 
   // Buka #/pengaturan dan #/suara serta ambil screenshot
   await page1.setViewportSize({ width: 360, height: 780 })
-  await page1.goto('http://localhost:5173/#/suara')
+  await page1.goto('/#/suara')
   await page1.waitForTimeout(300)
   await page1.screenshot({ path: 'preview/shots/suara-360.png', fullPage: true })
 
-  await page1.goto('http://localhost:5173/#/pengaturan')
+  await page1.goto('/#/pengaturan')
   await page1.waitForTimeout(300)
   await page1.screenshot({ path: 'preview/shots/pengaturan-360.png', fullPage: true })
 
   // Bukti ukur scrollWidth <= clientWidth & ukuran touch target >= 48px pada rute utama
   const rutesUkur = ['#/', '#/eksperimen', '#/sekitar', '#/pengaturan', '#/suara']
   for (const rute of rutesUkur) {
-    await page1.goto(`http://localhost:5173/${rute}`)
+    await page1.goto(`/${rute}`)
     await page1.waitForTimeout(200)
     const metrics = await page1.evaluate(() => {
       return {
@@ -103,7 +103,7 @@ test('Playwright C1-C3: Slider Volume, Popover 360px, Migrasi v1, dan Validasi T
     localStorage.setItem('lwb:v1', JSON.stringify(v1Data))
   })
 
-  await page2.goto('http://localhost:5173/')
+  await page2.goto('/')
   await page2.waitForTimeout(500)
 
   const textK2 = await page2.evaluate(() => document.body.innerText)
