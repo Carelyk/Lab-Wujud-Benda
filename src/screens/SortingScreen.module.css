@@ -86,6 +86,32 @@
   align-items: center;
 }
 
+.kemajuan {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(12px, 1fr));
+  gap: 7px;
+  margin: -2px 0 18px;
+}
+
+.titikKemajuan {
+  height: 9px;
+  border-radius: var(--r-pill);
+  background: #e3edf4;
+  border: 1px solid #c9dce9;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.titikSelesai {
+  background: var(--benar);
+  border-color: var(--benar-tua);
+}
+
+.titikAktif {
+  background: var(--bintang);
+  border-color: var(--bintang-tua);
+  transform: scaleY(1.45);
+}
+
 /* ---------- kartu benda ---------- */
 .kartu {
   position: relative;

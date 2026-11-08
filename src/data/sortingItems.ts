@@ -1,15 +1,14 @@
 import type { ItemSortir } from '../types'
 
 /**
- * Sorting content. Twelve main benda (5 padat, 4 cair, 3 gas) teach the basic
- * rule; five "Tantangan" benda look confusing but still follow the same rule.
+ * The catalog contains extra examples for future material, while the visible
+ * round intentionally uses ten benda (4 padat, 3 cair, 3 gas).
  *
- * Every tantangan answer carries a short explanation because these are the
- * cases children (and sometimes adults) argue about. They are marked
- * `perluVerifikasi` so a teacher can check the wording against the grade-4
- * IPAS book before classroom use. No pressure, no other variables.
+ * Every answer carries a short explanation and hint. Content is marked
+ * `perluVerifikasi` when a teacher should check the wording against the
+ * grade-4 IPAS book before classroom use.
  */
-export const ITEM_SORTIR: ItemSortir[] = [
+const KATALOG_SORTIR: ItemSortir[] = [
   // ---------- padat (5) ----------
   {
     id: 'batu',
@@ -164,8 +163,22 @@ export const ITEM_SORTIR: ItemSortir[] = [
   },
 ]
 
-export const ITEM_UTAMA = ITEM_SORTIR.filter((i) => !i.tantangan)
-export const ITEM_TANTANGAN = ITEM_SORTIR.filter((i) => i.tantangan)
+const ID_ITEM_UTAMA = new Set([
+  'batu',
+  'kayu',
+  'es',
+  'buku',
+  'air',
+  'minyak',
+  'sirup',
+  'balon',
+  'uap',
+  'oksigen',
+])
+
+export const ITEM_SORTIR = KATALOG_SORTIR.filter((i) => ID_ITEM_UTAMA.has(i.id))
+export const ITEM_UTAMA = ITEM_SORTIR
+export const ITEM_TANTANGAN: ItemSortir[] = []
 
 export function itemSortirDari(id: string): ItemSortir | undefined {
   return ITEM_SORTIR.find((i) => i.id === id)

@@ -1,4 +1,4 @@
-.modal { width:min(680px,calc(100vw - 24px)); max-height:92vh; padding:20px; border:3px solid #2D3142; border-radius:24px; background:#FFFFFF; color:#2D3142; box-shadow:0 24px 60px rgba(45,49,66,.35); overflow:auto; }
+.modal { position:fixed; inset:0; width:min(680px,calc(100vw - 24px)); max-height:calc(100vh - 32px); margin:auto; padding:20px; border:3px solid #2D3142; border-radius:24px; background:#FFFFFF; color:#2D3142; box-shadow:0 24px 60px rgba(45,49,66,.35); overflow:auto; }
 .modal::backdrop { background:rgba(45,49,66,.66); }
 .kepala { display:flex; justify-content:space-between; gap:16px; align-items:start; border-bottom:1px solid #B9D6E9; padding-bottom:12px; }
 .judul { margin:7px 0 0; font-family:var(--font-display); font-size:28px; line-height:1.08; }

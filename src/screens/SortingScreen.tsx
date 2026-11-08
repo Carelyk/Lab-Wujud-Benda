@@ -54,9 +54,7 @@ type Ronde = 'utama' | 'tantangan'
  *   2. Tap the card, then tap a basket.
  *   3. Keyboard: Enter on the card selects it, then Enter on a basket.
  *
- * A wrong answer on a main item returns the item with a hint. A wrong answer
- * on a Tantangan item shows the correct answer plus the reason, because those
- * five cases are the ones children argue about.
+ * A wrong answer returns the item with a short hint so the child can retry.
  */
 export function SortingScreen({ onSimpan, onBeranda }: Props) {
   const [ronde, setRonde] = useState<Ronde>('utama')
@@ -217,8 +215,7 @@ export function SortingScreen({ onSimpan, onBeranda }: Props) {
           </p>
           {ronde === 'utama' ? (
             <p className={s.kecil}>
-              12 benda · keranjang padat, cair, gas · keranjang gas lebih sedikit karena gas paling
-              sulit dilihat.
+              10 benda pilihan · 4 padat · 3 cair · 3 gas.
             </p>
           ) : (
             <p className={s.kecil}>
@@ -248,7 +245,6 @@ export function SortingScreen({ onSimpan, onBeranda }: Props) {
           salah={totalSalah}
           tersulit={termudah}
           onUlang={() => mulaiRonde(ronde)}
-          onTantangan={() => mulaiRonde('tantangan')}
           onBeranda={onBeranda}
         />
       ) : item ? (
@@ -259,6 +255,17 @@ export function SortingScreen({ onSimpan, onBeranda }: Props) {
             ikon={<IconBasket size={22} />}
             aksi={<span className={s.hitung}>{totalSalah} kali belum tepat</span>}
           >
+            <div className={s.kemajuan} aria-label={`${indeks} dari ${antrian.length} benda selesai`}>
+              {antrian.map((benda, urutan) => (
+                <span
+                  key={benda.id}
+                  className={`${s.titikKemajuan} ${
+                    urutan < indeks ? s.titikSelesai : urutan === indeks ? s.titikAktif : ''
+                  }`}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
             <div className={s.area}>
               <button
                 type="button"
@@ -347,7 +354,6 @@ interface RingkasanProps {
   salah: number
   tersulit: ItemSortir[]
   onUlang: () => void
-  onTantangan: () => void
   onBeranda: () => void
 }
 
@@ -358,7 +364,6 @@ function Ringkasan({
   salah,
   tersulit,
   onUlang,
-  onTantangan,
   onBeranda,
 }: RingkasanProps) {
   return (
@@ -408,11 +413,6 @@ function Ringkasan({
             <BigButton ikon={<IconUlang size={22} />} onClick={onUlang} sub="acak ulang urutannya">
               Main lagi
             </BigButton>
-            {ronde === 'utama' ? (
-              <BigButton ikon={<IconBasket size={22} />} onClick={onTantangan} sub="5 benda pengecoh">
-                Coba Tantangan
-              </BigButton>
-            ) : null}
             <BigButton ikon={<IconKembali size={22} />} onClick={onBeranda} nada="netral">
               Beranda
             </BigButton>

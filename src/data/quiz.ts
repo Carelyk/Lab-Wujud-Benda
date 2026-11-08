@@ -1,7 +1,7 @@
 import type { SoalKuis } from '../types'
 
 /**
- * Quiz content. Eight questions mix four kinds of thinking:
+ * Quiz content. Ten questions mix four kinds of thinking:
  * ciri wujud, nama proses, sebab-akibat, and everyday examples.
  *
  * Only temperature is used. No pressure and no "menyublim" in Tahap 2.
@@ -105,10 +105,34 @@ export const SOAL_KUIS: SoalKuis[] = [
       'Pada 100 °C air mendidih. Muncul banyak gelembung dan uap air. Di bawah 100 °C air sebenarnya sudah bisa menguap perlahan, tetapi belum mendidih.',
     perluVerifikasi: true,
   },
+  {
+    id: 'contoh-mengembun',
+    pertanyaan: 'Bagian luar gelas berisi es menjadi basah. Dari mana titik air itu berasal?',
+    opsi: [
+      { teks: 'Uap air di udara yang mengembun', benar: true },
+      { teks: 'Air di dalam gelas menembus kaca', benar: false },
+      { teks: 'Es berubah menjadi gas', benar: false },
+    ],
+    penjelasan:
+      'Permukaan gelas yang dingin membuat uap air di udara kehilangan panas dan mengembun menjadi titik air di bagian luar gelas.',
+    perluVerifikasi: true,
+  },
+  {
+    id: 'sebab-freezer',
+    pertanyaan: 'Mengapa air yang diletakkan di freezer dapat berubah menjadi es?',
+    opsi: [
+      { teks: 'Air kehilangan panas lalu membeku', benar: true },
+      { teks: 'Air menerima banyak panas', benar: false },
+      { teks: 'Air bercampur dengan udara', benar: false },
+    ],
+    penjelasan:
+      'Di dalam freezer, air kehilangan panas. Ketika cukup dingin, air berubah dari benda cair menjadi benda padat melalui proses membeku.',
+    perluVerifikasi: true,
+  },
 ]
 
-/** Stars for a finished quiz out of eight questions. */
+/** Stars for a finished quiz out of ten questions. */
 export const AMBANG_KUIS = {
-  tiga: 7,
-  dua: 5,
+  tiga: 9,
+  dua: 7,
 } as const

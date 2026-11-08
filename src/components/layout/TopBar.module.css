@@ -12,7 +12,8 @@
   border-bottom: 1px solid var(--line);
   box-sizing: border-box;
   width: 100%;
-  max-width: 100vw;
+  max-width: var(--lebar);
+  margin-inline: auto;
   overflow: hidden;
 }
 

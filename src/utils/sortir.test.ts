@@ -3,16 +3,16 @@ import { ITEM_SORTIR, ITEM_TANTANGAN, ITEM_UTAMA } from '../data/sortingItems'
 import { bintangSortir, itemSeringSalah } from './sortir'
 
 describe('data sortir', () => {
-  it('berisi 12 benda utama dan 5 tantangan', () => {
-    expect(ITEM_UTAMA).toHaveLength(12)
-    expect(ITEM_TANTANGAN).toHaveLength(5)
-    expect(ITEM_SORTIR).toHaveLength(17)
+  it('berisi tepat 10 benda dalam satu ronde ringkas', () => {
+    expect(ITEM_UTAMA).toHaveLength(10)
+    expect(ITEM_TANTANGAN).toHaveLength(0)
+    expect(ITEM_SORTIR).toHaveLength(10)
   })
 
-  it('komposisi wujud utama seimbang: 5 padat, 4 cair, 3 gas', () => {
+  it('komposisi wujud utama seimbang: 4 padat, 3 cair, 3 gas', () => {
     const hitung = (w: string) => ITEM_UTAMA.filter((i) => i.wujud === w).length
-    expect(hitung('padat')).toBe(5)
-    expect(hitung('cair')).toBe(4)
+    expect(hitung('padat')).toBe(4)
+    expect(hitung('cair')).toBe(3)
     expect(hitung('gas')).toBe(3)
   })
 
@@ -26,34 +26,31 @@ describe('data sortir', () => {
     }
   })
 
-  it('semua tantangan ditandai perlu diverifikasi', () => {
-    for (const item of ITEM_TANTANGAN) {
-      expect(item.tantangan).toBe(true)
-      expect(item.perluVerifikasi).toBe(true)
-    }
+  it('ronde utama tidak menyisipkan item tantangan', () => {
+    expect(ITEM_UTAMA.every((item) => !item.tantangan)).toBe(true)
   })
 })
 
 describe('bintangSortir', () => {
   it('tanpa salah mendapat 3 bintang', () => {
-    expect(bintangSortir(12, 0)).toBe(3)
+    expect(bintangSortir(10, 0)).toBe(3)
     expect(bintangSortir(5, 0)).toBe(3)
   })
 
   it('sedikit salah mendapat 2 bintang', () => {
-    expect(bintangSortir(12, 1)).toBe(2)
-    expect(bintangSortir(12, 2)).toBe(2)
+    expect(bintangSortir(10, 1)).toBe(2)
+    expect(bintangSortir(10, 2)).toBe(2)
     expect(bintangSortir(5, 1)).toBe(2)
   })
 
   it('banyak salah tetap mendapat 1 bintang', () => {
-    expect(bintangSortir(12, 3)).toBe(1)
+    expect(bintangSortir(10, 3)).toBe(1)
     expect(bintangSortir(5, 2)).toBe(1)
   })
 
   it('hasil tidak pernah 0 bintang', () => {
     expect(bintangSortir(0, 0)).toBe(1)
-    expect(bintangSortir(12, 99)).toBe(1)
+    expect(bintangSortir(10, 99)).toBe(1)
   })
 })
 

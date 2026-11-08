@@ -37,6 +37,35 @@ const IKON: Record<BendaId, ReactNode> = {
   panci: <IconPanci size={24} />,
 }
 
+const MISI_PROSES: Array<{
+  proses: Exclude<NamaProses, 'mendidih'>
+  bendaId: BendaId
+  alur: string
+  petunjuk: string
+}> = [
+  { proses: 'mencair', bendaId: 'es', alur: 'Padat → Cair', petunjuk: 'Pilih es, lalu panaskan.' },
+  { proses: 'membeku', bendaId: 'air', alur: 'Cair → Padat', petunjuk: 'Pilih air, lalu dinginkan.' },
+  { proses: 'menguap', bendaId: 'panci', alur: 'Cair → Gas', petunjuk: 'Pilih air di panci, lalu panaskan.' },
+  {
+    proses: 'mengembun',
+    bendaId: 'panci',
+    alur: 'Gas → Cair',
+    petunjuk: 'Jadikan uap dulu, lalu dinginkan.',
+  },
+  {
+    proses: 'menyublim',
+    bendaId: 'kapur-barus',
+    alur: 'Padat → Gas',
+    petunjuk: 'Pilih kapur barus, lalu panaskan.',
+  },
+  {
+    proses: 'mengkristal',
+    bendaId: 'kapur-barus',
+    alur: 'Gas → Padat',
+    petunjuk: 'Jadikan gas dulu, lalu dinginkan.',
+  },
+]
+
 interface Props {
   progress: Progress
   catat: (entri: EntriCatatan) => Promise<Progress>
@@ -46,6 +75,7 @@ interface Props {
 
 export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartikel }: Props) {
   const [bendaId, setBendaId] = useState<BendaId>('es')
+  const [misiAktif, setMisiAktif] = useState<NamaProses>('mencair')
   const [toast, setToast] = useState<{ proses: NamaProses; urutan: number; keluar: boolean } | null>(null)
   const [prosesTampil, setProsesTampil] = useState<NamaProses | null>(null)
   const [hasil, setHasil] = useState<{ tepat: boolean; jawaban: Wujud } | null>(null)
@@ -157,6 +187,11 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
     setBendaId(id)
   }
 
+  const pilihMisi = (proses: NamaProses, id: BendaId) => {
+    setMisiAktif(proses)
+    if (id !== bendaId) gantiBenda(id)
+  }
+
   const jawab = (w: Wujud) => {
     void mainkan('klik')
     void simpanPrediksi(benda.id, w, w === benda.prediksi.benar)
@@ -217,13 +252,48 @@ export function ExperimentScreen({ progress, catat, simpanPrediksi, tandaiPartik
 
   return (
     <div className={s.layar}>
+      <section className={s.misi} aria-labelledby="judul-misi-perubahan">
+        <div className={s.misiKepala}>
+          <div>
+            <span className={s.misiPita}>Peta belajar</span>
+            <h1 id="judul-misi-perubahan" className={s.misiJudul}>6 misi perubahan wujud</h1>
+          </div>
+          <p className={s.misiPenjelasan}>
+            Enam benda di laboratorium dapat dipanaskan dan didinginkan. Pilih satu misi agar tahu
+            benda dan urutan tombol yang perlu dicoba.
+          </p>
+        </div>
+        <div className={s.misiDaftar}>
+          {MISI_PROSES.map((misi, urutan) => (
+            <button
+              key={misi.proses}
+              type="button"
+              className={`${s.misiKartu} ${misiAktif === misi.proses ? s.misiTerpilih : ''}`}
+              onClick={() => pilihMisi(misi.proses, misi.bendaId)}
+              aria-pressed={misiAktif === misi.proses}
+            >
+              <span className={s.misiNomor}>{urutan + 1}</span>
+              <span className={s.misiIsi}>
+                <strong>{KOMENTAR_PROSES[misi.proses].split('.')[0]}</strong>
+                <span className={s.misiProses}>{misi.proses}</span>
+                <span className={s.misiAlur}>{misi.alur}</span>
+                <small>{misi.petunjuk}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+
       <div className={s.pilih} role="group" aria-label="Pilih benda">
         {BENDA_LIST.map((b) => (
           <button
             key={b.id}
             type="button"
             className={`${s.tab} ${b.id === bendaId ? s.aktif : ''}`}
-            onClick={() => gantiBenda(b.id)}
+            onClick={() => {
+              setMisiAktif(MISI_PROSES.find((misi) => misi.bendaId === b.id)?.proses ?? 'mencair')
+              gantiBenda(b.id)
+            }}
             aria-pressed={b.id === bendaId}
             title={b.keterangan}
           >

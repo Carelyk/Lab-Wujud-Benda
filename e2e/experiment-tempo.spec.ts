@@ -125,21 +125,19 @@ test('label proses menunggu visual, berurutan, dan tidak menumpuk', async ({ pag
 test('screenshot label mencair menunjukkan urutan waktu', async ({ browser }) => {
   test.setTimeout(45000)
   fs.mkdirSync('preview/shots', { recursive: true })
-  for (const [waktu, nama] of [
-    [0, 'label-mencair-t0.png'],
-    [500, 'label-mencair-t500.png'],
-    [1500, 'label-mencair-t1500.png'],
-  ] as const) {
-    const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })
-    const page = await context.newPage()
-    await page.goto('/#/eksperimen')
-    const art = page.locator('[data-testid="experiment-art"]')
-    const panggung = art.locator('xpath=../..')
-    await aturSuhu(page, 'Es batu', 0)
-    await expect(art).toHaveAttribute('data-fase', 'cair', { timeout: 3000 })
-    await page.waitForTimeout(waktu)
-    if (waktu >= 1000) await expect(page.locator('[data-testid="process-toast"]')).toContainText('Mencair')
-    await panggung.screenshot({ path: `preview/shots/${nama}` })
-    await context.close()
-  }
+  const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })
+  const page = await context.newPage()
+  await page.goto('/#/eksperimen')
+  const art = page.locator('[data-testid="experiment-art"]')
+  const panggung = art.locator('xpath=../..')
+  const toast = page.locator('[data-testid="process-toast"]')
+
+  await aturSuhu(page, 'Es batu', 0)
+  await expect(art).toHaveAttribute('data-fase', 'cair', { timeout: 3000 })
+  await panggung.screenshot({ path: 'preview/shots/label-mencair-t0.png' })
+  await page.waitForTimeout(500)
+  await panggung.screenshot({ path: 'preview/shots/label-mencair-t500.png' })
+  await expect(toast).toContainText('Mencair', { timeout: 3000 })
+  await panggung.screenshot({ path: 'preview/shots/label-mencair-t1500.png' })
+  await context.close()
 })

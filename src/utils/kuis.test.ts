@@ -3,8 +3,8 @@ import { SOAL_KUIS } from '../data/quiz'
 import { bintangKuis, indeksBenar, siapkanKuis } from './kuis'
 
 describe('data kuis', () => {
-  it('berisi 8 soal dengan tepat satu jawaban benar', () => {
-    expect(SOAL_KUIS).toHaveLength(8)
+  it('berisi 10 soal dengan tepat satu jawaban benar', () => {
+    expect(SOAL_KUIS).toHaveLength(10)
     for (const soal of SOAL_KUIS) {
       expect(soal.opsi.filter((o) => o.benar)).toHaveLength(1)
       expect(soal.opsi.length).toBeGreaterThanOrEqual(3)
@@ -70,19 +70,19 @@ describe('siapkanKuis', () => {
 })
 
 describe('bintangKuis', () => {
-  it('7–8 benar dari 8 soal mendapat 3 bintang', () => {
-    expect(bintangKuis(8, 8)).toBe(3)
-    expect(bintangKuis(7, 8)).toBe(3)
+  it('9-10 benar dari 10 soal mendapat 3 bintang', () => {
+    expect(bintangKuis(10, 10)).toBe(3)
+    expect(bintangKuis(9, 10)).toBe(3)
   })
 
-  it('5–6 benar mendapat 2 bintang', () => {
-    expect(bintangKuis(6, 8)).toBe(2)
-    expect(bintangKuis(5, 8)).toBe(2)
+  it('7-8 benar mendapat 2 bintang', () => {
+    expect(bintangKuis(8, 10)).toBe(2)
+    expect(bintangKuis(7, 10)).toBe(2)
   })
 
-  it('di bawah 5 benar tetap mendapat 1 bintang', () => {
-    expect(bintangKuis(4, 8)).toBe(1)
-    expect(bintangKuis(0, 8)).toBe(1)
+  it('di bawah 7 benar tetap mendapat 1 bintang', () => {
+    expect(bintangKuis(6, 10)).toBe(1)
+    expect(bintangKuis(0, 10)).toBe(1)
   })
 
   it('tidak pernah 0 bintang', () => {

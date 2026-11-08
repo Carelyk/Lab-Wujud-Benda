@@ -96,7 +96,7 @@ export function HomeScreen({
             <BigButton
               nada="panas"
               ikon={<IconFlask size={26} />}
-              sub="6 benda - panas dan dingin"
+              sub="6 proses - panas dan dingin"
               onClick={onMulai}
             >
               Ayo Bereksperimen
@@ -152,7 +152,7 @@ export function HomeScreen({
             <span className={s.modeTeks}>
               <span className={s.modeNama}>Eksperimen Bebas</span>
               <span className={s.modeKet}>
-                Panaskan dan dinginkan 6 benda, lalu catat perubahannya.
+                Temukan 6 jenis perubahan wujud lewat eksperimen panas dan dingin.
               </span>
             </span>
             <span className={s.modeMeta}>{progress.catatan.length} catatan</span>
@@ -165,7 +165,7 @@ export function HomeScreen({
             <span className={s.modeTeks}>
               <span className={s.modeNama}>Sortir Benda</span>
               <span className={s.modeKet}>
-                Masukkan 12 benda ke keranjang padat, cair, atau gas.
+                Sortir 10 benda ke keranjang padat, cair, atau gas.
               </span>
             </span>
             <span className={s.modeMeta}>{bintangTeks(progress.sortir.bintang)}</span>
@@ -177,7 +177,7 @@ export function HomeScreen({
             </span>
             <span className={s.modeTeks}>
               <span className={s.modeNama}>Kuis Bintang</span>
-              <span className={s.modeKet}>Jawab 8 soal acak dan kumpulkan sampai tiga bintang.</span>
+              <span className={s.modeKet}>Jawab 10 soal acak dan kumpulkan sampai tiga bintang.</span>
             </span>
             <span className={s.modeMeta}>{bintangTeks(progress.kuis.bintang)}</span>
           </button>
