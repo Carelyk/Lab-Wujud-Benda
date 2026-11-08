@@ -63,8 +63,8 @@
 }
 
 .api {
-  transform-box: view-box;
-  transform-origin: 0 12px;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
   animation: berkedip 1.4s ease-in-out infinite;
 }
 
@@ -74,7 +74,7 @@
     transform: scaleY(1) scaleX(1);
   }
   50% {
-    transform: scaleY(1.12) scaleX(0.94);
+    transform: scaleY(1.05) scaleX(0.96) rotate(1deg);
   }
 }
 
@@ -112,5 +112,12 @@
   }
   50% {
     transform: translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .api,
+  .drip {
+    animation: none;
   }
 }
