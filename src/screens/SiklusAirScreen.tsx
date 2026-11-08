@@ -19,6 +19,7 @@ export function SiklusAirScreen({ progress, onBack, onSelesai, tandaiPartikel }:
   const kurangiGerak = useReducedMotion(); const { progress: putaran, berjalan, putar, stop, seek } = useTimeline({ durasiMs: 24000, autoPlay: !kurangiGerak })
   const [ulangOtomatis, setUlangOtomatis] = useState(false); const [wujud, setWujud] = useState<Wujud>('cair'); const [suhu, setSuhu] = useState(25); const [sibuk, setSibuk] = useState(false)
   const index = Math.max(0, Math.min(3, Math.floor((Number.isFinite(putaran) ? putaran : 0) * 4))); const tahap = TAHAP_SIKLUS_LIST[index] ?? TAHAP_SIKLUS_LIST[0]
+  useEffect(() => { const suara = ['siklusMatahari', 'siklusAwan', 'siklusHujan', 'siklusSalju'] as const; void mainkan(suara[index]) }, [index])
   useEffect(() => { if (putaran >= 1 && ulangOtomatis && !kurangiGerak) putar() }, [kurangiGerak, putar, putaran, ulangOtomatis])
   const selesai = async () => { if (sibuk || progress.siklus.selesai) return; setSibuk(true); await onSelesai(); setSibuk(false) }
   return <div className={s.halaman}>
