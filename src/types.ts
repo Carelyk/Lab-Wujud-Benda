@@ -12,7 +12,7 @@ export type NamaProses =
 export type Arah = 'panas' | 'dingin'
 export type TingkatVolume = number // 0 - 100
 
-export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'suara'
+export type ScreenId = 'beranda' | 'eksperimen' | 'sortir' | 'kuis' | 'lencana' | 'siklus' | 'untungRugi' | 'galeri' | 'suara'
 
 export type BendaId = 'es' | 'air' | 'lilin' | 'cokelat' | 'kapur-barus' | 'panci'
 

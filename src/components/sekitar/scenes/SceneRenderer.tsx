@@ -1,76 +1,24 @@
-import React from 'react'
+import type { ReactElement } from 'react'
+import type { ContohUntungRugiAnimasi } from '../../../data/untungRugiAnimasi'
 import s from './Scene.module.css'
 
-export const SceneRenderer: React.FC<{ id: string; progress: number; reducedMotion?: boolean }> = ({
-  id,
-  progress,
-  reducedMotion,
-}) => {
-  const p = reducedMotion ? 1 : progress
+type IdAdegan = ContohUntungRugiAnimasi['id']
+type Adegan = ({ p }: { p: number }) => ReactElement
 
-  let scale = 1
-  let textLabel = 'Mulai'
-
-  if (p < 0.35) {
-    textLabel = 'Keadaan Awal'
-    scale = 1
-  } else if (p < 0.85) {
-    textLabel = 'Proses Perubahan'
-    scale = 1 + Math.sin(p * Math.PI * 4) * 0.05
-  } else {
-    textLabel = 'Keadaan Akhir'
-    scale = 1
-  }
-
-  return (
-    <div className={s.sceneContainer} aria-hidden="true">
-      <svg viewBox="0 0 300 160" className={s.svgCanvas} preserveAspectRatio="xMidYMid meet">
-        <rect width="300" height="160" rx="16" fill="var(--latar)" />
-        
-        <circle cx="250" cy="30" r="18" fill="var(--panas)" opacity={0.8} />
-        <path d="M250 8L250 2M250 52L250 58M228 30L222 30M272 30L278 30" stroke="var(--panas)" strokeWidth="3" strokeLinecap="round" />
-
-        <path d="M90 120 L210 120 L200 140 L100 140 Z" fill="var(--aksen)" opacity={0.3} />
-
-        {id === 'es-krim' && (
-          <g transform={`translate(150, 95) scale(${scale})`}>
-            <polygon points="-20,-10 20,-10 0,40" fill="#D97706" />
-            <circle cx="0" cy={-20 + p * 10} r={22 - p * 4} fill="#F472B6" />
-            <circle cx="-8" cy={-30 + p * 8} r={16} fill="#FBCFE8" />
-            {p > 0.5 && <path d="M-10 0 Q 0 15 10 5" fill="none" stroke="#F472B6" strokeWidth="6" strokeLinecap="round" />}
-          </g>
-        )}
-
-        {id === 'hujan' && (
-          <g>
-            <rect x="50" y="115" width="200" height="25" rx="6" fill="#3B82F6" />
-            <path d={`M100 ${110 - p * 50} Q110 ${90 - p * 50} 100 ${70 - p * 50}`} fill="none" stroke="#93C5FD" strokeWidth="3" opacity={1 - p} />
-            <path d={`M180 ${115 - p * 60} Q170 ${95 - p * 60} 180 ${75 - p * 60}`} fill="none" stroke="#93C5FD" strokeWidth="3" opacity={1 - p} />
-            <path d="M120 40 Q140 25 160 40 Q180 35 190 50 Q205 50 200 65 Q115 65 120 40" fill="#9CA3AF" opacity={p} />
-            {p > 0.6 && (
-              <g stroke="#3B82F6" strokeWidth="2" strokeLinecap="round">
-                <line x1="140" y1="70" x2="135" y2="85" opacity={(p - 0.6) * 2.5} />
-                <line x1="165" y1="70" x2="160" y2="85" opacity={(p - 0.6) * 2.5} />
-                <line x1="180" y1="70" x2="175" y2="85" opacity={(p - 0.6) * 2.5} />
-              </g>
-            )}
-          </g>
-        )}
-
-        {id !== 'es-krim' && id !== 'hujan' && (
-          <g transform={`translate(150, 90) scale(${scale})`}>
-            <circle cx="0" cy="0" r={30 + p * 10} fill="var(--bintang)" opacity={0.8} />
-            <text x="0" y="5" textAnchor="middle" fill="#1F2937" fontSize="12" fontWeight="bold">
-              {Math.round(p * 100)}%
-            </text>
-          </g>
-        )}
-
-        <rect x="15" y="15" width="90" height="24" rx="12" fill="var(--teks)" opacity={0.8} />
-        <text x="60" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
-          {textLabel}
-        </text>
-      </svg>
-    </div>
-  )
+function Latar({ malam = false }: { malam?: boolean }) {
+  return <><rect width="400" height="300" fill={malam ? '#DDEBFA' : '#EAF6FF'} /><circle cx="338" cy="54" r="24" fill="#FFD166" stroke="#2D3142" strokeWidth="2.5" /><path d="M0 236H400V300H0Z" fill="#BFE5C6" stroke="#2D3142" strokeWidth="2.5" /><path d="M0 255H400" stroke="#2D3142" strokeWidth="2.5" /></>
 }
+
+function EsKrim({ p }: { p: number }) { const beku = Math.max(0, (p - .3) / .5); return <svg viewBox="0 0 400 300"><Latar /><path d="M58 226H338M100 226V255M296 226V255" stroke="#2D3142" strokeWidth="5" /><rect x="125" y="142" width="110" height="67" rx="12" fill="#D8EFFF" stroke="#2D3142" strokeWidth="3" /><ellipse cx="180" cy="157" rx="42" ry="13" fill="#75C8FF" opacity={1 - beku} /><rect x="150" y="122" width="60" height="60" rx="9" fill="#BEE9FF" stroke="#2D3142" strokeWidth="3" /><path d="M160 138l9 9m14-12 8 10m-25 20 9 9" stroke="#FFFFFF" strokeWidth="4" /><path d="M242 205l20-55 20 55z" fill="#F5A524" stroke="#2D3142" strokeWidth="3" opacity={beku} /><circle cx="262" cy="145" r="18" fill="#FFB6CE" stroke="#2D3142" strokeWidth="3" opacity={beku} /></svg> }
+function Hujan({ p }: { p: number }) { const hujan = Math.max(0, (p - .55) / .45); return <svg viewBox="0 0 400 300"><Latar /><path d="M0 230C80 216 126 246 196 230S310 218 400 235V300H0Z" fill="#5CC8F5" stroke="#2D3142" strokeWidth="3" /><path d={`M105 ${200 - p * 70}q10-20 0-40M150 ${205 - p * 70}q12-20 0-40`} fill="none" stroke="#A7DFFF" strokeWidth="5" opacity={1 - hujan} /><path d="M164 100c14-22 44-18 53 2 22-10 42 8 37 28h-105c-5-18 1-26 15-30z" fill="#A9B8CC" stroke="#2D3142" strokeWidth="3" /><g stroke="#2F9BFF" strokeWidth="4" strokeLinecap="round" opacity={hujan}><path d="M172 142l-8 28M196 142l-7 36M220 142l-9 28M240 142l-7 36" /></g></svg> }
+function Pakaian({ p }: { p: number }) { const kering = Math.max(0, (p - .35) / .55); return <svg viewBox="0 0 400 300"><Latar /><path d="M66 108H320M92 108v128M298 108v128" stroke="#2D3142" strokeWidth="5" /><path d="M180 120l-34 19 12 22 15-8v62h55v-62l15 8 12-22-34-19z" fill={kering > .7 ? '#FFD166' : '#5CC8F5'} stroke="#2D3142" strokeWidth="3" /><g fill="#5CC8F5" opacity={1 - kering}><circle cx="178" cy="222" r="9" /><circle cx="221" cy="235" r="8" /></g><path d="M170 120c-9-24 12-29 5-48M212 120c-9-23 14-26 5-46" stroke="#B5DDF7" strokeWidth="4" fill="none" opacity={kering} /></svg> }
+function Garam({ p }: { p: number }) { const garam = Math.max(0, (p - .62) / .38); return <svg viewBox="0 0 400 300"><Latar /><path d="M56 210h286l-22 38H78z" fill="#E4B979" stroke="#2D3142" strokeWidth="3" /><path d={`M78 212h242v${20 * (1 - p)}H78z`} fill="#5CC8F5" /><g fill="#FFFFFF" opacity={garam}>{[120,150,184,220,251,280].map((x) => <circle key={x} cx={x} cy="223" r="5" />)}</g></svg> }
+function Pendingin({ p }: { p: number }) { const es = 1 - p * .6; return <svg viewBox="0 0 400 300"><Latar /><rect x="72" y="144" width="250" height="88" rx="15" fill="#C9E9F8" stroke="#2D3142" strokeWidth="3" /><path d="M84 160h226v58H84z" fill="#8FC6D9" /><path d={`M132 196l${44 * es} 0 8-${36 * es}h-${44 * es}zM220 200l${38 * es} 0 7-${32 * es}h-${38 * es}z`} fill="#EAFBFF" stroke="#2D3142" strokeWidth="2" /></svg> }
+function Kutub({ p }: { p: number }) { const es = 1 - p * .58; return <svg viewBox="0 0 400 300"><Latar malam /><path d="M0 220H400V300H0Z" fill="#5CC8F5" stroke="#2D3142" strokeWidth="3" /><path d={`M90 225h${150 * es}l-18-55h-${114 * es}z`} fill="#EAFBFF" stroke="#2D3142" strokeWidth="3" /><path d={`M${114 + p * 100} 192c14-14 38-14 51 0v20h-51z`} fill="#FFFFFF" stroke="#2D3142" strokeWidth="3" /></svg> }
+function EsKrimLeleh({ p }: { p: number }) { const leleh = Math.max(0, (p - .35) / .65); return <svg viewBox="0 0 400 300"><Latar /><path d="M0 240h400v60H0z" fill="#B9B1A8" stroke="#2D3142" strokeWidth="3" /><path d="M180 210l25-67 25 67z" fill="#F5A524" stroke="#2D3142" strokeWidth="3" /><circle cx="205" cy={135 + leleh * 55} r={30 - leleh * 11} fill="#FF9AB6" stroke="#2D3142" strokeWidth="3" /><path d={`M205 188c0 0 ${18 * leleh} 18 ${18 * leleh} 34`} stroke="#FF779D" strokeWidth="13" strokeLinecap="round" /></svg> }
+function Waduk({ p }: { p: number }) { const air = 1 - p * .85; return <svg viewBox="0 0 400 300"><Latar /><path d="M60 126h280v128H60z" fill="#C89B62" stroke="#2D3142" strokeWidth="3" /><path d={`M70 ${230 - air * 80}h260v${air * 80}H70z`} fill="#5CC8F5" /><path d="M96 241l20-15 18 17 22-15 28 16m38-3 22-17 24 18" stroke="#856040" strokeWidth="3" fill="none" opacity={p} /></svg> }
+function Kaca({ p }: { p: number }) { const embun = Math.max(0, (p - .35) / .65); return <svg viewBox="0 0 400 300"><Latar malam /><rect x="84" y="56" width="232" height="180" rx="12" fill="#DDF4FF" stroke="#2D3142" strokeWidth="5" /><path d="M200 58v176M86 146h228" stroke="#2D3142" strokeWidth="4" /><g fill="#FFFFFF" opacity={embun}>{[120,150,230,268,178,255].map((x, i) => <circle key={x} cx={x} cy={100 + (i % 3) * 38} r="8" />)}</g><path d="M250 85l-58 105" stroke="#8FD4F1" strokeWidth="22" opacity={p > .82 ? .8 : 0} /></svg> }
+function Cokelat({ p }: { p: number }) { const leleh = Math.max(0, (p - .35) / .65); return <svg viewBox="0 0 400 300"><Latar /><path d="M104 205c14-72 178-72 192 0v44H104z" fill="#F5A524" stroke="#2D3142" strokeWidth="3" /><rect x="150" y="122" width="100" height={65 - leleh * 38} rx="7" fill="#854D0E" stroke="#2D3142" strokeWidth="3" /><path d={`M160 ${165 - leleh * 25}h80M185 124v${42 - leleh * 23}M215 124v${42 - leleh * 23}`} stroke="#B77945" strokeWidth="3" /><path d={`M167 184c12 ${-5 + leleh * 18} 50 ${-5 + leleh * 18} 67 0`} stroke="#854D0E" strokeWidth={8 + leleh * 10} strokeLinecap="round" /></svg> }
+
+const ADEGAN: Record<IdAdegan, Adegan> = { 'es-krim': EsKrim, hujan: Hujan, 'baju-kering': Pakaian, 'garam-laut': Garam, 'es-pendingin': Pendingin, 'es-kutub': Kutub, 'es-krim-leleh': EsKrimLeleh, kekeringan: Waduk, 'kaca-berembun': Kaca, 'cokelat-tas': Cokelat }
+export function SceneRenderer({ id, progress, reducedMotion = false }: { id: IdAdegan; progress: number; reducedMotion?: boolean }) { const AdeganAktif = ADEGAN[id]; return <div className={s.sceneContainer} data-testid={`scene-${id}`}><AdeganAktif p={reducedMotion ? 1 : progress} /></div> }

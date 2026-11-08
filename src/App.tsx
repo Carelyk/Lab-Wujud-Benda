@@ -10,6 +10,7 @@ import { SortingScreen } from './screens/SortingScreen'
 import { SiklusAirScreen } from './screens/SiklusAirScreen'
 import { UntungRugiScreen } from './screens/UntungRugiScreen'
 import { SoundTestScreen } from './screens/SoundTestScreen'
+import { GalleryScreen } from './screens/GalleryScreen'
 import type { ScreenId, TingkatVolume } from './types'
 import { mainkan, siapkanSuara } from './utils/sound'
 import s from './App.module.css'
@@ -21,6 +22,7 @@ const RUTE: Record<string, ScreenId> = {
   '#/kuis': 'kuis',
   '#/lencana': 'lencana',
   '#/sekitar': 'untungRugi',
+  '#/galeri': 'galeri',
   '#/siklus': 'siklus',
   '#/suara': 'suara',
 }
@@ -33,6 +35,7 @@ const HASH: Record<ScreenId, string> = {
   lencana: '#/lencana',
   siklus: '#/siklus',
   untungRugi: '#/sekitar',
+  galeri: '#/galeri',
   suara: '#/suara',
 }
 
@@ -44,6 +47,7 @@ const JUDUL: Record<ScreenId, string> = {
   lencana: 'Lemari Lencana',
   siklus: 'Siklus Air',
   untungRugi: 'Wujud di Sekitar Kita',
+  galeri: 'Galeri Adegan',
   suara: 'Uji Suara',
 }
 
@@ -125,6 +129,9 @@ export default function App() {
       break
     case 'untungRugi':
       isi = <UntungRugiScreen onBack={() => pergi('beranda')} />
+      break
+    case 'galeri':
+      isi = <GalleryScreen />
       break
     case 'suara':
       isi = <SoundTestScreen volume={progress.volume ?? 60} onVolume={alihVolume} />

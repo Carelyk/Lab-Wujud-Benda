@@ -2,17 +2,16 @@ import { useState } from 'react'
 import { UntungRugiPopup } from '../components/sekitar/UntungRugiPopup'
 import { CONTOH_UNTUNG_RUGI_ANIMASI } from '../data/untungRugiAnimasi'
 import type { ContohUntungRugiAnimasi } from '../data/untungRugiAnimasi'
-import { BigButton } from '../components/ui/BigButton'
 import { Panel } from '../components/ui/Panel'
-import { IconBuku } from '../components/ui/Icons'
+import { renderIconProses } from '../components/ui/SvgIcons'
+import { SceneRenderer } from '../components/sekitar/scenes/SceneRenderer'
 import { mainkan } from '../utils/sound'
 import s from './UntungRugiScreen.module.css'
 
-interface Props {
-  onBack: () => void
-}
+interface Props { onBack: () => void }
 
 export function UntungRugiScreen({ onBack }: Props) {
+  void onBack
   const [aktif, setAktif] = useState<ContohUntungRugiAnimasi | null>(null)
   const [filter, setFilter] = useState<'semua' | 'untung' | 'rugi'>('semua')
 
@@ -30,14 +29,13 @@ export function UntungRugiScreen({ onBack }: Props) {
           <h1 className={s.judul}>Manfaat & Kerugian Perubahan Wujud</h1>
           <p className={s.sub}>Klik salah satu contoh untuk melihat animasi dan penjelasan lengkapnya.</p>
         </div>
-        <BigButton nada="netral" onClick={onBack}>
-          ← Kembali ke Beranda
-        </BigButton>
       </div>
 
-      <div className={s.filterBaris} role="group" aria-label="Filter contoh">
+      <div className={s.filterBaris} role="tablist" aria-label="Filter contoh">
         <button
           type="button"
+          role="tab"
+          aria-selected={filter === 'semua'}
           className={`${s.filterTombol} ${filter === 'semua' ? s.filterAktif : ''}`}
           onClick={() => {
             void mainkan('klik')
@@ -48,23 +46,27 @@ export function UntungRugiScreen({ onBack }: Props) {
         </button>
         <button
           type="button"
+          role="tab"
+          aria-selected={filter === 'untung'}
           className={`${s.filterTombol} ${filter === 'untung' ? s.filterAktif : ''}`}
           onClick={() => {
             void mainkan('klik')
             setFilter('untung')
           }}
         >
-          Menguntungkan
+          Menguntungkan ({CONTOH_UNTUNG_RUGI_ANIMASI.filter((c) => c.kategori === 'untung').length})
         </button>
         <button
           type="button"
+          role="tab"
+          aria-selected={filter === 'rugi'}
           className={`${s.filterTombol} ${filter === 'rugi' ? s.filterAktif : ''}`}
           onClick={() => {
             void mainkan('klik')
             setFilter('rugi')
           }}
         >
-          Merugikan
+          Merugikan ({CONTOH_UNTUNG_RUGI_ANIMASI.filter((c) => c.kategori === 'rugi').length})
         </button>
       </div>
 
@@ -74,12 +76,12 @@ export function UntungRugiScreen({ onBack }: Props) {
             key={c.id}
             stiker={c.kategori === 'untung' ? 'Untung' : 'Rugi'}
             judul={c.judul}
-            ikon={<IconBuku size={22} />}
             className={s.kartuPanel}
           >
+            <div className={s.thumbnail}><SceneRenderer id={c.id} progress={1} reducedMotion /></div>
             <p className={s.kartuDeskripsi}>{c.deskripsi}</p>
             <div className={s.kartuBawah}>
-              <span className={s.badgeProses}>Proses: {c.proses}</span>
+              <span className={s.badgeProses}>{renderIconProses(c.proses, 17)} Proses: {c.proses}</span>
               <button
                 type="button"
                 className={s.tombolAnimasi}
@@ -88,7 +90,7 @@ export function UntungRugiScreen({ onBack }: Props) {
                   setAktif(c)
                 }}
               >
-                ▶ Lihat Animasi
+                Lihat Animasi
               </button>
             </div>
           </Panel>

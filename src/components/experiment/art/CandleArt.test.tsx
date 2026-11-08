@@ -17,7 +17,7 @@ describe('CandleArt flame', () => {
   it('mengikat api dan sumbu pada pusat yang sama', () => {
     const html = renderToStaticMarkup(<CandleArt wujud="cair" uap={0} suhu={100} />)
     expect(html).toContain('data-testid="candle-wick"')
-    expect(html).toContain('translate(120 118)')
+    expect(html).toContain('translate(120 148)')
     expect(html).toContain('data-testid="candle-flame"')
   })
 

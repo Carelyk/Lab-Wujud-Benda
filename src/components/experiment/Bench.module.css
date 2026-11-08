@@ -26,6 +26,8 @@
   place-items: end center;
   min-height: 348px;
   padding: 6px 0 0;
+  background: radial-gradient(ellipse at 50% 72%, rgba(92, 200, 245, 0.13), transparent 54%);
+  border-radius: var(--r-md);
 }
 
 /* sun and iceberg: both a visual trigger and a real button */
@@ -78,7 +80,7 @@
 .artikel {
   position: relative;
   z-index: 2;
-  width: min(100%, 310px);
+  width: min(100%, 370px);
   margin-bottom: 16px;
 }
 
@@ -138,6 +140,6 @@
   }
 
   .artikel {
-    width: min(100%, 258px);
+    width: min(100%, 290px);
   }
 }

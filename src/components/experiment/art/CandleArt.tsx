@@ -11,7 +11,7 @@ export function CandleArt({ wujud, suhu }: Props) {
   const cair = wujud === 'cair'
   const t = suhu ?? 28
   const leleh = cair ? Math.max(0, Math.min(1, (t - 55) / 45)) : 0
-  const tinggiBadan = 96 - leleh * 48
+  const tinggiBadan = 96 - leleh * 78
   const atasBadan = 180 - tinggiBadan
   const ujungSumbu = atasBadan - 14
   const faktorApi = 0.86 + leleh * 0.46
